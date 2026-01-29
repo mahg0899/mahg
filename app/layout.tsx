@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Bitcount_Prop_Single, Orbitron, Inter } from "next/font/google";
 import Header from "./components/header";
+import Footer from "./components/footer";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -16,6 +17,7 @@ const geistMono = Geist_Mono({
 const bitcount = Bitcount_Prop_Single({
   variable: "--font-bitcount",
   subsets: ["latin"],
+  adjustFontFallback: false,
 });
 
 const orbitron = Orbitron({
