@@ -1,8 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bitcount+Prop+Single:wght@100..900&display=swap');
 @import "tailwindcss";
 
 :root {
   --background: #F0E7D5;
-  --foreground: #212842;
+  --foreground: #101922;
   --textMain: #F8FAFC;
   --btnColor: #2D8BFF;
   --contrast: #1D2835;
@@ -14,13 +16,21 @@
   --color-main: var(--textMain);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-inter: var(--font-inter);
   --color-btn: var(--btnColor);
   --color-contrast: var(--contrast);
+  --font-orbitron: var(--font-orbitron);
+  --font-bitcount: var(--font-bitcount);
+  --text-4xs: 0.625rem;
+  --text-3xs: 0.75rem;
+  --text-2xs: 0.875rem;
+  --text-4xl: 2.5rem;
+  --text-5xl: 3rem;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0A1118;
+    --background: #101922;
     --foreground: #F0E7D5;
     --textMain: #F8FAFC;
     --btnColor: #2D8BFF;
@@ -31,5 +41,5 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Arial, Helvetica, sans-serif, var(--font-orbitron), var(--font-bitcount);
 }

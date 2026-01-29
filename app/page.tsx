@@ -1,10 +1,9 @@
-import Image from "next/image";
-import Header from "./components/header";
+import Grid from "./home/grid";
 
 export default function Home() {
   return (
     <div className="">
-      <Header />
+      <Grid />
     </div>
   );
 }
