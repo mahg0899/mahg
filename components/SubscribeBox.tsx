@@ -1,0 +1,25 @@
+'use client'
+
+export default function SubscribeBox() {
+    return (
+        <div className="bg-blue-500 rounded-2xl p-6 text-white shadow-lg mb-8">
+            <h3 className="text-xl font-bold mb-2">Mantente Actualizado</h3>
+            <p className="text-blue-100 text-sm mb-6 leading-relaxed">
+                Recibe las últimas novedades sobre diseño y desarrollo directamente en tu bandeja de entrada.
+            </p>
+            <form className="flex flex-col gap-3" onSubmit={(e) => e.preventDefault()}>
+                <input
+                    type="email"
+                    placeholder="email@ejemplo.com"
+                    className="w-full px-4 py-2.5 rounded-lg bg-white/20 border border-white/30 text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-white/50 text-sm"
+                />
+                <button
+                    type="submit"
+                    className="w-full px-4 py-2.5 rounded-lg bg-white text-blue-600 font-bold text-sm hover:bg-blue-50 transition-colors shadow-sm"
+                >
+                    Suscribirse
+                </button>
+            </form>
+        </div>
+    )
+}

@@ -35,7 +35,7 @@ const techStack = [
     }
 ];
 
-export default function Grid() {
+export default function Head() {
     return (
         <div className="mx-auto max-w-6/10">
             <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 group">

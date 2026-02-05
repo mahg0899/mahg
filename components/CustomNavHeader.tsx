@@ -1,0 +1,59 @@
+'use client'
+
+import { useEffect, useState } from 'react'
+
+export default function CustomNavHeader() {
+    const [mounted, setMounted] = useState(false)
+
+    useEffect(() => {
+        setMounted(true)
+    }, [])
+
+    if (!mounted) return null
+
+    return (
+        <div style={{
+            padding: '1.5rem 1rem',
+            borderBottom: '1px solid var(--theme-elevation-150)',
+            marginBottom: '1rem'
+        }}>
+            <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.75rem',
+                marginBottom: '0.5rem'
+            }}>
+                <div style={{
+                    width: '32px',
+                    height: '32px',
+                    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                    borderRadius: '6px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '1.25rem'
+                }}>
+                    🍱
+                </div>
+                <h2 style={{
+                    fontSize: '1.25rem',
+                    fontWeight: '700',
+                    margin: 0,
+                    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text'
+                }}>
+                    BentoMahg
+                </h2>
+            </div>
+            <p style={{
+                fontSize: '0.75rem',
+                color: 'var(--theme-elevation-400)',
+                margin: 0
+            }}>
+                Panel de Administración
+            </p>
+        </div>
+    )
+}
