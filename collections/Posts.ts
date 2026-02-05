@@ -15,62 +15,83 @@ export const Posts: CollectionConfig = {
             },
         },
         group: 'Contenido',
+        components: {
+            edit: {
+                // 'actions' does not exist, using 'beforeDocumentControls' to place it near the other buttons
+                beforeDocumentControls: ['/components/PreviewLink#PreviewLink'],
+            }
+        }
     },
     access: {
         read: () => true,
     },
     fields: [
         {
+            name: 'title',
+            type: 'text',
+            required: true,
+            label: 'Título',
+            admin: {
+                placeholder: 'Escribe un título llamativo...',
+                className: 'post-title',
+            }
+        },
+        {
+            name: 'featuredImage',
+            type: 'upload',
+            relationTo: 'media',
+            label: 'Imagen Destacada',
+            required: false,
+            admin: {
+                description: 'Imagen principal del artículo.',
+                className: 'post-featured-image',
+            }
+        },
+        {
+            name: 'categories',
+            type: 'select',
+            hasMany: true,
+            label: 'Categorías',
+            options: [
+                { label: 'Tecnología', value: 'tech' },
+                { label: 'Diseño', value: 'design' },
+                { label: 'Desarrollo', value: 'development' },
+                { label: 'Tutorial', value: 'tutorial' },
+                { label: 'Noticias', value: 'news' },
+            ],
+            admin: {
+                className: 'post-categories',
+            },
+        },
+        {
             type: 'tabs',
             tabs: [
                 {
-                    label: 'Contenido Principal',
+                    label: 'Contenido',
                     fields: [
-                        {
-                            name: 'title',
-                            type: 'text',
-                            required: true,
-                            label: 'Título del Artículo',
-                            admin: {
-                                placeholder: 'Escribe un título llamativo...',
-                            }
-                        },
                         {
                             name: 'content',
                             type: 'richText',
                             required: true,
-                            label: 'Cuerpo del Artículo',
+                            label: false,
                             admin: {
-                                style: {
-                                    minHeight: '600px',
-                                }
+                                className: 'post-content-editor',
                             }
                         },
-                        {
-                            name: 'featuredImage',
-                            type: 'upload',
-                            relationTo: 'media',
-                            label: 'Imagen de Portada',
-                            required: false,
-                            admin: {
-                                description: 'Imagen principal que se muestra en el blog y al compartir en redes.',
-                            }
-                        },
+                    ]
+                },
+                {
+                    label: 'Configuración',
+                    fields: [
                         {
                             name: 'excerpt',
                             type: 'textarea',
                             label: 'Resumen / Extracto',
                             admin: {
-                                description: 'Aparece en las tarjetas del blog y en los resultados de búsqueda.',
+                                description: 'Aparece en las tarjetas del blog.',
                                 rows: 3,
                             },
                         },
-                    ]
-                },
-                {
-                    label: 'Configuración y Medios',
-                    fields: [
-
                         {
                             type: 'row',
                             fields: [
@@ -123,8 +144,7 @@ export const Posts: CollectionConfig = {
                                     label: 'Slug URL',
                                     unique: true,
                                     admin: {
-                                        position: 'sidebar',
-                                        description: 'Se genera automáticamente si no lo escribes (TODO: hook)',
+                                        description: 'Se genera automáticamente.',
                                     },
                                     hooks: {
                                         beforeValidate: [
@@ -140,23 +160,10 @@ export const Posts: CollectionConfig = {
                             ]
                         },
                         {
-                            name: 'categories',
-                            type: 'select',
-                            hasMany: true,
-                            label: 'Categorías',
-                            options: [
-                                { label: 'Tecnología', value: 'tech' },
-                                { label: 'Diseño', value: 'design' },
-                                { label: 'Desarrollo', value: 'development' },
-                                { label: 'Tutorial', value: 'tutorial' },
-                                { label: 'Noticias', value: 'news' },
-                            ],
-                        },
-                        {
                             name: 'tags',
                             type: 'text',
                             hasMany: true,
-                            label: 'Tags / Etiquetas',
+                            label: 'Tags',
                             admin: {
                                 description: 'Presiona Enter para añadir una etiqueta',
                             },
@@ -175,23 +182,17 @@ export const Posts: CollectionConfig = {
                                     name: 'metaTitle',
                                     type: 'text',
                                     label: 'Meta Título',
-                                    admin: {
-                                        description: 'Si se deja vacío, se usará el título del artículo.',
-                                    }
                                 },
                                 {
                                     name: 'metaDescription',
                                     type: 'textarea',
                                     label: 'Meta Descripción',
-                                    admin: {
-                                        description: 'Idealmente entre 150-160 caracteres.',
-                                    }
                                 },
                                 {
                                     name: 'metaImage',
                                     type: 'upload',
                                     relationTo: 'media',
-                                    label: 'Imagen para Redes Sociales (OG Image)',
+                                    label: 'Imagen OG',
                                 },
                             ],
                         },

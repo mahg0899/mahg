@@ -40,4 +40,11 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+
+# log
 tsc_errors.log
+lint.log
+types_alias_debug.log
+tupes_debug.log
+types_error.log
+types_inline.debug.log
