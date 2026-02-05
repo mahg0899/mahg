@@ -58,8 +58,8 @@ export default function Head() {
                         <h1 className="text-3xs font-bold uppercase mb-2 font-inter tracking-wider text-slate-500">Tech Stack</h1>
                         <div className="grid grid-cols-2 gap-3 mt-6 text-3xs font-semibold">
                             {techStack.map((tech, index) => (
-                                <span key={index} className="px-4 py-1 pt-4 pb-4 rounded-xl bg-slate-700/50 col-span-1 text-center flex items-end justify-start gap-2 hover:scale-105 transition-all duration-300 border border-transparent hover:border-btn hover:bg-slate-700 ">
-                                    <div className="w-5 h-5" style={{ backgroundColor: tech.color, maskImage: `url(${tech.icon})`, maskSize: "contain", maskRepeat: "no-repeat", WebkitMaskImage: `url(${tech.icon})`, WebkitMaskSize: "contain", WebkitMaskRepeat: "no-repeat", maskPosition: "center", WebkitMaskPosition: "center" }} />
+                                <span key={index} className="px-2 py-1 pt-4 pb-4 rounded-xl bg-slate-700/50 col-span-1 text-center flex items-center justify-start gap-2 hover:scale-105 transition-all duration-300 border border-transparent hover:border-btn hover:bg-slate-700 ">
+                                    <div className="w-5 h-5 shrink-0" style={{ backgroundColor: tech.color, maskImage: `url(${tech.icon})`, maskSize: "contain", maskRepeat: "no-repeat", WebkitMaskImage: `url(${tech.icon})`, WebkitMaskSize: "contain", WebkitMaskRepeat: "no-repeat", maskPosition: "center", WebkitMaskPosition: "center" }} />
                                     {tech.name}
                                 </span>
                             ))}

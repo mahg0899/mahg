@@ -8,9 +8,15 @@ import sharp from "sharp";
 import { Users } from "./collections/Users";
 import { Media } from "./collections/Media";
 import { Posts } from "./collections/Posts";
+import { Categories } from "./collections/Categories";
+import { Pages } from "./collections/Pages";
+
+import { SiteSettings } from "./globals/SiteSettings";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
+
+import { nestedDocsPlugin } from '@payloadcms/plugin-nested-docs'
 
 export default buildConfig({
   admin: {
@@ -54,7 +60,15 @@ export default buildConfig({
       },
     },
   },
-  collections: [Users, Media, Posts],
+  collections: [Users, Media, Posts, Categories, Pages],
+  globals: [SiteSettings],
+  plugins: [
+    nestedDocsPlugin({
+      collections: ['pages'],
+      generateLabel: (_, doc) => doc.title as string,
+      generateURL: (docs) => docs.reduce((url, doc) => `${url}/${doc.slug}`, ''),
+    }),
+  ],
   editor: lexicalEditor({
     features: ({ defaultFeatures }) => [
       ...defaultFeatures,
@@ -118,5 +132,5 @@ export default buildConfig({
     },
   }),
   sharp,
-  plugins: [],
+
 });

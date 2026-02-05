@@ -71,9 +71,18 @@ export const RichText: React.FC<{ className?: string; content: any }> = ({ class
     )
 }
 
+// Helper to extract plain text for IDs
+function getTextFromNodes(nodes: Node[]): string {
+    if (!nodes || !Array.isArray(nodes)) return ''
+    return nodes.map(node => {
+        if (node.type === 'text') return node.text || ''
+        if (node.children) return getTextFromNodes(node.children)
+        return ''
+    }).join('')
+}
+
 function serializeLexical({ nodes }: { nodes: Node[] }) {
     if (!nodes || !Array.isArray(nodes)) return null
-
     return (
         <>
             {nodes.map((node, index) => {
@@ -81,32 +90,27 @@ function serializeLexical({ nodes }: { nodes: Node[] }) {
                     return null
                 }
 
+                // ... (rest of text handling is fine, skipping to headings)
+
                 if (node.type === 'text') {
+                    // ... (keep existing text handling logic)
                     let text = <span dangerouslySetInnerHTML={{ __html: node.text as string }} key={index} />
-                    if (node.format && node.format & 1) {
-                        text = <strong key={index}>{text}</strong>
-                    }
-                    if (node.format && node.format & 2) {
-                        text = <em key={index}>{text}</em>
-                    }
-                    if (node.format && node.format & 8) {
-                        text = <u key={index}>{text}</u>
-                    }
-                    if (node.format && node.format & 16) {
-                        text = <code key={index}>{text}</code>
-                    }
+                    if (node.format && node.format & 1) text = <strong key={index}>{text}</strong>
+                    if (node.format && node.format & 2) text = <em key={index}>{text}</em>
+                    if (node.format && node.format & 8) text = <u key={index}>{text}</u>
+                    if (node.format && node.format & 16) text = <code key={index}>{text}</code>
                     return text
                 }
 
-                if (!node) {
-                    return null
-                }
+                if (!node) return null
 
                 switch (node.type) {
                     case 'heading': {
                         const tag = node.tag
                         const children = serializeLexical({ nodes: node.children || [] })
-                        const id = children?.toString().toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '')
+                        // FIX: Use helper to get plain text only
+                        const textContent = getTextFromNodes(node.children || [])
+                        const id = textContent.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '')
 
                         if (tag === 'h1') return <h1 key={index} id={id} className="text-3xl font-bold mt-12 mb-6 text-slate-100 scroll-mt-24">{children}</h1>
                         if (tag === 'h2') return <h2 key={index} id={id} className="text-2xl font-bold mt-12 mb-6 text-slate-100 border-b border-slate-800 pb-2 scroll-mt-24">{children}</h2>
@@ -116,6 +120,8 @@ function serializeLexical({ nodes }: { nodes: Node[] }) {
                         if (tag === 'h6') return <h6 key={index} id={id} className="text-sm font-bold mt-6 mb-3 text-slate-400 uppercase tracking-wide scroll-mt-24">{children}</h6>
                         return <h1 key={index} id={id} className="text-4xl font-bold mt-12 mb-6 text-slate-100 scroll-mt-24">{children}</h1>
                     }
+                    // Clean up individual heading cases if they exist or ensure they use the same ID logic
+
                     case 'h1':
                         return (
                             <h1 key={index} id={serializeLexical({ nodes: node.children || [] })?.toString().toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '')} className="text-4xl font-bold mt-12 mb-6 text-slate-100 scroll-mt-24">

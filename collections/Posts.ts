@@ -2,19 +2,21 @@ import type { CollectionConfig } from 'payload'
 
 export const Posts: CollectionConfig = {
     slug: 'posts',
+    versions: {
+        drafts: true,
+    },
     labels: {
-        singular: 'Artículo',
-        plural: 'Artículos',
+        singular: 'Post',
+        plural: 'Posts',
     },
     admin: {
         useAsTitle: 'title',
-        defaultColumns: ['title', 'author', 'status', 'publishedAt'],
+        defaultColumns: ['title', 'author', 'publishedAt'],
         livePreview: {
             url: ({ data }) => {
                 return `${process.env.NEXT_PUBLIC_SERVER_URL}/blog/${data.slug}`
             },
         },
-        group: 'Contenido',
         components: {
             edit: {
                 // 'actions' does not exist, using 'beforeDocumentControls' to place it near the other buttons
@@ -63,6 +65,7 @@ export const Posts: CollectionConfig = {
                 className: 'post-categories',
             },
         },
+
         {
             type: 'tabs',
             tabs: [
@@ -95,21 +98,7 @@ export const Posts: CollectionConfig = {
                         {
                             type: 'row',
                             fields: [
-                                {
-                                    name: 'status',
-                                    type: 'select',
-                                    required: true,
-                                    defaultValue: 'draft',
-                                    label: 'Estado',
-                                    options: [
-                                        { label: 'Borrador', value: 'draft' },
-                                        { label: 'Publicado', value: 'published' },
-                                        { label: 'Archivado', value: 'archived' },
-                                    ],
-                                    admin: {
-                                        width: '50%',
-                                    }
-                                },
+
                                 {
                                     name: 'publishedAt',
                                     type: 'date',
@@ -137,6 +126,15 @@ export const Posts: CollectionConfig = {
                                     admin: {
                                         width: '50%',
                                     }
+                                },
+                                {
+                                    name: 'isFeatured',
+                                    type: 'checkbox',
+                                    label: 'Destacar como Post Principal',
+                                    admin: {
+                                        position: 'sidebar',
+                                        description: 'Si se marca, aparecerá destacado al inicio del blog.',
+                                    },
                                 },
                                 {
                                     name: 'slug',

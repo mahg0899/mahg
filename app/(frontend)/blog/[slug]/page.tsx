@@ -7,6 +7,8 @@ import BackToBlogButton from '@/components/BackToBlogButton'
 import { RichText } from '@/components/RichText'
 import SubscribeBox from '@/components/SubscribeBox'
 import ShareButtons from '@/components/ShareButtons'
+import TableOfContents from '@/components/TableOfContents'
+import RelatedPosts from '@/components/RelatedPosts'
 
 export async function generateStaticParams() {
     const payload = await getPayload({ config })
@@ -14,7 +16,7 @@ export async function generateStaticParams() {
     const posts = await payload.find({
         collection: 'posts',
         where: {
-            status: { equals: 'published' }
+            _status: { equals: 'published' }
         },
         limit: 100
     })
@@ -37,9 +39,20 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
 
     const post = result.docs[0]
 
-    if (!post || post.status !== 'published') {
+    if (!post || (post as any)._status !== 'published') {
         notFound()
     }
+
+    // Fetch Related Posts
+    const relatedPosts = await payload.find({
+        collection: 'posts',
+        where: {
+            slug: { not_equals: slug },
+            _status: { equals: 'published' }
+        },
+        limit: 3,
+        depth: 1
+    })
 
     const featuredImage = post.featuredImage as Media | undefined
     const author = typeof post.author === 'object' ? post.author : null
@@ -154,32 +167,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
                     {/* Left Sidebar: Table of Contents */}
                     <aside className="hidden lg:block col-span-2 relative">
-                        <div className="sticky top-32">
-                            <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-6 border-l-2 border-blue-500 pl-3">
-                                Contenido
-                            </h3>
-                            <nav className="text-sm text-slate-400 space-y-3">
-                                {toc.length > 0 ? (
-                                    <ul className="space-y-3">
-                                        {toc.map((item, i) => (
-                                            <li key={i} style={{
-                                                paddingLeft: item.level === 1 ? '0' : item.level === 2 ? '1rem' : '2rem',
-                                                marginTop: item.level === 1 ? '0.75rem' : '0.25rem'
-                                            }}>
-                                                <a
-                                                    href={`#${item.id}`}
-                                                    className={`block hover:text-blue-400 transition-colors line-clamp-2 ${item.level === 1 ? 'text-slate-200 font-bold' : 'text-slate-400'}`}
-                                                >
-                                                    {item.text}
-                                                </a>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                ) : (
-                                    <p className="opacity-50 italic text-xs">Sin secciones</p>
-                                )}
-                            </nav>
-                        </div>
+                        <TableOfContents items={toc} />
                     </aside>
                     {/* Center Column: Main Content */}
                     <div className="col-span-1 lg:col-span-7">
@@ -263,6 +251,8 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
                     </aside>
                 </div>
             </div>
+            {/* Related Articles Section */}
+            <RelatedPosts posts={relatedPosts.docs} />
         </article>
     )
 }
