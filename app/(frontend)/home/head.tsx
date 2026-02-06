@@ -38,9 +38,9 @@ const techStack = [
 export default function Head() {
     return (
         <div className="mx-auto max-w-6/10">
-            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 group">
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 <div className="col-span-2 md:col-span-2 lg:col-span-3 group/item">
-                    <div className="relative overflow-hidden bg-bento dark:bg-bento pt-5 pb-15 rounded-lg p-6 border border-contrast hover: transition-all duration-300 hover:border-btn/50 hover:-translate-y-2 group">
+                    <div className="relative overflow-hidden bg-bento dark:bg-bento pt-5 pb-15 rounded-lg p-6 border border-main/25 hover: transition-all duration-300 hover:border-btn/50 hover:-translate-y-2 group hover:shadow-lg shadow-btn/20">
                         <div className="absolute top-0 right-0 w-32 h-32 bg-btn/20 rounded-full blur-[50px] -mr-8 -mt-8 transition-all duration-500 group-hover:bg-btn/30"></div>
                         <span className="text-2xs font-semibold text-btn uppercase tracking-wider mb-2 block">Frontend Developer</span>
                         <p className="text-5xl font-black font-inter leading-none drop-shadow-md">Desarrollando soluciones digitales con <span className="text-btn">precisión</span> y creatividad</p>
@@ -54,7 +54,7 @@ export default function Head() {
                     </div>
                 </div>
                 <div className="col-span-2 md:col-span-1 lg:col-span-1">
-                    <div className="bg-bento dark:bg-bento rounded-lg p-6 border border-contrast pt-5 pb-15 h-full border border-contrast hover:transition-all duration-500 hover:border-btn/50 hover:-translate-y-2 group">
+                    <div className="bg-bento dark:bg-bento rounded-lg p-6 border border-main/25 pt-5 pb-15 h-full border border-contrast hover:transition-all duration-500 hover:border-btn/50 hover:-translate-y-2 group">
                         <h1 className="text-3xs font-bold uppercase mb-2 font-inter tracking-wider text-slate-500">Tech Stack</h1>
                         <div className="grid grid-cols-2 gap-3 mt-6 text-3xs font-semibold">
                             {techStack.map((tech, index) => (
