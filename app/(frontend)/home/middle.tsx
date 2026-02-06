@@ -21,10 +21,8 @@ export default async function Middle() {
         <div className="mx-auto max-w-6/10 pt-5">
             <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 <div className="relative overflow-hidden bg-bento dark:bg-bento rounded-lg p-6 border border-main/25 hover: transition-all duration-300 hover:border-btn/50 hover:-translate-y-2 group hover:shadow-lg shadow-btn/20">
-                    <h3 className="text-2xs font-bold text-slate-500 uppercase tracking-widest mb-6">Services</h3>
-
+                    <h3 className="text-2xs font-bold text-slate-500 uppercase tracking-widest mb-6">Servicios</h3>
                     <div className="space-y-6">
-                        {/* Service 1 */}
                         <div className="flex items-start gap-4">
                             <div className="mt-1 text-blue-400">
                                 <FontAwesomeIcon icon={faLaptopCode} className="w-5 h-5" />
@@ -34,8 +32,6 @@ export default async function Middle() {
                                 <p className="text-slate-500 text-xs mt-0.5">Apps responsivas y de gran desempeño</p>
                             </div>
                         </div>
-
-                        {/* Service 2 */}
                         <div className="flex items-start gap-4">
                             <div className="mt-1 text-blue-400">
                                 <FontAwesomeIcon icon={faPenRuler} className="w-5 h-5" />
@@ -45,8 +41,6 @@ export default async function Middle() {
                                 <p className="text-slate-500 text-xs mt-0.5">Interfaces intuitivas y de alta calidad</p>
                             </div>
                         </div>
-
-                        {/* Service 3 */}
                         <div className="flex items-start gap-4">
                             <div className="mt-1 text-blue-400">
                                 <FontAwesomeIcon icon={faShareNodes} className="w-5 h-5" />

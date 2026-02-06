@@ -1,7 +1,19 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faInfinity } from "@fortawesome/free-solid-svg-icons";
+
 export default function Footer() {
     return (
-        <div>
-            <h1>Footer</h1>
-        </div>
+        <footer className="py-10 bg-background dark:bg-background">
+            <div className="flex flex-col items-center justify-center gap-4">
+                <div className="flex items-center gap-4 text-slate-600">
+                    <div className="h-px w-10 bg-slate-800"></div>
+                    <FontAwesomeIcon icon={faInfinity} className="w-4 h-4" />
+                    <div className="h-px w-10 bg-slate-800"></div>
+                </div>
+                <p className="text-slate-500 text-[12px] uppercase tracking-wider font-semibold">
+                    © {new Date().getFullYear()} <span className="text-btn">MAHG</span>. Hecho con ♥️ con ayuda de <a href="https://fractalis.dev" target="_blank" className="text-btn">Fractalis.Dev</a>
+                </p>
+            </div>
+        </footer>
     );
 }

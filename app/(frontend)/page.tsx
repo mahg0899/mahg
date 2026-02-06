@@ -1,6 +1,7 @@
 import Head from "./home/head";
 import Middle from "./home/middle";
 import Bottom from "./home/bottom";
+import Cont from "./home/cont";
 
 export default function Home() {
   return (
@@ -8,6 +9,7 @@ export default function Home() {
       <Head />
       <Middle />
       <Bottom />
+      <Cont />
     </div>
   );
 }
