@@ -8,7 +8,7 @@ import { FeaturedPost } from '@/components/FeaturedPost'
 export default async function BlogIndex() {
     const payload = await getPayload({ config })
 
-    // 1. Fetch the Featured Post
+    // 1. Fetch the Featured Post (Explicitly marked)
     const featuredQuery = await payload.find({
         collection: 'posts',
         where: {
@@ -21,22 +21,39 @@ export default async function BlogIndex() {
         depth: 1
     })
 
-    const featuredPost = featuredQuery.docs.length > 0 ? featuredQuery.docs[0] : null
+    let featuredPost = featuredQuery.docs.length > 0 ? featuredQuery.docs[0] : null
+    let recentPosts: any[] = []
 
-    // 2. Fetch Recent Posts (excluding the featured one if it exists)
-    const recentPostsQuery = await payload.find({
-        collection: 'posts',
-        where: {
-            and: [
-                { _status: { equals: 'published' } },
-                { id: { not_equals: featuredPost?.id } }
-            ]
-        },
-        sort: '-publishedAt',
-        limit: 20
-    })
+    if (featuredPost) {
+        // If we have a featured post, fetch others excluding it
+        const recentPostsQuery = await payload.find({
+            collection: 'posts',
+            where: {
+                and: [
+                    { _status: { equals: 'published' } },
+                    { id: { not_equals: featuredPost.id } }
+                ]
+            },
+            sort: '-publishedAt',
+            limit: 20
+        })
+        recentPosts = recentPostsQuery.docs
+    } else {
+        // Fallback: No featured post selected? Use the latest one!
+        const allPostsQuery = await payload.find({
+            collection: 'posts',
+            where: {
+                _status: { equals: 'published' }
+            },
+            sort: '-publishedAt',
+            limit: 21 // 1 for featured + 20 recent
+        })
 
-    const recentPosts = recentPostsQuery.docs
+        if (allPostsQuery.docs.length > 0) {
+            featuredPost = allPostsQuery.docs[0]
+            recentPosts = allPostsQuery.docs.slice(1)
+        }
+    }
 
     return (
         <div className="max-w-[1400px] mx-auto px-6 py-12 md:py-20">

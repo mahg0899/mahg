@@ -11,6 +11,8 @@ import { Posts } from "./collections/Posts";
 import { Categories } from "./collections/Categories";
 import { Pages } from "./collections/Pages";
 
+import { Projects } from "./collections/Projects";
+
 import { SiteSettings } from "./globals/SiteSettings";
 
 const filename = fileURLToPath(import.meta.url);
@@ -60,7 +62,7 @@ export default buildConfig({
       },
     },
   },
-  collections: [Users, Media, Posts, Categories, Pages],
+  collections: [Users, Media, Posts, Categories, Pages, Projects],
   globals: [SiteSettings],
   plugins: [
     nestedDocsPlugin({
