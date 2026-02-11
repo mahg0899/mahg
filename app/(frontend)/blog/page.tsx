@@ -56,7 +56,7 @@ export default async function BlogIndex() {
     }
 
     return (
-        <div className="max-w-[1400px] mx-auto px-6 py-12 md:py-20">
+        <div className="mx-auto w-11/12 xl:w-6/10 px-0 py-12 md:py-20">
             {/* Featured Post (if exists) */}
             {featuredPost && (
                 <FeaturedPost post={featuredPost} />

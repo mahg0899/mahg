@@ -5,11 +5,11 @@ import Link from "next/link";
 
 export default function Contact() {
     return (
-        <div className="min-h-screen relative flex flex-col justify-center overflow-hidden mx-auto max-w-6/10">
+        <div className="min-h-screen relative flex flex-col justify-center overflow-hidden mx-auto w-11/12 xl:w-6/10 py-24 md:py-0">
             <div className="absolute inset-0 h-full w-full bg-[radial-gradient(#ffffff1a_1px,transparent_1px)] [background-size:24px_24px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)] pointer-events-none mx-auto"></div>
 
             <div className="relative z-10 pb-12">
-                <h1 className="text-5xl font-black font-inter leading-none drop-shadow-md text-white mb-6">
+                <h1 className="text-3xl md:text-5xl font-black font-inter leading-none drop-shadow-md text-white mb-6">
                     Comencemos a trabajar <span className="text-btn">juntos.</span>
                 </h1>
                 <p className="text-slate-400 text-lg max-w-2xl font-inter font-medium leading-relaxed">
@@ -76,13 +76,13 @@ export default function Contact() {
                     </div>
                     <Link href="https://cal.com/mahg0899/15min" className="block bg-btn rounded-2xl p-8 shadow-lg shadow-blue-500/20 transition-all hover:-translate-y-1 group relative overflow-hidden">
                         <div className="relative z-10">
-                            <h3 className="text-xl font-bold text-white mb-2">¿Quieres saltarte el formulario?</h3>
+                            <h3 className="text-xl font-bold text-white mb-2">¿Necesitas una solución rápida?</h3>
                             <p className="text-blue-100 text-sm mb-6 leading-relaxed max-w-[280px]">
                                 Agenda una llamada rápida de 15 min para discutir tu visión directamente conmigo.
                             </p>
                             <div className="bg-white text-btn px-4 py-3 rounded-lg font-bold text-sm inline-flex items-center gap-2 group-hover:shadow-lg transition-all hover:scale-105">
                                 <FontAwesomeIcon icon={faCalendar} className="w-4 h-4" />
-                                Agendar Reunión
+                                Agendar Cita
                             </div>
                         </div>
                         <div className="absolute -right-6 -bottom-6 -rotate-12 group-hover:rotate-0 group-hover:scale-110 transition-all duration-500 pointer-events-none">

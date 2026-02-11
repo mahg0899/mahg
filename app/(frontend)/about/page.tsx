@@ -4,11 +4,11 @@ import Link from "next/link";
 
 export default function About() {
     return (
-        <div className="mx-auto max-w-6/10 pb-15 text-main">
+        <div className="mx-auto w-11/12 xl:w-6/10 pb-15 text-main">
             <div className="grid grid-cols-1 md:grid-cols-4 md:grid-rows-6 gap-4 auto-rows-[minmax(160px,auto)]">
                 <div className="md:col-span-3 md:row-span-3 bento-card rounded-2xl pl-10 pt-4 pb-6 flex flex-col relative overflow-hidden group bg-bento border border-main/25 hover:transition-all duration-300 hover:border-btn/50 hover:-translate-y-2 group hover:shadow-lg shadow-btn/20">
                     <p className="text-3xs font-semibold text-btn uppercase tracking-wider mb-2 block pt-7">Mi historia</p>
-                    <h1 className="text-5xl font-black font-inter leading-none drop-shadow-md pt-3">Busco <span className="text-btn italic">diseñar</span> y <span className="text-btn italic">desarrollar</span> soluciones innovadoras.</h1>
+                    <h1 className="text-3xl md:text-5xl font-black font-inter leading-none drop-shadow-md pt-3">Busco <span className="text-btn italic">diseñar</span> y <span className="text-btn italic">desarrollar</span> soluciones innovadoras.</h1>
                     <p className="text-slate-500 mt-6 font-semibold max-w-8/10 pt-4">
                         Soy desarrollador web frontend con experiencia en diseño y desarrollo de interfaces. Mi recorrido comienza desde la curiosidad de entender como funciona realmente la tecnología y como el mundo digital funciona. Hoy en día mi interés es aprender y resolver problemas por medio de la programación.
                     </p>
@@ -109,7 +109,7 @@ export default function About() {
                     </div>
                 </div>
                 <div className="md:col-span-3 md:row-span-2 bento-card rounded-2xl p-10 flex flex-col justify-center relative overflow-hidden group bg-btn border border-main/25 hover:transition-all duration-300 hover:border-main/50 hover:-translate-y-2 group hover:shadow-lg shadow-btn/20">
-                    <h1 className="text-4xl font-bold mb-4">Hagamos algo grandioso</h1>
+                    <h1 className="text-2xl md:text-4xl font-bold mb-4">Hagamos algo grandioso</h1>
                     <p className="mb-6 text-lg">
                         Estoy abierto a oportunidades laborales y colaboraciones. No dudes en dejar un mensaje.
                     </p>
