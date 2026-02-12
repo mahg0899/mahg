@@ -199,7 +199,7 @@ export default async function Home() {
                 </span>
                 <div className="relative flex items-center justify-center">
                   <div className="absolute flex items-center justify-center">
-                    <FontAwesomeIcon icon={faFileLines} className="text-slate-800 w-40 h-40 opacity-50 rotate-12 -translate-x-10 -translate-y-6 transition-all duration-500 ease-out group-hover:rotate-0 group-hover:scale-110" />
+                    <FontAwesomeIcon icon={faFileLines} className="text-slate-800 text-[10rem] opacity-50 rotate-12 -translate-x-10 -translate-y-6 transition-all duration-500 ease-out group-hover:rotate-0 group-hover:scale-110" />
                   </div>
                   <div className="relative z-10 flex items-center justify-center bg-white rounded-full w-10 h-10 shadow-lg group-hover:scale-110 transition-transform duration-300">
                     <FontAwesomeIcon icon={faArrowRight} className="text-blue-500 w-4 h-4" />

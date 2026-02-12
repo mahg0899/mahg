@@ -8,7 +8,6 @@ import { FeaturedPost } from '@/components/FeaturedPost'
 export default async function BlogIndex() {
     const payload = await getPayload({ config })
 
-    // 1. Fetch the Featured Post (Explicitly marked)
     const featuredQuery = await payload.find({
         collection: 'posts',
         where: {
@@ -25,7 +24,6 @@ export default async function BlogIndex() {
     let recentPosts: any[] = []
 
     if (featuredPost) {
-        // If we have a featured post, fetch others excluding it
         const recentPostsQuery = await payload.find({
             collection: 'posts',
             where: {
@@ -39,14 +37,13 @@ export default async function BlogIndex() {
         })
         recentPosts = recentPostsQuery.docs
     } else {
-        // Fallback: No featured post selected? Use the latest one!
         const allPostsQuery = await payload.find({
             collection: 'posts',
             where: {
                 _status: { equals: 'published' }
             },
             sort: '-publishedAt',
-            limit: 21 // 1 for featured + 20 recent
+            limit: 21
         })
 
         if (allPostsQuery.docs.length > 0) {
@@ -57,12 +54,9 @@ export default async function BlogIndex() {
 
     return (
         <div className="mx-auto w-11/12 xl:w-6/10 px-0 py-12 md:py-20">
-            {/* Featured Post (if exists) */}
             {featuredPost && (
                 <FeaturedPost post={featuredPost} />
             )}
-
-            {/* Posts Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {recentPosts.map((post) => (
                     <PostCard
