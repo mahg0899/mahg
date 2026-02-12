@@ -27,8 +27,8 @@ ENV NEXT_PUBLIC_SERVER_URL=$NEXT_PUBLIC_SERVER_URL
 ENV CI=true
 ENV NODE_ENV=production
 
-# Generate initial migration files
-RUN npx payload migrate:create --name initial 2>/dev/null || true
+# Ensure migrations directory exists
+RUN mkdir -p migrations
 
 RUN npm run build
 
