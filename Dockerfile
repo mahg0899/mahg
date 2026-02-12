@@ -56,6 +56,9 @@ COPY --from=builder /app/payload.config.ts ./payload.config.ts
 COPY --from=builder /app/payload-types.ts ./payload-types.ts
 COPY --from=builder /app/tsconfig.json ./tsconfig.json
 
+# Create media directory for uploads with correct permissions
+RUN mkdir -p ./media && chown nextjs:nodejs ./media
+
 USER nextjs
 
 EXPOSE 3005

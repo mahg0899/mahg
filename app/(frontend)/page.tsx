@@ -187,7 +187,7 @@ export default async function Home() {
             </Link>
           )}
           {latestPost ? (
-            <Link href={`/ blog / ${latestPost.slug} `} className="relative overflow-hidden bg-bento dark:bg-bento rounded-lg p-6 border border-main/25 hover:border-btn/50 transition-all duration-300 hover:-translate-y-2 group hover:shadow-lg shadow-btn/20 flex flex-col justify-between h-full min-h-[240px]">
+            <Link href={`/blog/${latestPost.slug}`} className="relative overflow-hidden bg-bento dark:bg-bento rounded-lg p-6 border border-main/25 hover:border-btn/50 transition-all duration-300 hover:-translate-y-2 group hover:shadow-lg shadow-btn/20 flex flex-col justify-between h-full min-h-[240px]">
               <span className="bg-contrast text-white text-[10px] font-bold px-3 py-1 rounded w-fit mb-4 uppercase tracking-wider backdrop-blur-sm self-start">
                 Último Blog
               </span>
