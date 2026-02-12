@@ -11,23 +11,6 @@ import RelatedPosts from '@/components/RelatedPosts'
 
 export const dynamic = 'force-dynamic'
 
-
-export async function generateStaticParams() {
-    const payload = await getPayload({ config })
-
-    const posts = await payload.find({
-        collection: 'posts',
-        where: {
-            _status: { equals: 'published' }
-        },
-        limit: 100
-    })
-
-    return posts.docs.map((post) => ({
-        slug: post.slug,
-    }))
-}
-
 export default async function BlogPost({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params
     const payload = await getPayload({ config })
