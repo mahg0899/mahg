@@ -133,6 +133,7 @@ export default buildConfig({
       connectionString: process.env.DATABASE_URL || "",
     },
     push: true,
+    migrationDir: path.resolve(dirname, "migrations"),
   }),
   sharp,
 

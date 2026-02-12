@@ -1,5 +1,5 @@
 # ---- Base ----
-FROM node:20-alpine AS base
+FROM node:22-alpine AS base
 RUN apk add --no-cache libc6-compat
 
 # ---- Dependencies ----
@@ -27,6 +27,9 @@ ENV NEXT_PUBLIC_SERVER_URL=$NEXT_PUBLIC_SERVER_URL
 ENV CI=true
 ENV NODE_ENV=production
 
+# Generate initial migration files
+RUN npx payload migrate:create --name initial 2>/dev/null || true
+
 RUN npm run build
 
 # ---- Runner ----
@@ -40,7 +43,7 @@ ENV PORT=3005
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
-# Copy only what's needed for production
+# Copy what's needed for production
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/app ./app
 COPY --from=builder /app/.next ./.next
@@ -57,8 +60,13 @@ COPY --from=builder /app/payload.config.ts ./payload.config.ts
 COPY --from=builder /app/payload-types.ts ./payload-types.ts
 COPY --from=builder /app/tsconfig.json ./tsconfig.json
 
+# Copy migration files and entrypoint script
+COPY --from=builder /app/migrations ./migrations
+COPY --from=builder /app/entrypoint.sh ./entrypoint.sh
+RUN chmod +x ./entrypoint.sh
+
 USER nextjs
 
 EXPOSE 3005
 
-CMD ["npm", "start"]
+ENTRYPOINT ["./entrypoint.sh"]
