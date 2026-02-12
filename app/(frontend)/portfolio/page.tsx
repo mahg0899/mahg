@@ -1,16 +1,15 @@
-```
 import { getPayload } from "payload";
 import config from "@payload-config";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGithub, faFigma } from "@fortawesome/free-brands-svg-icons";
 import { faArrowRight, faLaptopCode } from "@fortawesome/free-solid-svg-icons";
-import { ensureUrl } from '@/lib/utils'
+import { ensureUrl } from '@/lib/utils';
 import type { Media } from "@/payload-types";
 
 export const dynamic = 'force-dynamic'
 
-};
+
 
 export default async function Portfolio() {
     const payload = await getPayload({ config });

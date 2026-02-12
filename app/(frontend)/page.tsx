@@ -1,4 +1,3 @@
-```
 import React from "react";
 import Link from "next/link";
 export const dynamic = 'force-dynamic'
@@ -87,7 +86,7 @@ export default async function Home() {
               <div className="grid grid-cols-2 gap-3 mt-6 text-3xs font-semibold">
                 {techStack.map((tech, index) => (
                   <span key={index} className="px-2 py-1 pt-4 pb-4 rounded-xl bg-slate-700/50 col-span-1 text-center flex items-center justify-start gap-2 hover:scale-105 transition-all duration-300 border border-transparent hover:border-btn hover:bg-slate-700 ">
-                    <div className="w-5 h-5 shrink-0" style={{ backgroundColor: tech.color, maskImage: `url(${ tech.icon })`, maskSize: "contain", maskRepeat: "no-repeat", WebkitMaskImage: `url(${ tech.icon })`, WebkitMaskSize: "contain", WebkitMaskRepeat: "no-repeat", maskPosition: "center", WebkitMaskPosition: "center" }} />
+                    <div className="w-5 h-5 shrink-0" style={{ backgroundColor: tech.color, maskImage: `url(${tech.icon})`, maskSize: "contain", maskRepeat: "no-repeat", WebkitMaskImage: `url(${tech.icon})`, WebkitMaskSize: "contain", WebkitMaskRepeat: "no-repeat", maskPosition: "center", WebkitMaskPosition: "center" }} />
                     {tech.name}
                   </span>
                 ))}
@@ -188,7 +187,7 @@ export default async function Home() {
             </Link>
           )}
           {latestPost ? (
-            <Link href={`/ blog / ${ latestPost.slug } `} className="relative overflow-hidden bg-bento dark:bg-bento rounded-lg p-6 border border-main/25 hover:border-btn/50 transition-all duration-300 hover:-translate-y-2 group hover:shadow-lg shadow-btn/20 flex flex-col justify-between h-full min-h-[240px]">
+            <Link href={`/ blog / ${latestPost.slug} `} className="relative overflow-hidden bg-bento dark:bg-bento rounded-lg p-6 border border-main/25 hover:border-btn/50 transition-all duration-300 hover:-translate-y-2 group hover:shadow-lg shadow-btn/20 flex flex-col justify-between h-full min-h-[240px]">
               <span className="bg-contrast text-white text-[10px] font-bold px-3 py-1 rounded w-fit mb-4 uppercase tracking-wider backdrop-blur-sm self-start">
                 Último Blog
               </span>
