@@ -27,9 +27,6 @@ ENV NEXT_PUBLIC_SERVER_URL=$NEXT_PUBLIC_SERVER_URL
 ENV CI=true
 ENV NODE_ENV=production
 
-# Ensure migrations directory exists
-RUN mkdir -p migrations
-
 RUN npm run build
 
 # ---- Runner ----
@@ -39,18 +36,17 @@ WORKDIR /app
 ENV NODE_ENV=production
 ENV PORT=3005
 
-# Don't run as root
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
-# Copy what's needed for production
+# Copy production files
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/app ./app
 COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package.json ./package.json
 
-# Payload needs these at runtime
+# Payload runtime files
 COPY --from=builder /app/collections ./collections
 COPY --from=builder /app/globals ./globals
 COPY --from=builder /app/lib ./lib
@@ -60,13 +56,8 @@ COPY --from=builder /app/payload.config.ts ./payload.config.ts
 COPY --from=builder /app/payload-types.ts ./payload-types.ts
 COPY --from=builder /app/tsconfig.json ./tsconfig.json
 
-# Copy init script and entrypoint
-COPY --from=builder /app/scripts ./scripts
-COPY --from=builder /app/entrypoint.sh ./entrypoint.sh
-RUN chmod +x ./entrypoint.sh
-
 USER nextjs
 
 EXPOSE 3005
 
-ENTRYPOINT ["./entrypoint.sh"]
+CMD ["npm", "start"]
