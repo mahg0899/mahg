@@ -3,6 +3,7 @@ import config from '@payload-config'
 import Link from 'next/link'
 import type { Media } from '@/payload-types'
 import { PostCard } from '@/components/PostCard'
+export const dynamic = 'force-dynamic'
 import { FeaturedPost } from '@/components/FeaturedPost'
 
 export default async function BlogIndex() {

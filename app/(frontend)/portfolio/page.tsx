@@ -1,16 +1,15 @@
+```
 import { getPayload } from "payload";
 import config from "@payload-config";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGithub, faFigma } from "@fortawesome/free-brands-svg-icons";
 import { faArrowRight, faLaptopCode } from "@fortawesome/free-solid-svg-icons";
+import { ensureUrl } from '@/lib/utils'
 import type { Media } from "@/payload-types";
 
 export const dynamic = 'force-dynamic'
 
-const ensureUrl = (url?: string | null) => {
-    if (!url) return null;
-    return url.startsWith('http') ? url : `https://${url}`;
 };
 
 export default async function Portfolio() {

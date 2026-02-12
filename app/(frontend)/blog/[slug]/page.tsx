@@ -9,6 +9,9 @@ import ShareButtons from '@/components/ShareButtons'
 import TableOfContents from '@/components/TableOfContents'
 import RelatedPosts from '@/components/RelatedPosts'
 
+export const dynamic = 'force-dynamic'
+
+
 export async function generateStaticParams() {
     const payload = await getPayload({ config })
 
