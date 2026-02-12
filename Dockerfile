@@ -60,8 +60,8 @@ COPY --from=builder /app/payload.config.ts ./payload.config.ts
 COPY --from=builder /app/payload-types.ts ./payload-types.ts
 COPY --from=builder /app/tsconfig.json ./tsconfig.json
 
-# Copy migration files and entrypoint script
-COPY --from=builder /app/migrations ./migrations
+# Copy init script and entrypoint
+COPY --from=builder /app/scripts ./scripts
 COPY --from=builder /app/entrypoint.sh ./entrypoint.sh
 RUN chmod +x ./entrypoint.sh
 
