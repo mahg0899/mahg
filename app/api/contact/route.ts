@@ -1,7 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+let resend: Resend | null = null
+function getResend() {
+    if (!resend) {
+        if (!process.env.RESEND_API_KEY) {
+            throw new Error('RESEND_API_KEY is not configured.')
+        }
+        resend = new Resend(process.env.RESEND_API_KEY)
+    }
+    return resend
+}
 
 // Simple in-memory rate limiting
 const rateLimit = new Map<string, { count: number; resetAt: number }>()
@@ -64,7 +73,7 @@ export async function POST(request: NextRequest) {
         }
 
         // Send email via Resend
-        const { data, error } = await resend.emails.send({
+        const { data, error } = await getResend().emails.send({
             from: 'Formulario Web <noreply@mahg.me>',
             to: ['contacto@mahg.me'],
             replyTo: email,
