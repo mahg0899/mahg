@@ -21,8 +21,6 @@ const dirname = path.dirname(filename);
 import { nestedDocsPlugin } from '@payloadcms/plugin-nested-docs'
 
 export default buildConfig({
-  serverURL: process.env.NEXT_PUBLIC_SERVER_URL || '',
-  cors: '*',
   admin: {
     user: Users.slug,
     meta: {

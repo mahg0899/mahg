@@ -54,7 +54,6 @@ COPY --from=builder /app/components ./components
 COPY --from=builder /app/payload.config.ts ./payload.config.ts
 COPY --from=builder /app/payload-types.ts ./payload-types.ts
 COPY --from=builder /app/tsconfig.json ./tsconfig.json
-COPY --from=builder /app/next.config.ts ./next.config.ts
 
 RUN mkdir -p ./media && chown nextjs:nodejs ./media
 
