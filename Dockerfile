@@ -16,7 +16,7 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# Build-time args (needed by Next.js + Payload during `next build`)
+
 ARG DATABASE_URL
 ARG PAYLOAD_SECRET
 ARG NEXT_PUBLIC_SERVER_URL
@@ -29,7 +29,6 @@ ENV NODE_ENV=production
 
 RUN npm run build
 
-# ---- Runner ----
 FROM base AS runner
 WORKDIR /app
 
@@ -39,14 +38,14 @@ ENV PORT=3005
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
-# Copy production files
+
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/app ./app
 COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package.json ./package.json
 
-# Payload runtime files
+
 COPY --from=builder /app/collections ./collections
 COPY --from=builder /app/globals ./globals
 COPY --from=builder /app/lib ./lib
@@ -55,8 +54,9 @@ COPY --from=builder /app/components ./components
 COPY --from=builder /app/payload.config.ts ./payload.config.ts
 COPY --from=builder /app/payload-types.ts ./payload-types.ts
 COPY --from=builder /app/tsconfig.json ./tsconfig.json
+COPY --from=builder /app/next.config.ts ./next.config.ts
+COPY --from=builder /app/middleware.ts ./middleware.ts
 
-# Create media directory for uploads with correct permissions
 RUN mkdir -p ./media && chown nextjs:nodejs ./media
 
 USER nextjs

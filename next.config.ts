@@ -14,6 +14,19 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async headers() {
+    return [
+      {
+        source: '/api/media/file/:path*',
+        headers: [
+          { key: 'Accept-Ranges', value: 'bytes' },
+          { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
+          { key: 'X-Content-Type-Options', value: 'nosniff' },
+          { key: 'Access-Control-Allow-Origin', value: '*' },
+        ],
+      },
+    ]
+  },
   typescript: {
     ignoreBuildErrors: true,
   },

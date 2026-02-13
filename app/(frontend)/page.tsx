@@ -284,14 +284,14 @@ export default async function Home() {
             <h1 className="text-2xs font-bold text-slate-500 uppercase tracking-widest mb-15">Soft Skills</h1>
             <div className="flex flex-wrap gap-2 mt-2">
               {["Resolución de problemas", "Trabajo en equipo", "Liderazgo"].map((tag, i) => (
-                <span key={i} className="text-[10px] bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded font-semibold border border-slate-200 dark:border-slate-700">
+                <span key={i} className="text-[10px] bg-slate-800 px-2 py-1 rounded font-semibold border border-slate-700">
                   {tag}
                 </span>
               ))}
             </div>
           </div>
           <div className="relative text-btn overflow-hidden bg-bento dark:bg-bento rounded-lg p-6 border border-main/25 hover:transition-all duration-300 hover:border-btn/50 hover:-translate-y-2 group hover:shadow-lg shadow-btn/20 col-span-1 md:col-span-1 row-span-1 grid grid-cols-2 gap-4">
-            <div className="flex flex-col justify-center border-r border-slate-200 dark:border-[#3b4754]">
+            <div className="flex flex-col justify-center border-r border-[#3b4754]">
               <p className="text-2xl font-black text-primary">3+</p>
               <p className="text-[10px] font-bold text-slate-500 uppercase">Años</p>
             </div>
