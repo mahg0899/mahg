@@ -47,7 +47,6 @@ export default function ContactForm() {
             setSubject('Propuesta de Proyecto')
             setMessage('')
 
-            // Reset to idle after 5 seconds
             setTimeout(() => setStatus('idle'), 5000)
         } catch {
             setStatus('error')

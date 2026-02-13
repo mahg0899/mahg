@@ -12,10 +12,10 @@ function getResend() {
     return resend
 }
 
-// Simple in-memory rate limiting
+
 const rateLimit = new Map<string, { count: number; resetAt: number }>()
 const RATE_LIMIT_MAX = 5
-const RATE_LIMIT_WINDOW = 60 * 60 * 1000 // 1 hour
+const RATE_LIMIT_WINDOW = 60 * 60 * 1000
 
 function isRateLimited(ip: string): boolean {
     const now = Date.now()
@@ -36,7 +36,7 @@ function isRateLimited(ip: string): boolean {
 
 export async function POST(request: NextRequest) {
     try {
-        // Rate limiting
+
         const ip = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown'
         if (isRateLimited(ip)) {
             return NextResponse.json(
@@ -48,7 +48,7 @@ export async function POST(request: NextRequest) {
         const body = await request.json()
         const { name, email, subject, message } = body
 
-        // Validation
+
         if (!email || !email.trim()) {
             return NextResponse.json(
                 { error: 'El email es requerido.' },
@@ -63,7 +63,7 @@ export async function POST(request: NextRequest) {
             )
         }
 
-        // Basic email format validation
+
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
         if (!emailRegex.test(email)) {
             return NextResponse.json(
@@ -72,7 +72,7 @@ export async function POST(request: NextRequest) {
             )
         }
 
-        // Send email via Resend
+
         const { data, error } = await getResend().emails.send({
             from: 'Formulario Web <noreply@mahg.me>',
             to: ['contacto@mahg.me'],

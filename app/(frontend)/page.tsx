@@ -35,7 +35,7 @@ const techStack = [
 ];
 
 export default async function Home() {
-  // Data Fetching
+
   const payload = await getPayload({ config });
   const latestPosts = await payload.find({
     collection: "posts",
