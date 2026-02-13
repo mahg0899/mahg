@@ -59,7 +59,8 @@ export const Posts: CollectionConfig = {
                 { label: 'Diseño', value: 'design' },
                 { label: 'Desarrollo', value: 'development' },
                 { label: 'Tutorial', value: 'tutorial' },
-                { label: 'Noticias', value: 'news' },
+                { label: 'Ideas', value: 'ideas' },
+                { label: 'Libros', value: 'books' },
             ],
             admin: {
                 className: 'post-categories',
