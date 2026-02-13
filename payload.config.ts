@@ -22,10 +22,7 @@ import { nestedDocsPlugin } from '@payloadcms/plugin-nested-docs'
 
 export default buildConfig({
   serverURL: process.env.NEXT_PUBLIC_SERVER_URL || '',
-  cors: [
-    'https://mahg.me',
-    'http://localhost:3000',
-  ],
+  cors: '*',
   admin: {
     user: Users.slug,
     meta: {
