@@ -8,8 +8,55 @@ import SubscribeBox from '@/components/SubscribeBox'
 import ShareButtons from '@/components/ShareButtons'
 import TableOfContents from '@/components/TableOfContents'
 import RelatedPosts from '@/components/RelatedPosts'
+import type { Metadata } from 'next'
+import { getSeoData } from '@/lib/getSeoData'
 
 export const dynamic = 'force-dynamic'
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+    try {
+        const { slug } = await params
+        const payload = await getPayload({ config })
+        const seo = await getSeoData()
+
+        const result = await payload.find({
+            collection: 'posts',
+            where: { slug: { equals: slug } },
+        })
+
+        const post = result.docs[0]
+        if (!post) return {}
+
+        const postSeo = (post as any).seo || {}
+        const featuredImage = post.featuredImage as Media | undefined
+
+        const title = postSeo.metaTitle || post.title
+        const description = postSeo.metaDescription || (post as any).excerpt || ''
+        const ogImage = postSeo.metaImage
+            ? (postSeo.metaImage as Media).url
+            : featuredImage?.url || seo.defaultImageUrl
+
+        return {
+            title,
+            description,
+            openGraph: {
+                title: `${title}${seo.metaTitleSuffix}`,
+                description,
+                type: 'article',
+                ...(post.publishedAt && { publishedTime: post.publishedAt }),
+                ...(ogImage && { images: [{ url: ogImage }] }),
+            },
+            twitter: {
+                card: 'summary_large_image',
+                title: `${title}${seo.metaTitleSuffix}`,
+                description,
+                ...(ogImage && { images: [ogImage] }),
+            },
+        }
+    } catch {
+        return {}
+    }
+}
 
 export default async function BlogPost({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params

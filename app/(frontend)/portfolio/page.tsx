@@ -6,8 +6,14 @@ import { faGithub, faFigma } from "@fortawesome/free-brands-svg-icons";
 import { faArrowRight, faLaptopCode } from "@fortawesome/free-solid-svg-icons";
 import { ensureUrl } from '@/lib/utils';
 import type { Media } from "@/payload-types";
+import type { Metadata } from "next";
 
 export const dynamic = 'force-dynamic'
+
+export const metadata: Metadata = {
+    title: 'Portafolio',
+    description: 'Proyectos de desarrollo web, diseño UI/UX y más — portafolio de MAHG.',
+}
 
 
 

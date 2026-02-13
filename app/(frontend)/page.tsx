@@ -1,6 +1,12 @@
 import React from "react";
 import Link from "next/link";
+import type { Metadata } from "next";
 export const dynamic = 'force-dynamic'
+
+export const metadata: Metadata = {
+  title: 'Inicio',
+  description: 'Portafolio y blog personal de MAHG — Frontend Developer. Proyectos, artículos y más.',
+}
 import { getPayload } from "payload";
 import config from "@payload-config";
 import type { Media } from "@/payload-types";

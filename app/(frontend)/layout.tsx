@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Bitcount_Prop_Single, Orbitron, Inter } from "next/f
 import Header from "./components/header";
 import Footer from "./components/footer";
 import "./globals.css";
+import { getSeoData } from "@/lib/getSeoData";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,10 +26,37 @@ const orbitron = Orbitron({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "MAHG - Frontend Developer",
-  description: "MAHG.me - Frontend Developer",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  try {
+    const seo = await getSeoData();
+    return {
+      metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://mahg.me'),
+      title: {
+        default: seo.siteTitle,
+        template: `%s${seo.metaTitleSuffix}`,
+      },
+      description: seo.siteDescription,
+      openGraph: {
+        type: 'website',
+        siteName: seo.siteTitle,
+        ...(seo.defaultImageUrl && {
+          images: [{ url: seo.defaultImageUrl }],
+        }),
+      },
+      twitter: {
+        card: 'summary_large_image',
+      },
+      ...(seo.faviconUrl && {
+        icons: { icon: seo.faviconUrl },
+      }),
+    };
+  } catch {
+    return {
+      title: 'MAHG - Frontend Developer',
+      description: 'MAHG.me - Frontend Developer',
+    };
+  }
+}
 
 const inter = Inter({
   variable: "--font-inter",

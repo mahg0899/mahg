@@ -1,6 +1,12 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBook, faBrain, faClock, faCode, faDesktop, faFilm, faGamepad, faMusic, faPuzzlePiece, faWeightHanging, faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: 'Sobre Mí',
+    description: 'Conoce más sobre MAHG — mi historia, experiencia, setup y los intereses que me mueven como desarrollador.',
+}
 
 export default function About() {
     return (

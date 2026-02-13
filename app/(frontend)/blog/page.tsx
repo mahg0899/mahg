@@ -5,6 +5,12 @@ import type { Media } from '@/payload-types'
 import { PostCard } from '@/components/PostCard'
 export const dynamic = 'force-dynamic'
 import { FeaturedPost } from '@/components/FeaturedPost'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+    title: 'Blog',
+    description: 'Artículos sobre desarrollo web, frontend, tecnología y más — por MAHG.',
+}
 
 export default async function BlogIndex() {
     const payload = await getPayload({ config })

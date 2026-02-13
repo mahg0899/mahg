@@ -1,7 +1,14 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCalendar, faCalendarDays, faEnvelope, faMapMarkerAlt, faPaperPlane } from "@fortawesome/free-solid-svg-icons";
-import { faDribbble, faGithub, faLinkedin, faTwitter } from "@fortawesome/free-brands-svg-icons";
+import { faCalendar, faCalendarDays, faEnvelope, faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
+import { faGithub, faLinkedin, faTwitter } from "@fortawesome/free-brands-svg-icons";
 import Link from "next/link";
+import type { Metadata } from "next";
+import ContactForm from "./ContactForm";
+
+export const metadata: Metadata = {
+    title: 'Contacto',
+    description: 'Ponte en contacto conmigo — estoy disponible para proyectos freelance y colaboraciones.',
+}
 
 export default function Contact() {
     return (
@@ -18,40 +25,9 @@ export default function Contact() {
                 </p>
             </div>
             <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start w-full">
-                <div className="lg:col-span-7 bg-bento border border-slate-700/50 rounded-2xl p-8 shadow-sm relative group overflow-hidden hover:border-btn/50 hover:-translate-y-2 group hover:shadow-lg shadow-btn/20 transition-all">
-                    <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                        <div className="space-y-2">
-                            <label className="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">Nombre Completo</label>
-                            <input type="text" placeholder="Alejandro Hernández" className="w-full bg-slate-900/50 border border-slate-700/50 rounded-lg px-4 py-3 text-white placeholder:text-slate-600 focus:outline-none focus:border-btn focus:ring-1 focus:ring-btn transition-all text-sm font-medium" />
-                        </div>
-                        <div className="space-y-2">
-                            <label className="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">Email <span className="text-blue-500">*</span></label>
-                            <input type="email" placeholder="your@email.com" className="w-full bg-slate-900/50 border border-slate-700/50 rounded-lg px-4 py-3 text-white placeholder:text-slate-600 focus:outline-none focus:border-btn focus:ring-1 focus:ring-btn transition-all text-sm font-medium" />
-                        </div>
-                    </div>
-                    <div className="space-y-2 mb-6">
-                        <label className="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">Asunto</label>
-                        <select className="w-full bg-slate-900/50 border border-slate-700/50 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-btn focus:ring-1 focus:ring-btn transition-all text-sm font-medium appearance-none">
-                            <option>Propuesta de Proyecto</option>
-                            <option>Oferta Laboral</option>
-                            <option>Colaboración</option>
-                            <option>Soporte Técnico</option>
-                            <option>Otro</option>
-                        </select>
-                    </div>
-
-                    <div className="space-y-2 mb-8">
-                        <label className="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">Mensaje</label>
-                        <textarea rows={5} placeholder="Hola, me gustaría proponerte un proyecto..." className="w-full bg-slate-900/50 border border-slate-700/50 rounded-lg px-4 py-3 text-white placeholder:text-slate-600 focus:outline-none focus:border-btn focus:ring-1 focus:ring-btn transition-all text-sm font-medium resize-none"></textarea>
-                    </div>
-                    <button className="w-full bg-btn hover:bg-blue-600 text-white font-bold py-4 rounded-xl shadow-lg shadow-blue-500/20 transition-all active:scale-[0.98] flex items-center justify-center gap-2 group/btn cursor-pointer">
-                        Enviar Mensaje
-                        <FontAwesomeIcon icon={faPaperPlane} className="w-4 h-4 group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform" />
-                    </button>
-                </div>
+                <ContactForm />
                 <div className="lg:col-span-5 space-y-6">
-                    <div className="bg-bento border border-slate-700/50 rounded-2xl p-6 shadow-sm hover:border-btn/50 hover:-translate-y-2 group hover:shadow-lg shadow-btn/20">
+                    <div className="bg-bento border border-slate-700/50 rounded-2xl p-6 shadow-sm hover:border-btn/50 hover:-translate-y-2 group hover:shadow-lg shadow-btn/20 duration-300">
                         <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-6">Contacto Directo</h3>
                         <div className="space-y-6">
                             <div className="flex items-start gap-4 group/item">
@@ -74,7 +50,7 @@ export default function Contact() {
                             </div>
                         </div>
                     </div>
-                    <Link href="https://cal.com/mahg0899/15min" className="block bg-btn rounded-2xl p-8 shadow-lg shadow-blue-500/20 transition-all hover:-translate-y-1 group relative overflow-hidden">
+                    <Link href="https://cal.com/mahg0899/15min" className="block bg-btn rounded-2xl p-8 shadow-lg shadow-blue-500/20 transition-all hover:-translate-y-1 group relative overflow-hidden duration-300">
                         <div className="relative z-10">
                             <h3 className="text-xl font-bold text-white mb-2">¿Necesitas una solución rápida?</h3>
                             <p className="text-blue-100 text-sm mb-6 leading-relaxed max-w-[280px]">
@@ -89,7 +65,7 @@ export default function Contact() {
                             <FontAwesomeIcon icon={faCalendarDays} className="w-35 h-35 text-white/20" />
                         </div>
                     </Link>
-                    <div className="bg-bento border border-slate-700/50 rounded-2xl p-6 shadow-sm hover:border-btn/50 hover:-translate-y-2 group hover:shadow-lg shadow-btn/20">
+                    <div className="bg-bento border border-slate-700/50 rounded-2xl p-6 shadow-sm hover:border-btn/50 hover:-translate-y-2 group hover:shadow-lg shadow-btn/20 duration-300">
                         <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-4">Estemos conectados</h3>
                         <div className="grid grid-cols-2 gap-3">
                             {[
