@@ -80,7 +80,7 @@ export default async function Home() {
               <p className="mt-6 font-semibold text-slate-500 max-w-xl">
                 Desarrollador especializado en frontend con experiencia en React, Next.js, Tailwind CSS y TypeScript.
               </p>
-              <a href="/cv.pdf" download className="gap-2 mt-6 p-4 inline-flex items-center bg-slate-700/50 dark:bg-slate-700/50 rounded-lg px-6 py-2 hover:bg-slate-700 duration-300">
+              <a href="https://drive.google.com/file/d/1one18GvA2nFNswvsvob42rg76-j-8Rpl/view?usp=drive_link" target="_blank" className="gap-2 mt-6 p-4 inline-flex items-center bg-slate-700/50 dark:bg-slate-700/50 rounded-lg px-6 py-2 hover:bg-slate-700 duration-300">
                 <FontAwesomeIcon icon={faDownload} style={{ color: "var(--text-main)", width: "15px" }} />
                 <span className="font-semibold m-2">Descargar CV</span>
               </a>
