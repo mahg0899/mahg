@@ -51,17 +51,10 @@ export const Posts: CollectionConfig = {
         },
         {
             name: 'categories',
-            type: 'select',
+            type: 'relationship',
+            relationTo: 'categories',
             hasMany: true,
             label: 'Categorías',
-            options: [
-                { label: 'Tecnología', value: 'tech' },
-                { label: 'Diseño', value: 'design' },
-                { label: 'Desarrollo', value: 'development' },
-                { label: 'Tutorial', value: 'tutorial' },
-                { label: 'Ideas', value: 'ideas' },
-                { label: 'Libros', value: 'books' },
-            ],
             admin: {
                 className: 'post-categories',
             },

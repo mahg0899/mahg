@@ -133,14 +133,18 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
                 <div className="max-w-4xl mx-auto text-center">
                     {post.categories && post.categories.length > 0 && (
                         <div className="mb-8 flex justify-center gap-2">
-                            {post.categories.map((cat: any) => (
-                                <span
-                                    key={cat}
-                                    className="inline-block px-4 py-1.5 rounded-full bg-[#1c2127] text-blue-400 text-xs font-bold uppercase tracking-wider border border-slate-800"
-                                >
-                                    {cat}
-                                </span>
-                            ))}
+                            {post.categories.map((cat: any) => {
+                                const catTitle = typeof cat === 'string' ? cat : (cat.title || 'Blog')
+                                const catKey = typeof cat === 'string' ? cat : cat.id
+                                return (
+                                    <span
+                                        key={catKey}
+                                        className="inline-block px-4 py-1.5 rounded-full bg-[#1c2127] text-blue-400 text-xs font-bold uppercase tracking-wider border border-slate-800"
+                                    >
+                                        {catTitle}
+                                    </span>
+                                )
+                            })}
                         </div>
                     )}
 

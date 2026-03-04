@@ -20,7 +20,7 @@ export interface PostCardProps {
             avatar?: string | Media | null
             avatartUrl?: string | null
         } | null
-        categories?: (string | { title?: string })[] | null
+        categories?: (string | { id?: string; title?: string })[] | null
         [key: string]: any
     }
 }
@@ -28,7 +28,9 @@ export interface PostCardProps {
 export const PostCard: React.FC<PostCardProps> = ({ post }) => {
     const featuredImage = post.featuredImage as Media | undefined
     const category = post.categories && post.categories.length > 0 ? post.categories[0] : null
-    const categoryTitle = typeof category === 'string' ? category : 'Blog'
+    const categoryTitle = category
+        ? (typeof category === 'string' ? category : (category.title || 'Blog'))
+        : 'Blog'
 
     // Calculate Reading Time
     const readingTime = calculateReadingTime(post.content)
