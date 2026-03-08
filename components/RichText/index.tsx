@@ -184,18 +184,35 @@ function serializeLexical({ nodes }: { nodes: Node[] }) {
                                 {serializeLexical({ nodes: node.children || [] })}
                             </li>
                         )
-                    case 'link':
+                    case 'autolink':
+                    case 'link': {
+                        // Payload CMS 3.x Lexical stores link data in node.fields
+                        const linkUrl = (node.fields as any)?.url || node.url || '#'
+                        const linkNewTab = (node.fields as any)?.newTab ?? node.newTab
+                        const linkType = (node.fields as any)?.linkType // 'custom' or 'internal'
+
+                        // For internal links, the URL might be a relationship
+                        let finalUrl = linkUrl
+                        if (linkType === 'internal' && (node.fields as any)?.doc) {
+                            const doc = (node.fields as any).doc
+                            if (typeof doc === 'object' && doc?.value) {
+                                const docValue = typeof doc.value === 'object' ? doc.value : null
+                                finalUrl = docValue?.slug ? `/${docValue.slug}` : linkUrl
+                            }
+                        }
+
                         return (
                             <a
-                                href={node.url}
+                                href={finalUrl}
                                 key={index}
-                                target={node.newTab ? '_blank' : '_self'}
-                                rel={node.newTab ? 'noopener noreferrer' : undefined}
+                                target={linkNewTab ? '_blank' : '_self'}
+                                rel={linkNewTab ? 'noopener noreferrer' : undefined}
                                 className="text-blue-400 hover:text-blue-300 underline"
                             >
                                 {serializeLexical({ nodes: node.children || [] })}
                             </a>
                         )
+                    }
                     case 'upload': {
                         // Handle custom fields: width and alignment
                         const alignment = node.fields?.alignment || 'center'
