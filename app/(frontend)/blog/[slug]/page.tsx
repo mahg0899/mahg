@@ -98,17 +98,34 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
     }
 
     const toc = [] as { id: string; text: string; level: number }[]
+    let hasContentBeforeFirstHeading = false
 
     if (post.content && post.content.root && post.content.root.children) {
-        post.content.root.children.forEach((node: any) => {
+        const children = post.content.root.children as any[]
+        const headingTypes = ['heading', 'h1', 'h2', 'h3', 'h4']
+
+        // Check if there's content before the first heading
+        const firstHeadingIndex = children.findIndex((node: any) =>
+            headingTypes.includes(node.type)
+        )
+        const hasHeadings = firstHeadingIndex !== -1
+        hasContentBeforeFirstHeading = hasHeadings && firstHeadingIndex > 0
+
+        // If there's text before the first heading, add "Introducción" to TOC
+        if (hasContentBeforeFirstHeading) {
+            toc.push({ id: 'introduccion', text: 'Introducción', level: 1 })
+        }
+
+        children.forEach((node: any) => {
             const text = node.children?.map((c: any) => c.text).join('') || ''
-            if (text && (node.type === 'heading' || node.type === 'h1' || node.type === 'h2' || node.type === 'h3')) {
+            if (text && headingTypes.includes(node.type)) {
                 const id = text.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '')
                 let level = 2
                 if (node.tag === 'h1' || node.type === 'h1') level = 1
                 if (node.tag === 'h2' || node.type === 'h2') level = 2
                 if (node.tag === 'h3' || node.type === 'h3') level = 3
-                if ([1, 2, 3].includes(level)) {
+                if (node.tag === 'h4' || node.type === 'h4') level = 4
+                if ([1, 2, 3, 4].includes(level)) {
                     toc.push({ id, text, level })
                 }
             }
@@ -191,7 +208,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
                     </aside>
                     <div className="col-span-1 lg:col-span-7">
                         <div className="prose prose-lg prose-invert max-w-none prose-headings:text-slate-100 prose-p:text-slate-300 prose-a:text-blue-400 hover:prose-a:text-blue-300 prose-code:text-pink-400 prose-pre:bg-slate-900/50 prose-pre:border prose-pre:border-slate-800 prose-img:rounded-xl">
-                            <RichText content={post.content} />
+                            <RichText content={post.content} hasIntroduction={hasContentBeforeFirstHeading} />
                         </div>
                         <hr className="border-slate-800 my-16" />
                         <div className="bg-slate-900/40 rounded-2xl p-8 border border-white/5 flex flex-col md:flex-row gap-6 items-center md:items-start text-center md:text-left">

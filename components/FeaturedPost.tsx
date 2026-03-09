@@ -49,7 +49,7 @@ export const FeaturedPost: React.FC<PostCardProps> = ({ post }) => {
                     <div className="flex items-center gap-2 mb-6">
                         <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
                         <span className="text-xs font-bold tracking-[0.2em] text-blue-400 uppercase">
-                            Featured Post
+                            Post Destacado
                         </span>
                     </div>
 
@@ -106,7 +106,7 @@ export const FeaturedPost: React.FC<PostCardProps> = ({ post }) => {
                             href={`/blog/${post.slug}`}
                             className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl transition-all shadow-lg hover:shadow-blue-500/25"
                         >
-                            Start Reading
+                            Leer Ahora
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                 <path d="M5 12h14" />
                                 <path d="m12 5 7 7-7 7" />

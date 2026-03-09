@@ -59,14 +59,36 @@ const CodeBlock = ({ code, language, filename }: { code: string; language?: stri
     )
 }
 
-export const RichText: React.FC<{ className?: string; content: any }> = ({ className, content }) => {
+export const RichText: React.FC<{ className?: string; content: any; hasIntroduction?: boolean }> = ({ className, content, hasIntroduction }) => {
     if (!content) {
         return null
     }
 
+    const nodes = content?.root?.children || []
+
+    // If hasIntroduction, split nodes into intro (before first heading) and rest
+    if (hasIntroduction && nodes.length > 0) {
+        const headingTypes = ['heading', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6']
+        const firstHeadingIndex = nodes.findIndex((n: Node) => headingTypes.includes(n.type))
+
+        if (firstHeadingIndex > 0) {
+            const introNodes = nodes.slice(0, firstHeadingIndex)
+            const restNodes = nodes.slice(firstHeadingIndex)
+
+            return (
+                <div className={[className].filter(Boolean).join(' ')}>
+                    <section id="introduccion" className="scroll-mt-24">
+                        {serializeLexical({ nodes: introNodes })}
+                    </section>
+                    {serializeLexical({ nodes: restNodes })}
+                </div>
+            )
+        }
+    }
+
     return (
         <div className={[className].filter(Boolean).join(' ')}>
-            {serializeLexical({ nodes: content?.root?.children })}
+            {serializeLexical({ nodes })}
         </div>
     )
 }
