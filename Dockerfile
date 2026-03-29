@@ -61,4 +61,4 @@ USER nextjs
 
 EXPOSE 3005
 
-CMD ["sh", "-c", "npx payload migrate && npm start"]
+CMD ["npm", "start"]
