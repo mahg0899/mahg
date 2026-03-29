@@ -18,7 +18,7 @@ export default function Header() {
                     {/* Logo */}
                     <Link href="/" className="text-xl tracking-wider font-bitcount hover:text-btn transition-all duration-300 flex flex-row items-center gap-3">
                         <img src="/mahg_logo.png" alt="MAHG Logo" className="w-10 bg-bento p-1 rounded-xl" />
-                        MAHG
+                        <span>MAHG<span className="text-main text-2xs">.me</span></span>
                     </Link>
                     <ul className="hidden md:flex flex-row gap-8 font-semibold text-2xs">
                         <li className="hover:text-btn transition-all duration-300"><Link href="/about">Sobre mí</Link></li>

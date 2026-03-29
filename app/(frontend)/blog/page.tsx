@@ -1,11 +1,10 @@
 import { getPayload } from 'payload'
 import config from '@payload-config'
-import Link from 'next/link'
-import type { Media } from '@/payload-types'
-import { PostCard } from '@/components/PostCard'
-export const dynamic = 'force-dynamic'
 import { FeaturedPost } from '@/components/FeaturedPost'
+import BlogPostsGrid from '@/components/BlogPostsGrid'
 import type { Metadata } from 'next'
+
+export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
     title: 'Blog',
@@ -15,17 +14,30 @@ export const metadata: Metadata = {
 export default async function BlogIndex() {
     const payload = await getPayload({ config })
 
-    const featuredQuery = await payload.find({
-        collection: 'posts',
-        where: {
-            and: [
-                { _status: { equals: 'published' } },
-                { isFeatured: { equals: true } }
-            ]
-        },
-        limit: 1,
-        depth: 1
-    })
+    // Fetch categories and posts in parallel
+    const [categoriesResult, featuredQuery] = await Promise.all([
+        payload.find({
+            collection: 'categories',
+            limit: 50,
+            sort: 'title',
+        }),
+        payload.find({
+            collection: 'posts',
+            where: {
+                and: [
+                    { _status: { equals: 'published' } },
+                    { isFeatured: { equals: true } }
+                ]
+            },
+            limit: 1,
+            depth: 1
+        }),
+    ])
+
+    const categories = categoriesResult.docs.map((cat: any) => ({
+        id: cat.id,
+        title: cat.title,
+    }))
 
     let featuredPost = featuredQuery.docs.length > 0 ? featuredQuery.docs[0] : null
     let recentPosts: any[] = []
@@ -40,7 +52,8 @@ export default async function BlogIndex() {
                 ]
             },
             sort: '-publishedAt',
-            limit: 20
+            limit: 20,
+            depth: 1,
         })
         recentPosts = recentPostsQuery.docs
     } else {
@@ -50,7 +63,8 @@ export default async function BlogIndex() {
                 _status: { equals: 'published' }
             },
             sort: '-publishedAt',
-            limit: 21
+            limit: 21,
+            depth: 1,
         })
 
         if (allPostsQuery.docs.length > 0) {
@@ -64,14 +78,7 @@ export default async function BlogIndex() {
             {featuredPost && (
                 <FeaturedPost post={featuredPost} />
             )}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {recentPosts.map((post) => (
-                    <PostCard
-                        key={post.id}
-                        post={post}
-                    />
-                ))}
-            </div>
+            <BlogPostsGrid posts={recentPosts} categories={categories} />
             {(!featuredPost && recentPosts.length === 0) && (
                 <div className="text-center py-20 border border-dashed border-slate-800 rounded-2xl bg-slate-900/50">
                     <p className="text-xl text-slate-400 mb-4 font-medium">
@@ -91,4 +98,3 @@ export default async function BlogIndex() {
         </div>
     )
 }
-

@@ -14,7 +14,7 @@ export const Posts: CollectionConfig = {
         defaultColumns: ['title', 'author', 'publishedAt'],
         livePreview: {
             url: ({ data }) => {
-                return `${process.env.NEXT_PUBLIC_SERVER_URL}/blog/${data.slug}`
+                return `${process.env.NEXT_PUBLIC_SERVER_URL}/blog/${data.slug}?draft=true`
             },
         },
         components: {
@@ -150,15 +150,6 @@ export const Posts: CollectionConfig = {
                                     }
                                 }
                             ]
-                        },
-                        {
-                            name: 'tags',
-                            type: 'text',
-                            hasMany: true,
-                            label: 'Tags',
-                            admin: {
-                                description: 'Presiona Enter para añadir una etiqueta',
-                            },
                         },
                     ]
                 },

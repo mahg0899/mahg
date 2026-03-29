@@ -2,6 +2,16 @@ import type { CollectionConfig } from 'payload'
 
 export const Media: CollectionConfig = {
   slug: 'media',
+  labels: {
+    singular: 'Archivo',
+    plural: 'Archivos',
+  },
+  admin: {
+    group: 'Contenido',
+    useAsTitle: 'alt',
+    defaultColumns: ['filename', 'alt', 'mimeType', 'updatedAt'],
+    listSearchableFields: ['alt', 'filename'],
+  },
   access: {
     read: () => true,
   },
@@ -10,10 +20,13 @@ export const Media: CollectionConfig = {
       name: 'alt',
       type: 'text',
       required: true,
+      label: 'Texto Alternativo',
     },
   ],
   upload: {
     staticDir: 'media',
+    filesRequiredOnCreate: false,
+    displayPreview: true,
     imageSizes: [
       {
         name: 'thumbnail',
@@ -35,6 +48,6 @@ export const Media: CollectionConfig = {
       },
     ],
     adminThumbnail: 'thumbnail',
-    mimeTypes: ['image/*'],
+    mimeTypes: ['image/*', 'video/mp4', 'video/webm'],
   },
 }

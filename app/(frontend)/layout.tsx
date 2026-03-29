@@ -29,6 +29,7 @@ const orbitron = Orbitron({
 export async function generateMetadata(): Promise<Metadata> {
   try {
     const seo = await getSeoData();
+
     return {
       metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://mahg.me'),
       title: {
@@ -38,13 +39,22 @@ export async function generateMetadata(): Promise<Metadata> {
       description: seo.siteDescription,
       openGraph: {
         type: 'website',
+        title: seo.siteTitle,
+        description: seo.siteDescription,
         siteName: seo.siteTitle,
         ...(seo.defaultImageUrl && {
-          images: [{ url: seo.defaultImageUrl }],
+          images: [{ url: seo.defaultImageUrl, width: 1200, height: 630 }],
         }),
       },
       twitter: {
-        card: 'summary_large_image',
+        card: seo.twitterCard,
+        title: seo.siteTitle,
+        description: seo.siteDescription,
+        ...(seo.twitterHandle && { creator: seo.twitterHandle }),
+        ...(seo.defaultImageUrl && { images: [seo.defaultImageUrl] }),
+      },
+      other: {
+        'theme-color': seo.themeColor,
       },
       ...(seo.faviconUrl && {
         icons: { icon: seo.faviconUrl },
@@ -69,7 +79,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="es">
       <link rel="shortcut icon" href="/mahg_logo.png" type="image/x-icon" />
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${bitcount.variable} ${orbitron.variable} ${inter.variable} antialiased`}

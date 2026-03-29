@@ -24,7 +24,7 @@ export default buildConfig({
   admin: {
     user: Users.slug,
     meta: {
-      titleSuffix: '- BentoMahg Admin',
+      titleSuffix: '- MAHG.me Admin',
     },
     dateFormat: 'dd/MM/yyyy',
     avatar: 'gravatar',
@@ -55,8 +55,10 @@ export default buildConfig({
     },
     components: {
       beforeNavLinks: ['/components/CustomNavHeader'],
+      providers: ['/components/admin/AdminStyles'],
       views: {
-        Dashboard: {
+        /* Dashboard with letter D on mayus load the default dashboard, with d minus load the custom dashboard*/
+        dashboard: {
           Component: '/components/Dashboard',
         },
       },
@@ -120,6 +122,42 @@ export default buildConfig({
       BlocksFeature({
         blocks: [
           CodeBlock(),
+          {
+            slug: 'youtube',
+            labels: {
+              singular: 'Video de YouTube',
+              plural: 'Videos de YouTube',
+            },
+            fields: [
+              {
+                name: 'url',
+                type: 'text',
+                required: true,
+                label: 'URL del Video',
+                admin: {
+                  placeholder: 'https://www.youtube.com/watch?v=... o https://youtu.be/...',
+                  description: 'Pega la URL completa del video de YouTube.',
+                },
+              },
+              {
+                name: 'caption',
+                type: 'text',
+                label: 'Descripción (opcional)',
+                admin: {
+                  placeholder: 'Descripción del video...',
+                },
+              },
+              {
+                name: 'preview',
+                type: 'ui',
+                admin: {
+                  components: {
+                    Field: '/components/admin/YouTubeBlockPreview',
+                  },
+                },
+              },
+            ],
+          },
         ],
       }),
     ],

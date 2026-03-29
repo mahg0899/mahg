@@ -140,3 +140,67 @@ body {
     transform: translate(0);
   }
 }
+
+/* Plyr Video Player - Dark Theme Overrides */
+.plyr-wrapper .plyr {
+  --plyr-color-main: #3b82f6;
+  --plyr-video-background: #000;
+  --plyr-menu-background: #1e293b;
+  --plyr-menu-color: #e2e8f0;
+  --plyr-menu-border-color: #334155;
+  --plyr-menu-arrow-color: #334155;
+  --plyr-tooltip-background: #1e293b;
+  --plyr-tooltip-color: #e2e8f0;
+  --plyr-badge-background: #3b82f6;
+  --plyr-badge-text-color: #fff;
+  --plyr-range-fill-background: #3b82f6;
+  --plyr-video-control-background-hover: rgba(59, 130, 246, 0.3);
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+
+.plyr-wrapper .plyr__controls {
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.85)) !important;
+  padding: 12px 16px !important;
+}
+
+.plyr-wrapper .plyr__control--overlaid {
+  background: rgba(59, 130, 246, 0.85) !important;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  width: 64px;
+  height: 64px;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+}
+
+.plyr-wrapper .plyr__control--overlaid:hover {
+  background: #3b82f6 !important;
+}
+
+/* Play triangle icon for the big center button */
+.plyr-wrapper .plyr__control--overlaid svg {
+  display: none !important;
+}
+
+.plyr-wrapper .plyr__control--overlaid::after {
+  content: '';
+  display: block;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 12px 0 12px 22px;
+  border-color: transparent transparent transparent #fff;
+  margin-left: 3px;
+}
+
+/* Make all control bar icons visible */
+.plyr-wrapper .plyr__controls svg {
+  fill: #fff;
+  color: #fff;
+}
+
+.plyr-wrapper .plyr__controls button {
+  color: #fff;
+}

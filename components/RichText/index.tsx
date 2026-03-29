@@ -1,12 +1,16 @@
 'use client'
 
 import React, { useState } from 'react'
+import dynamic from 'next/dynamic'
+
+const PlyrVideo = dynamic(() => import('@/components/PlyrVideo'), { ssr: false })
 
 type Node = {
     type: string
     value?: {
         url?: string
         alt?: string
+        mimeType?: string
     }
     children?: Node[]
     url?: string
@@ -16,10 +20,58 @@ type Node = {
         blockType?: string
         code?: string
         language?: string
-        blockName?: string // Added blockName to fields
+        blockName?: string
+        url?: string
+        caption?: string
         [key: string]: any
     }
     [key: string]: unknown
+}
+
+// Helper to extract YouTube video ID from various URL formats
+function getYouTubeId(url: string): string | null {
+    const patterns = [
+        /(?:youtube\.com\/watch\?v=)([\w-]{11})/,
+        /(?:youtube\.com\/embed\/)([\w-]{11})/,
+        /(?:youtu\.be\/)([\w-]{11})/,
+        /(?:youtube\.com\/shorts\/)([\w-]{11})/,
+    ]
+    for (const pattern of patterns) {
+        const match = url.match(pattern)
+        if (match) return match[1]
+    }
+    return null
+}
+
+const YouTubeEmbed = ({ url, caption }: { url: string; caption?: string }) => {
+    const videoId = getYouTubeId(url)
+    if (!videoId) {
+        return (
+            <div className="my-8 p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
+                URL de YouTube no válida: {url}
+            </div>
+        )
+    }
+
+    return (
+        <div className="my-8 max-w-4xl mx-auto">
+            <div className="relative rounded-xl overflow-hidden shadow-2xl ring-1 ring-white/10 bg-black aspect-video">
+                <iframe
+                    src={`https://www.youtube.com/embed/${videoId}?rel=0`}
+                    title={caption || 'Video de YouTube'}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowFullScreen
+                    className="absolute inset-0 w-full h-full"
+                    loading="lazy"
+                />
+            </div>
+            {caption && (
+                <p className="mt-3 text-center text-sm text-slate-400 italic">
+                    {caption}
+                </p>
+            )}
+        </div>
+    )
 }
 
 const CodeBlock = ({ code, language, filename }: { code: string; language?: string; filename?: string }) => {
@@ -249,28 +301,57 @@ function serializeLexical({ nodes }: { nodes: Node[] }) {
                         if (width === 'half') widthClass = 'w-1/2' // 50%
                         if (width === 'narrow') widthClass = 'w-1/4' // 25%
 
+                        // Payload Lexical upload nodes: value can be the full media doc
+                        const uploadValue = node.value as any
+                        const mediaUrl = uploadValue?.url || ''
+                        const mediaAlt = uploadValue?.alt || ''
+                        const mimeType = uploadValue?.mimeType || ''
+
+                        // Detect video by mimeType OR file extension
+                        const videoExtensions = ['.mp4', '.webm']
+                        const urlLower = mediaUrl.toLowerCase()
+                        const isVideo = mimeType.startsWith('video/') ||
+                            videoExtensions.some((ext: string) => urlLower.endsWith(ext))
+
                         return (
                             <div key={index} className={`my-8 flex ${alignClass}`}>
-                                {node.value?.url && (
+                                {mediaUrl && isVideo ? (
+                                    <div className={`${widthClass}`}>
+                                        <PlyrVideo
+                                            src={mediaUrl}
+                                            caption={mediaAlt}
+                                        />
+                                    </div>
+                                ) : mediaUrl ? (
                                     <img
-                                        src={node.value.url}
-                                        alt={node.value.alt || ''}
+                                        src={mediaUrl}
+                                        alt={mediaAlt}
                                         className={`rounded-xl h-auto ${widthClass} object-cover shadow-lg`}
                                     />
-                                )}
+                                ) : null}
                             </div>
                         )
                     }
 
                     case 'block':
-                        // Match 'Code' (capitalized) based on debug output
+                        // Code block
                         if (node.fields?.blockType === 'Code' || node.fields?.blockType === 'code') {
                             return (
                                 <CodeBlock
                                     key={index}
                                     code={node.fields?.code || ''}
                                     language={node.fields?.language}
-                                    filename={node.fields?.blockName} // Pass blockName as filename
+                                    filename={node.fields?.blockName}
+                                />
+                            )
+                        }
+                        // YouTube embed block
+                        if (node.fields?.blockType === 'youtube') {
+                            return (
+                                <YouTubeEmbed
+                                    key={index}
+                                    url={node.fields?.url || ''}
+                                    caption={node.fields?.caption}
                                 />
                             )
                         }

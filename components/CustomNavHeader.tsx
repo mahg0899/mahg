@@ -24,18 +24,6 @@ export default function CustomNavHeader() {
                 marginBottom: '0.5rem'
             }}>
                 <a href="/admin" style={{ textDecoration: 'none' }}>
-                    <div style={{
-                        width: '32px',
-                        height: '32px',
-                        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                        borderRadius: '6px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontSize: '1.25rem'
-                    }}>
-                        🍱
-                    </div>
                     <h2 style={{
                         fontSize: '1.25rem',
                         fontWeight: '700',
@@ -45,7 +33,7 @@ export default function CustomNavHeader() {
                         WebkitTextFillColor: 'transparent',
                         backgroundClip: 'text'
                     }}>
-                        MAHG V3
+                        MAHG.me v3.1
                     </h2>
                 </a>
             </div>

@@ -10,8 +10,21 @@ import TableOfContents from '@/components/TableOfContents'
 import RelatedPosts from '@/components/RelatedPosts'
 import type { Metadata } from 'next'
 import { getSeoData } from '@/lib/getSeoData'
+import { draftMode } from 'next/headers'
 
 export const dynamic = 'force-dynamic'
+
+// Calculate reading time from richText content
+function calculateReadingTime(content: any): number {
+    if (!content?.root?.children) return 1
+    let wordCount = 0
+    const extractText = (node: any) => {
+        if (node.text) wordCount += node.text.split(/\s+/).filter(Boolean).length
+        if (node.children) node.children.forEach(extractText)
+    }
+    content.root.children.forEach(extractText)
+    return Math.max(1, Math.ceil(wordCount / 200))
+}
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
     try {
@@ -30,26 +43,31 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
         const postSeo = (post as any).seo || {}
         const featuredImage = post.featuredImage as Media | undefined
 
+        // Priority: SEO override → post defaults → site defaults
         const title = postSeo.metaTitle || post.title
-        const description = postSeo.metaDescription || (post as any).excerpt || ''
+        const description = postSeo.metaDescription || (post as any).excerpt || seo.siteDescription || ''
         const ogImage = postSeo.metaImage
             ? (postSeo.metaImage as Media).url
             : featuredImage?.url || seo.defaultImageUrl
+
+        const fullTitle = `${title} | MAHG`
 
         return {
             title,
             description,
             openGraph: {
-                title: `${title}${seo.metaTitleSuffix}`,
+                title: fullTitle,
                 description,
                 type: 'article',
+                siteName: seo.siteTitle,
                 ...(post.publishedAt && { publishedTime: post.publishedAt }),
-                ...(ogImage && { images: [{ url: ogImage }] }),
+                ...(ogImage && { images: [{ url: ogImage, width: 1200, height: 630 }] }),
             },
             twitter: {
-                card: 'summary_large_image',
-                title: `${title}${seo.metaTitleSuffix}`,
+                card: seo.twitterCard || 'summary_large_image',
+                title: fullTitle,
                 description,
+                ...(seo.twitterHandle && { creator: seo.twitterHandle }),
                 ...(ogImage && { images: [ogImage] }),
             },
         }
@@ -58,20 +76,31 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     }
 }
 
-export default async function BlogPost({ params }: { params: Promise<{ slug: string }> }) {
+export default async function BlogPost({ params, searchParams }: { params: Promise<{ slug: string }>, searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {
     const { slug } = await params
+    const resolvedSearchParams = await searchParams
     const payload = await getPayload({ config })
+
+    // Check if draft mode is requested (for live preview)
+    const { isEnabled: isDraftMode } = await draftMode()
+    const isDraft = isDraftMode || resolvedSearchParams.draft === 'true'
 
     const result = await payload.find({
         collection: 'posts',
         where: {
             slug: { equals: slug }
-        }
+        },
+        draft: isDraft,
     })
 
     const post = result.docs[0]
 
-    if (!post || (post as any)._status !== 'published') {
+    if (!post) {
+        notFound()
+    }
+
+    // Only block non-published posts if not in draft mode
+    if (!isDraft && (post as any)._status !== 'published') {
         notFound()
     }
 
@@ -87,6 +116,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
 
     const featuredImage = post.featuredImage as Media | undefined
     const author = typeof post.author === 'object' ? post.author : null
+    const readingTime = calculateReadingTime(post.content)
 
     const formatDate = (dateStr?: string | null) => {
         if (!dateStr) return ''
@@ -187,6 +217,8 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
                                 </time>
                             </>
                         )}
+                        <span className="w-1 h-1 rounded-full bg-slate-600" />
+                        <span>{readingTime} min de lectura</span>
                     </div>
                 </div>
             </div>
