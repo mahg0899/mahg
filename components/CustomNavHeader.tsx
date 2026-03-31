@@ -23,17 +23,18 @@ export default function CustomNavHeader() {
                 gap: '0.75rem',
                 marginBottom: '0.5rem'
             }}>
-                <a href="/admin" style={{ textDecoration: 'none' }}>
+                <a href="/admin" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                    <img src="/mahg.svg" alt="Logo" style={{ width: '2rem', height: '2rem' }} />
                     <h2 style={{
                         fontSize: '1.25rem',
                         fontWeight: '700',
                         margin: 0,
-                        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                        background: 'linear-gradient(135deg, #80c5ecff 0%, #1a9ae4ff 100%)',
                         WebkitBackgroundClip: 'text',
                         WebkitTextFillColor: 'transparent',
                         backgroundClip: 'text'
                     }}>
-                        MAHG.me v3.1
+                        MAHG.me v3.1.1
                     </h2>
                 </a>
             </div>

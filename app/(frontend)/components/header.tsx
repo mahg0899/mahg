@@ -4,6 +4,7 @@ import Link from "next/link";
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faXmark, faEnvelope } from "@fortawesome/free-solid-svg-icons";
+import { MahgLogo } from "./MahgLogo";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
 
 export default function Header() {
@@ -16,8 +17,8 @@ export default function Header() {
             <div className="mx-auto w-11/12 xl:w-6/10 mt-4 mb-4 text-main">
                 <div className="flex items-center justify-between flex-row">
                     {/* Logo */}
-                    <Link href="/" className="text-xl tracking-wider font-bitcount hover:text-btn transition-all duration-300 flex flex-row items-center gap-3">
-                        <img src="/mahg_logo.png" alt="MAHG Logo" className="w-10 bg-bento p-1 rounded-xl" />
+                    <Link href="/" className="text-xl tracking-wider font-bitcount hover:text-btn transition-all duration-300 flex flex-row items-center gap-3 group">
+                        <MahgLogo className="w-10 bg-bento p-1 rounded-xl text-main group-hover:text-btn transition-colors duration-300" />
                         <span>MAHG<span className="text-main text-2xs">.me</span></span>
                     </Link>
                     <ul className="hidden md:flex flex-row gap-8 font-semibold text-2xs">

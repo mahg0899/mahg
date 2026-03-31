@@ -81,7 +81,7 @@ export const SiteSettings: GlobalConfig = {
                                     label: 'Twitter / X Handle',
                                     admin: {
                                         width: '50%',
-                                        placeholder: '@mahg_dev',
+                                        placeholder: '@mahg0899',
                                         description: 'Tu usuario de Twitter/X (con @).',
                                     },
                                 },
