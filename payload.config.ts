@@ -25,7 +25,7 @@ export default buildConfig({
     user: Users.slug,
     meta: {
       titleSuffix: '- MAHG.me Admin',
-      icons: [{ url: '/mahg.ico' }],
+      icons: [{ url: '/mahgw.ico' }],
     },
     dateFormat: 'dd/MM/yyyy',
     avatar: 'gravatar',
