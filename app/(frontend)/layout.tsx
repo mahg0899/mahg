@@ -80,7 +80,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
-      <link rel="shortcut icon" href="/mahg.ico" type="image/x-icon" />
+      <link rel="shortcut icon" href="/mahgw.ico" type="image/x-icon" />
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${bitcount.variable} ${orbitron.variable} ${inter.variable} antialiased`}
       >
