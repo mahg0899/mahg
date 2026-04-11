@@ -30,7 +30,7 @@ export default async function BlogIndex() {
                 ]
             },
             limit: 1,
-            depth: 1
+            depth: 2
         }),
     ])
 
@@ -53,7 +53,7 @@ export default async function BlogIndex() {
             },
             sort: '-publishedAt',
             limit: 20,
-            depth: 1,
+            depth: 2,
         })
         recentPosts = recentPostsQuery.docs
     } else {
@@ -64,7 +64,7 @@ export default async function BlogIndex() {
             },
             sort: '-publishedAt',
             limit: 21,
-            depth: 1,
+            depth: 2,
         })
 
         if (allPostsQuery.docs.length > 0) {

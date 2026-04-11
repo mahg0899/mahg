@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import dynamic from 'next/dynamic'
 
 const PlyrVideo = dynamic(() => import('@/components/PlyrVideo'), { ssr: false })
+const ImageGallery = dynamic(() => import('@/components/ImageGallery'), { ssr: false })
 
 type Node = {
     type: string
@@ -269,9 +270,23 @@ function serializeLexical({ nodes }: { nodes: Node[] }) {
                         let finalUrl = linkUrl
                         if (linkType === 'internal' && (node.fields as any)?.doc) {
                             const doc = (node.fields as any).doc
-                            if (typeof doc === 'object' && doc?.value) {
-                                const docValue = typeof doc.value === 'object' ? doc.value : null
-                                finalUrl = docValue?.slug ? `/${docValue.slug}` : linkUrl
+                            // doc can be { relationTo: 'posts', value: { slug: '...' } } or { value: { slug: '...' } }
+                            const relationTo = doc?.relationTo || ''
+                            const docValue = typeof doc?.value === 'object' ? doc.value : null
+
+                            if (docValue?.slug) {
+                                // Map collection to its frontend URL path
+                                switch (relationTo) {
+                                    case 'posts':
+                                        finalUrl = `/blog/${docValue.slug}`
+                                        break
+                                    case 'pages':
+                                        finalUrl = `/${docValue.slug}`
+                                        break
+                                    default:
+                                        finalUrl = `/blog/${docValue.slug}`
+                                        break
+                                }
                             }
                         }
 
@@ -351,6 +366,18 @@ function serializeLexical({ nodes }: { nodes: Node[] }) {
                                 <YouTubeEmbed
                                     key={index}
                                     url={node.fields?.url || ''}
+                                    caption={node.fields?.caption}
+                                />
+                            )
+                        }
+                        // Image Gallery block
+                        if (node.fields?.blockType === 'imageGallery') {
+                            return (
+                                <ImageGallery
+                                    key={index}
+                                    images={node.fields?.images || []}
+                                    columns={node.fields?.columns}
+                                    gap={node.fields?.gap}
                                     caption={node.fields?.caption}
                                 />
                             )

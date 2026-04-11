@@ -1,5 +1,7 @@
 'use client'
 
+import Link from 'next/link'
+
 export default function SubscribeBox() {
     return (
         <div className="bg-blue-500 rounded-2xl p-6 text-white shadow-lg mb-8">
@@ -13,12 +15,12 @@ export default function SubscribeBox() {
                     placeholder="email@ejemplo.com"
                     className="w-full px-4 py-2.5 rounded-lg bg-white/20 border border-white/30 text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-white/50 text-sm"
                 />
-                <button
-                    type="submit"
-                    className="w-full px-4 py-2.5 rounded-lg bg-white text-blue-600 font-bold text-sm hover:bg-blue-50 transition-colors shadow-sm"
+                <Link
+                    href="/contact"
+                    className="block w-full px-4 py-2.5 rounded-lg bg-white text-blue-600 font-bold text-sm hover:bg-blue-50 transition-colors shadow-sm text-center"
                 >
                     Suscribirse
-                </button>
+                </Link>
             </form>
         </div>
     )

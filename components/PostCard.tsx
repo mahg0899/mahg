@@ -97,6 +97,8 @@ export const PostCard: React.FC<PostCardProps> = ({ post }) => {
                     <div className="flex items-center gap-3">
                         {author?.avatar && typeof author.avatar === 'object' && author.avatar.url ? (
                             <img src={author.avatar.url} alt={author.name || 'Author'} className="w-8 h-8 rounded-full ring-2 ring-[#1A1C23]" />
+                        ) : (author as any)?.avatarUrl ? (
+                            <img src={(author as any).avatarUrl} alt={author?.name || 'Author'} className="w-8 h-8 rounded-full ring-2 ring-[#1A1C23]" />
                         ) : (
                             <div className="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center ring-2 ring-[#1A1C23]">
                                 <span className="text-[10px] text-slate-300 font-bold">

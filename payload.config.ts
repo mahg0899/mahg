@@ -1,5 +1,5 @@
 import { postgresAdapter } from "@payloadcms/db-postgres";
-import { lexicalEditor, BlocksFeature, CodeBlock, UploadFeature } from "@payloadcms/richtext-lexical";
+import { lexicalEditor, BlocksFeature, CodeBlock, UploadFeature, LinkFeature } from "@payloadcms/richtext-lexical";
 import path from "path";
 import { buildConfig } from "payload";
 import { fileURLToPath } from "url";
@@ -57,6 +57,9 @@ export default buildConfig({
     components: {
       beforeNavLinks: ['/components/CustomNavHeader'],
       providers: ['/components/admin/AdminStyles'],
+      graphics: {
+        Icon: '/components/admin/AdminIcon',
+      },
       views: {
         /* Dashboard with letter D on mayus load the default dashboard, with d minus load the custom dashboard*/
         dashboard: {
@@ -74,9 +77,34 @@ export default buildConfig({
       generateURL: (docs) => docs.reduce((url, doc) => `${url}/${doc.slug}`, ''),
     }),
   ],
+  serverURL: process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000',
   editor: lexicalEditor({
     features: ({ defaultFeatures }) => [
-      ...defaultFeatures,
+      ...defaultFeatures.filter(f => f.key !== 'link'),
+      LinkFeature({
+        enabledCollections: ['posts'],
+        fields: ({ defaultFields }) => {
+          return defaultFields.map((field) => {
+            if ('name' in field && field.name === 'url') {
+              return {
+                ...field,
+                validate: (value: any, { siblingData }: any) => {
+                  if (siblingData?.linkType === 'internal') return true
+                  if (!value) return 'URL requerida'
+                  // Accept any valid URL including steam://, discord://, etc.
+                  try { new URL(value); return true } catch { /* continue */ }
+                  // Also accept relative URLs
+                  if (value.startsWith('/') || value.startsWith('#')) return true
+                  // Accept URLs starting with www.
+                  if (value.startsWith('www.')) return true
+                  return true // Be permissive
+                },
+              } as typeof field
+            }
+            return field
+          })
+        },
+      }),
       UploadFeature({
         collections: {
           media: {
@@ -155,6 +183,82 @@ export default buildConfig({
                   components: {
                     Field: '/components/admin/YouTubeBlockPreview',
                   },
+                },
+              },
+            ],
+          },
+          {
+            slug: 'imageGallery',
+            labels: {
+              singular: 'Galería de Imágenes',
+              plural: 'Galerías de Imágenes',
+            },
+            fields: [
+              {
+                name: 'bulkUpload',
+                type: 'ui',
+                admin: {
+                  components: {
+                    Field: '/components/admin/BulkImagePicker',
+                  },
+                },
+              },
+              {
+                name: 'images',
+                type: 'array',
+                label: 'Imágenes',
+                required: true,
+                minRows: 2,
+                labels: {
+                  singular: 'Imagen',
+                  plural: 'Imágenes',
+                },
+                fields: [
+                  {
+                    name: 'image',
+                    type: 'upload',
+                    relationTo: 'media',
+                    required: true,
+                    label: 'Imagen',
+                  },
+                ],
+              },
+              {
+                type: 'row',
+                fields: [
+                  {
+                    name: 'columns',
+                    type: 'select',
+                    label: 'Columnas',
+                    defaultValue: '2',
+                    options: [
+                      { label: '2 Columnas', value: '2' },
+                      { label: '3 Columnas', value: '3' },
+                      { label: '4 Columnas', value: '4' },
+                    ],
+                    admin: { width: '50%' },
+                  },
+                  {
+                    name: 'gap',
+                    type: 'select',
+                    label: 'Espaciado',
+                    defaultValue: 'md',
+                    options: [
+                      { label: 'Sin espacio', value: 'none' },
+                      { label: 'Pequeño', value: 'sm' },
+                      { label: 'Mediano', value: 'md' },
+                      { label: 'Grande', value: 'lg' },
+                    ],
+                    admin: { width: '50%' },
+                  },
+                ],
+              },
+              {
+                name: 'caption',
+                type: 'text',
+                label: 'Descripción (opcional)',
+                admin: {
+                  placeholder: 'Descripción de la galería...',
                 },
               },
             ],
