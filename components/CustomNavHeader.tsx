@@ -34,7 +34,7 @@ export default function CustomNavHeader() {
                         WebkitTextFillColor: 'transparent',
                         backgroundClip: 'text'
                     }}>
-                        MAHG.me v3.2.0
+                        MAHG.me v3.3.0
                     </h2>
                 </a>
             </div>

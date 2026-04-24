@@ -75,8 +75,136 @@ const YouTubeEmbed = ({ url, caption }: { url: string; caption?: string }) => {
     )
 }
 
+// GitHub Dark syntax highlighter for code blocks
+function highlightLine(line: string, lang?: string): React.ReactNode[] {
+    const tokens: React.ReactNode[] = []
+    const l = lang?.toLowerCase() || ''
+
+    // Shell/bash highlighting
+    if (['bash', 'sh', 'shell', 'zsh'].includes(l)) {
+        if (line.startsWith('#!')) {
+            tokens.push(<span key="shebang" style={{ color: '#79c0ff' }}>{line}</span>)
+            return tokens
+        }
+        if (line.trimStart().startsWith('#')) {
+            tokens.push(<span key="comment" style={{ color: '#8b949e' }}>{line}</span>)
+            return tokens
+        }
+
+        let remaining = line
+        let tokenIdx = 0
+        while (remaining.length > 0) {
+            const dqMatch = remaining.match(/^("(?:[^"\\]|\\.)*")/)
+            if (dqMatch) {
+                tokens.push(<span key={tokenIdx++} style={{ color: '#a5d6ff' }}>{dqMatch[1]}</span>)
+                remaining = remaining.slice(dqMatch[1].length)
+                continue
+            }
+            const sqMatch = remaining.match(/^('(?:[^'\\]|\\.)*')/)
+            if (sqMatch) {
+                tokens.push(<span key={tokenIdx++} style={{ color: '#a5d6ff' }}>{sqMatch[1]}</span>)
+                remaining = remaining.slice(sqMatch[1].length)
+                continue
+            }
+            const flagMatch = remaining.match(/^(--?[\w-]+)/)
+            if (flagMatch) {
+                tokens.push(<span key={tokenIdx++} style={{ color: '#d2a8ff' }}>{flagMatch[1]}</span>)
+                remaining = remaining.slice(flagMatch[1].length)
+                continue
+            }
+            const specialMatch = remaining.match(/^([{}|;+]+)/)
+            if (specialMatch) {
+                tokens.push(<span key={tokenIdx++} style={{ color: '#e6edf3' }}>{specialMatch[1]}</span>)
+                remaining = remaining.slice(specialMatch[1].length)
+                continue
+            }
+            const cmdMatch = remaining.match(/^(echo|find|rm|cd|ls|cat|grep|sed|awk|chmod|chown|mkdir|cp|mv|curl|wget|sudo|apt|yum|npm|pnpm|yarn|node|python|pip|docker|git)\b/)
+            if (cmdMatch && (tokens.length === 0 || (typeof tokens[tokens.length - 1] === 'object' && remaining === line.trimStart().slice(line.trimStart().indexOf(cmdMatch[1]))))) {
+                tokens.push(<span key={tokenIdx++} style={{ color: '#ff7b72' }}>{cmdMatch[1]}</span>)
+                remaining = remaining.slice(cmdMatch[1].length)
+                continue
+            }
+            if (remaining[0] === '.') {
+                tokens.push(<span key={tokenIdx++} style={{ color: '#e6edf3' }}>{remaining[0]}</span>)
+                remaining = remaining.slice(1)
+                continue
+            }
+            const plainMatch = remaining.match(/^([^"'{}|;+.\-]+)/)
+            if (plainMatch) {
+                tokens.push(<span key={tokenIdx++} style={{ color: '#e6edf3' }}>{plainMatch[1]}</span>)
+                remaining = remaining.slice(plainMatch[1].length)
+                continue
+            }
+            tokens.push(<span key={tokenIdx++} style={{ color: '#e6edf3' }}>{remaining[0]}</span>)
+            remaining = remaining.slice(1)
+        }
+        return tokens
+    }
+
+    // JavaScript/TypeScript highlighting
+    if (['javascript', 'js', 'typescript', 'ts', 'jsx', 'tsx'].includes(l)) {
+        if (line.trimStart().startsWith('//')) {
+            tokens.push(<span key="comment" style={{ color: '#8b949e' }}>{line}</span>)
+            return tokens
+        }
+
+        let remaining = line
+        let tokenIdx = 0
+        while (remaining.length > 0) {
+            const kwMatch = remaining.match(/^(const|let|var|function|return|if|else|for|while|import|export|from|default|class|extends|new|this|async|await|try|catch|throw|typeof|instanceof)\b/)
+            if (kwMatch) {
+                tokens.push(<span key={tokenIdx++} style={{ color: '#ff7b72' }}>{kwMatch[1]}</span>)
+                remaining = remaining.slice(kwMatch[1].length)
+                continue
+            }
+            const strMatch = remaining.match(/^(["'`](?:[^"'`\\]|\\.)*?["'`])/)
+            if (strMatch) {
+                tokens.push(<span key={tokenIdx++} style={{ color: '#a5d6ff' }}>{strMatch[1]}</span>)
+                remaining = remaining.slice(strMatch[1].length)
+                continue
+            }
+            const numMatch = remaining.match(/^(\d+\.?\d*)/)
+            if (numMatch) {
+                tokens.push(<span key={tokenIdx++} style={{ color: '#79c0ff' }}>{numMatch[1]}</span>)
+                remaining = remaining.slice(numMatch[1].length)
+                continue
+            }
+            const opMatch = remaining.match(/^(=>|===|!==|==|!=|&&|\|\||[+\-*/%=<>!&|^~?:]+)/)
+            if (opMatch) {
+                tokens.push(<span key={tokenIdx++} style={{ color: '#ff7b72' }}>{opMatch[1]}</span>)
+                remaining = remaining.slice(opMatch[1].length)
+                continue
+            }
+            const braceMatch = remaining.match(/^([{}[\]()])/)
+            if (braceMatch) {
+                tokens.push(<span key={tokenIdx++} style={{ color: '#e6edf3' }}>{braceMatch[1]}</span>)
+                remaining = remaining.slice(1)
+                continue
+            }
+            const plainMatch = remaining.match(/^([^"'`{}[\]()=<>!&|+\-*/%^~?:0-9\s]+)/)
+            if (plainMatch) {
+                tokens.push(<span key={tokenIdx++} style={{ color: '#e6edf3' }}>{plainMatch[1]}</span>)
+                remaining = remaining.slice(plainMatch[1].length)
+                continue
+            }
+            tokens.push(<span key={tokenIdx++} style={{ color: '#e6edf3' }}>{remaining[0]}</span>)
+            remaining = remaining.slice(1)
+        }
+        return tokens
+    }
+
+    // Default: no highlighting
+    tokens.push(<span key="plain" style={{ color: '#e6edf3' }}>{line}</span>)
+    return tokens
+}
+
 const CodeBlock = ({ code, language, filename }: { code: string; language?: string; filename?: string }) => {
     const [copied, setCopied] = useState(false)
+    const lines = code.split('\n')
+    if (lines.length > 1 && lines[lines.length - 1] === '') {
+        lines.pop()
+    }
+    const lineNumWidth = String(lines.length).length
 
     const handleCopy = () => {
         navigator.clipboard.writeText(code)
@@ -84,29 +212,101 @@ const CodeBlock = ({ code, language, filename }: { code: string; language?: stri
         setTimeout(() => setCopied(false), 2000)
     }
 
+    const displayLabel = filename || language || 'code'
+
     return (
-        <div className="my-8 rounded-xl overflow-hidden bg-[#0f172a] border border-slate-800 shadow-2xl ring-1 ring-white/5 max-w-8/10 mx-auto">
-            <div className="flex items-center justify-between px-4 py-3 bg-[#1e293b]/50 border-b border-slate-700/50 backdrop-blur-sm">
-                <span className="text-xs font-bold text-blue-400 uppercase tracking-wider font-mono">
-                    {filename || language || 'CODE'}
+        <div className="my-8 max-w-[90%] mx-auto" style={{
+            borderRadius: '6px',
+            overflow: 'hidden',
+            background: '#0d1117',
+            border: '1px solid #30363d',
+        }}>
+            {/* Header */}
+            <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                padding: '8px 16px',
+                background: '#161b22',
+                borderBottom: '1px solid #30363d',
+            }}>
+                <span style={{
+                    fontSize: '12px',
+                    fontFamily: "'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace",
+                    color: '#8b949e',
+                }}>
+                    {displayLabel}
                 </span>
                 <button
                     onClick={handleCopy}
-                    className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-700 transition-all focus:outline-none"
                     title="Copiar código"
+                    style={{
+                        padding: '3px 8px',
+                        borderRadius: '6px',
+                        border: '1px solid #30363d',
+                        background: copied ? 'rgba(63,185,80,0.1)' : 'transparent',
+                        color: copied ? '#3fb950' : '#8b949e',
+                        cursor: 'pointer',
+                        fontSize: '12px',
+                        fontFamily: "'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace",
+                        transition: 'color 0.15s, background 0.15s',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '4px',
+                    }}
+                    onMouseEnter={(e) => {
+                        if (!copied) {
+                            e.currentTarget.style.color = '#e6edf3'
+                            e.currentTarget.style.borderColor = '#8b949e'
+                        }
+                    }}
+                    onMouseLeave={(e) => {
+                        if (!copied) {
+                            e.currentTarget.style.color = '#8b949e'
+                            e.currentTarget.style.borderColor = '#30363d'
+                        }
+                    }}
                 >
                     {copied ? (
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-green-400"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
                     ) : (
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
                     )}
                 </button>
             </div>
-            {/* Code Body */}
-            <div className="relative group">
-                <pre className="p-5 text-sm font-mono leading-relaxed text-slate-200 whitespace-pre-wrap break-words">
-                    <code>{code}</code>
-                </pre>
+            {/* Code body */}
+            <div style={{ overflow: 'auto', padding: '12px 0' }}>
+                <table style={{
+                    width: '100%',
+                    borderCollapse: 'collapse',
+                    fontFamily: "'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace",
+                    fontSize: '13px',
+                    lineHeight: '1.6',
+                }}>
+                    <tbody>
+                        {lines.map((line, i) => (
+                            <tr key={i}>
+                                <td style={{
+                                    width: `${lineNumWidth + 2}ch`,
+                                    padding: '0 12px 0 16px',
+                                    textAlign: 'right',
+                                    color: '#484f58',
+                                    userSelect: 'none',
+                                    verticalAlign: 'top',
+                                    fontVariantNumeric: 'tabular-nums',
+                                }}>
+                                    {i + 1}
+                                </td>
+                                <td style={{
+                                    padding: '0 16px 0 12px',
+                                    whiteSpace: 'pre',
+                                }}>
+                                    {highlightLine(line, language)}
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
             </div>
         </div>
     )

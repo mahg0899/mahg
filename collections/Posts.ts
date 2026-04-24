@@ -97,12 +97,35 @@ export const Posts: CollectionConfig = {
                                     name: 'publishedAt',
                                     type: 'date',
                                     label: 'Fecha de Publicación',
-                                    defaultValue: () => new Date(),
                                     admin: {
                                         date: {
                                             pickerAppearance: 'dayAndTime',
                                         },
                                         width: '50%',
+                                        description: 'Se establece automáticamente al publicar. Puedes modificarla manualmente.',
+                                    },
+                                    hooks: {
+                                        beforeChange: [
+                                            ({ value, data, originalDoc }) => {
+                                                // If the user explicitly set/changed the date, respect it
+                                                if (value && originalDoc?.publishedAt && value !== originalDoc.publishedAt) {
+                                                    return value
+                                                }
+                                                // Auto-set date when publishing for the first time
+                                                const isPublishing = data?._status === 'published'
+                                                const wasDraft = !originalDoc?._status || originalDoc?._status === 'draft'
+                                                if (isPublishing && wasDraft && !value) {
+                                                    return new Date().toISOString()
+                                                }
+                                                // If already published and has a date, keep it
+                                                if (value) return value
+                                                // If publishing without a date (edge case), set it now
+                                                if (isPublishing && !value) {
+                                                    return new Date().toISOString()
+                                                }
+                                                return value
+                                            }
+                                        ]
                                     },
                                 },
                             ]
