@@ -99,7 +99,7 @@ export const PostCard: React.FC<PostCardProps> = ({ post }) => {
                         {author?.avatar && typeof author.avatar === 'object' && author.avatar.url ? (
                             <Image src={getMediaSrc(author.avatar.url)} alt={author.name || 'Author'} width={32} height={32} className="rounded-full ring-2 ring-main/25" />
                         ) : (author as any)?.avatarUrl ? (
-                            <Image src={getMediaSrc((author as any).avatarUrl)} alt={author?.name || 'Author'} width={32} height={32} className="rounded-full ring-2 ring-main/25" />
+                            <Image src={getMediaSrc((author as any).avatarUrl)} alt={author?.name || 'Author'} width={32} height={32} className="rounded-full ring-2 ring-main/25" unoptimized />
                         ) : (
                             <div className="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center ring-2 ring-main/25">
                                 <span className="text-[10px] text-slate-300 font-bold">

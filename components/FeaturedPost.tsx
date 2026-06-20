@@ -76,7 +76,7 @@ export const FeaturedPost: React.FC<PostCardProps> = ({ post }) => {
                             {author?.avatar && typeof author.avatar === 'object' && author.avatar.url ? (
                                 <Image src={getMediaSrc(author.avatar.url)} alt={author.name || 'Author'} width={40} height={40} className="rounded-full ring-2 ring-main/25" />
                             ) : (author as any)?.avatarUrl ? (
-                                <Image src={getMediaSrc((author as any).avatarUrl)} alt={author?.name || 'Author'} width={40} height={40} className="rounded-full ring-2 ring-main/25" />
+                                <Image src={getMediaSrc((author as any).avatarUrl)} alt={author?.name || 'Author'} width={40} height={40} className="rounded-full ring-2 ring-main/25" unoptimized />
                             ) : (
                                 <div className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center ring-2 ring-main/25">
                                     <span className="text-sm text-slate-300 font-bold">

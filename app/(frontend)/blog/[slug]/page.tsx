@@ -216,7 +216,7 @@ export default async function BlogPost({ params, searchParams }: { params: Promi
                         {author && (
                             <div className="flex items-center gap-3">
                                 {author.avatarUrl ? (
-                                    <Image src={getMediaSrc(author.avatarUrl)} alt={author.name || 'Autor'} width={32} height={32} className="rounded-full border border-slate-700" />
+                                    <Image src={getMediaSrc(author.avatarUrl)} alt={author.name || 'Autor'} width={32} height={32} className="rounded-full border border-slate-700" unoptimized />
                                 ) : null}
                                 <span className="font-medium text-slate-200">
                                     {author.name || author.email}
@@ -277,6 +277,7 @@ export default async function BlogPost({ params, searchParams }: { params: Promi
                                         width={80}
                                         height={80}
                                         className="rounded-full object-cover shadow-lg ring-2 ring-blue-500/20"
+                                        unoptimized
                                     />
                                 ) : (
                                     <div className="w-20 h-20 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-2xl font-bold text-white shadow-lg ring-2 ring-blue-500/20">
