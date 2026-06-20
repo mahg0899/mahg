@@ -2,6 +2,7 @@ import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Media, Post } from '@/payload-types'
+import { getMediaSrc } from '@/lib/utils'
 
 export default function RelatedPosts({ posts }: { posts: Post[] }) {
     if (!posts || posts.length === 0) return null
@@ -28,7 +29,7 @@ export default function RelatedPosts({ posts }: { posts: Post[] }) {
                                 <div className="aspect-video rounded-lg overflow-hidden bg-bento dark:bg-bento border border-main/25 mb-4 relative group-hover:border-btn/50 transition-all">
                                     {featuredImage && featuredImage.url ? (
                                         <Image
-                                            src={featuredImage.url}
+                                            src={getMediaSrc(featuredImage.url)}
                                             alt={featuredImage.alt || post.title || ''}
                                             fill
                                             sizes="(max-width: 768px) 100vw, 33vw"

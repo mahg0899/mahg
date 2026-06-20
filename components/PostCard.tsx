@@ -3,6 +3,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { Media } from '@/payload-types'
 import { calculateReadingTime } from '../utils/readingTime'
+import { getMediaSrc } from '@/lib/utils'
 
 // Define a local interface since payload-types.ts seems to be missing Post
 export interface PostCardProps {
@@ -46,7 +47,7 @@ export const PostCard: React.FC<PostCardProps> = ({ post }) => {
             <Link href={`/blog/${post.slug}`} className="relative block w-full aspect-[16/10] overflow-hidden rounded-lg bg-slate-800">
                 {featuredImage && featuredImage.url ? (
                     <Image
-                        src={featuredImage.url}
+                        src={getMediaSrc(featuredImage.url)}
                         alt={featuredImage.alt || post.title || 'Post Image'}
                         fill
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -96,9 +97,9 @@ export const PostCard: React.FC<PostCardProps> = ({ post }) => {
                     {/* Author */}
                     <div className="flex items-center gap-3">
                         {author?.avatar && typeof author.avatar === 'object' && author.avatar.url ? (
-                            <Image src={author.avatar.url} alt={author.name || 'Author'} width={32} height={32} className="rounded-full ring-2 ring-main/25" />
+                            <Image src={getMediaSrc(author.avatar.url)} alt={author.name || 'Author'} width={32} height={32} className="rounded-full ring-2 ring-main/25" />
                         ) : (author as any)?.avatarUrl ? (
-                            <Image src={(author as any).avatarUrl} alt={author?.name || 'Author'} width={32} height={32} className="rounded-full ring-2 ring-main/25" />
+                            <Image src={getMediaSrc((author as any).avatarUrl)} alt={author?.name || 'Author'} width={32} height={32} className="rounded-full ring-2 ring-main/25" />
                         ) : (
                             <div className="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center ring-2 ring-main/25">
                                 <span className="text-[10px] text-slate-300 font-bold">

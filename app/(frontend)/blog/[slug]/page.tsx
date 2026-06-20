@@ -12,6 +12,7 @@ import RelatedPosts from '@/components/RelatedPosts'
 import type { Metadata, Viewport } from 'next'
 import { getSeoData } from '@/lib/getSeoData'
 import { draftMode } from 'next/headers'
+import { getMediaSrc } from '@/lib/utils'
 
 export const dynamic = 'force-dynamic'
 
@@ -239,7 +240,7 @@ export default async function BlogPost({ params, searchParams }: { params: Promi
                 {featuredImage && featuredImage.url ? (
                     <div className="rounded-2xl overflow-hidden shadow-2xl ring-1 ring-slate-800/50 aspect-video bg-slate-900 relative">
                         <Image
-                            src={featuredImage.url}
+                            src={getMediaSrc(featuredImage.url)}
                             alt={featuredImage.alt || post.title}
                             fill
                             priority
@@ -263,7 +264,7 @@ export default async function BlogPost({ params, searchParams }: { params: Promi
                             <div className="shrink-0">
                                 {author?.avatar && typeof author.avatar === 'object' && author.avatar.url ? (
                                     <Image
-                                        src={author.avatar.url}
+                                        src={getMediaSrc(author.avatar.url)}
                                         alt={author.name || 'Author'}
                                         width={80}
                                         height={80}
@@ -271,7 +272,7 @@ export default async function BlogPost({ params, searchParams }: { params: Promi
                                     />
                                 ) : author?.avatarUrl ? (
                                     <Image
-                                        src={author.avatarUrl}
+                                        src={getMediaSrc(author.avatarUrl)}
                                         alt={author.name || 'Author'}
                                         width={80}
                                         height={80}

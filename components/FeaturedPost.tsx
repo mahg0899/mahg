@@ -4,6 +4,7 @@ import Image from 'next/image'
 import { Media } from '@/payload-types'
 import { PostCardProps } from './PostCard' // Reusing the type
 import { calculateReadingTime } from '@/utils/readingTime'
+import { getMediaSrc } from '@/lib/utils'
 
 export const FeaturedPost: React.FC<PostCardProps> = ({ post }) => {
     if (!post) return null
@@ -29,7 +30,7 @@ export const FeaturedPost: React.FC<PostCardProps> = ({ post }) => {
                     <div className="absolute inset-0 p-8 flex items-center justify-center">
                         {featuredImage && featuredImage.url ? (
                             <Image
-                                src={featuredImage.url}
+                                src={getMediaSrc(featuredImage.url)}
                                 alt={featuredImage.alt || post.title || 'Featured Post'}
                                 fill
                                 sizes="(max-width: 768px) 100vw, 50vw"
@@ -73,9 +74,9 @@ export const FeaturedPost: React.FC<PostCardProps> = ({ post }) => {
                         {/* Author */}
                         <div className="flex items-center gap-3">
                             {author?.avatar && typeof author.avatar === 'object' && author.avatar.url ? (
-                                <Image src={author.avatar.url} alt={author.name || 'Author'} width={40} height={40} className="rounded-full ring-2 ring-main/25" />
+                                <Image src={getMediaSrc(author.avatar.url)} alt={author.name || 'Author'} width={40} height={40} className="rounded-full ring-2 ring-main/25" />
                             ) : (author as any)?.avatarUrl ? (
-                                <Image src={(author as any).avatarUrl} alt={author?.name || 'Author'} width={40} height={40} className="rounded-full ring-2 ring-main/25" />
+                                <Image src={getMediaSrc((author as any).avatarUrl)} alt={author?.name || 'Author'} width={40} height={40} className="rounded-full ring-2 ring-main/25" />
                             ) : (
                                 <div className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center ring-2 ring-main/25">
                                     <span className="text-sm text-slate-300 font-bold">

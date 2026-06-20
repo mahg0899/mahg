@@ -14,6 +14,7 @@ export const metadata: Metadata = {
 import { getPayload } from "payload";
 import config from "@payload-config";
 import type { Media } from "@/payload-types";
+import { getMediaSrc } from "@/lib/utils";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faDownload,
@@ -144,7 +145,7 @@ export default async function Home() {
             <Link href="/portfolio" className="relative overflow-hidden bg-bento dark:bg-bento rounded-lg border border-main/25 hover:border-btn/50 transition-all duration-300 hover:-translate-y-2 group col-span-1 md:col-span-2 lg:col-span-2 hover:shadow-lg shadow-btn/20 flex flex-col">
               <div className="h-48 w-full bg-slate-800 overflow-hidden relative">
                 {latestProject.banner && typeof latestProject.banner !== "string" && (
-                  <Image src={(latestProject.banner as Media).url || ""} alt={latestProject.title} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500" />
+                  <Image src={getMediaSrc((latestProject.banner as Media).url)} alt={latestProject.title} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500" />
                 )}
                 {!latestProject.banner && (
                   <div className="absolute inset-0 bg-gradient-to-br from-slate-700 to-slate-900 flex items-center justify-center">
@@ -231,7 +232,7 @@ export default async function Home() {
             <Link href="/portfolio" className="relative overflow-hidden bg-bento dark:bg-bento rounded-lg p-6 col-span-1 md:col-span-3 lg:col-span-2 border border-main/25 hover:transition-all duration-300 hover:border-btn/50 hover:-translate-y-2 group hover:shadow-lg shadow-btn/20 flex items-center gap-6">
               <div className="w-24 h-24 shrink-0 rounded-2xl bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700/50 flex items-center justify-center shadow-inner group-hover:scale-105 transition-transform duration-500 relative overflow-hidden">
                 {featuredProject.banner && typeof featuredProject.banner !== "string" && (
-                  <Image src={(featuredProject.banner as Media).url || ""} alt={featuredProject.title} fill sizes="96px" className="object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500" />
+                  <Image src={getMediaSrc((featuredProject.banner as Media).url)} alt={featuredProject.title} fill sizes="96px" className="object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500" />
                 )}
                 {!featuredProject.banner && <FontAwesomeIcon icon={faChartPie} className="text-blue-500 text-3xl opacity-80" />}
                 <div className="absolute inset-0 bg-blue-500/20 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
