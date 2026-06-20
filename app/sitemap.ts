@@ -2,6 +2,11 @@ import type { MetadataRoute } from 'next'
 import { getPayload } from 'payload'
 import config from '@payload-config'
 
+// Force dynamic rendering — the sitemap queries the DB at runtime.
+// Without this, Next.js tries to statically pre-render it during `npm run build`,
+// which fails because the database is not reachable from the Docker build container.
+export const dynamic = 'force-dynamic'
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://mahg.me'
 
