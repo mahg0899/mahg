@@ -33,7 +33,7 @@ export default function Header() {
                         </li>
                         <li>
                             <a href="https://github.com/mahg0899" target="_blank" rel="noopener noreferrer">
-                                <Image src="https://avatars.githubusercontent.com/u/46274461?v=4" alt="GitHub" width={40} height={40} className="rounded-full border border-contrast" />
+                                <Image src="https://avatars.githubusercontent.com/u/46274461?v=4" alt="GitHub" width={40} height={40} className="rounded-full border border-contrast" unoptimized />
                             </a>
                         </li>
                     </ul>
