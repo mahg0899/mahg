@@ -1,11 +1,15 @@
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import type { Metadata } from "next";
 export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   title: 'Inicio',
   description: 'Portafolio y blog personal de MAHG — Frontend Developer. Proyectos, artículos y más.',
+  alternates: {
+    canonical: 'https://mahg.me',
+  },
 }
 import { getPayload } from "payload";
 import config from "@payload-config";
@@ -76,7 +80,7 @@ export default async function Home() {
             <div className="relative overflow-hidden bg-bento dark:bg-bento pt-5 pb-15 rounded-lg p-10 border border-main/25 hover: transition-all duration-300 hover:border-btn/50 hover:-translate-y-2 group hover:shadow-lg shadow-btn/20">
               <div className="absolute top-0 right-0 w-32 h-32 bg-btn/20 rounded-full blur-[50px] -mr-8 -mt-8 transition-all duration-500 group-hover:bg-btn/30"></div>
               <span className="text-2xs font-semibold text-btn uppercase tracking-wider mb-2 block">Frontend Developer</span>
-              <p className="text-3xl md:text-5xl font-black font-inter leading-none drop-shadow-md">Desarrollando soluciones digitales con <span className="text-btn">precisión</span> y creatividad</p>
+              <h1 className="text-3xl md:text-5xl font-black font-inter leading-none drop-shadow-md">Desarrollando soluciones digitales con <span className="text-btn">precisión</span> y creatividad</h1>
               <p className="mt-6 font-semibold text-slate-500 max-w-xl">
                 Desarrollador especializado en frontend con experiencia en React, Next.js, Tailwind CSS y TypeScript.
               </p>
@@ -88,7 +92,7 @@ export default async function Home() {
           </div>
           <div className="col-span-1 md:col-span-1 lg:col-span-1">
             <div className="bg-bento dark:bg-bento rounded-lg p-6 border border-main/25 pt-5 pb-15 h-full border border-contrast hover:transition-all duration-500 hover:border-btn/50 hover:-translate-y-2 group">
-              <h1 className="text-3xs font-bold uppercase mb-2 font-inter tracking-wider text-slate-500">Tech Stack</h1>
+              <p className="text-3xs font-bold uppercase mb-2 font-inter tracking-wider text-slate-500">Tech Stack</p>
               <div className="grid grid-cols-2 gap-3 mt-6 text-3xs font-semibold">
                 {techStack.map((tech, index) => (
                   <span key={index} className="px-2 py-1 pt-4 pb-4 rounded-xl bg-slate-700/50 col-span-1 text-center flex items-center justify-start gap-2 hover:scale-105 transition-all duration-300 border border-transparent hover:border-btn hover:bg-slate-700 ">
@@ -140,7 +144,7 @@ export default async function Home() {
             <Link href="/portfolio" className="relative overflow-hidden bg-bento dark:bg-bento rounded-lg border border-main/25 hover:border-btn/50 transition-all duration-300 hover:-translate-y-2 group col-span-1 md:col-span-2 lg:col-span-2 hover:shadow-lg shadow-btn/20 flex flex-col">
               <div className="h-48 w-full bg-slate-800 overflow-hidden relative">
                 {latestProject.banner && typeof latestProject.banner !== "string" && (
-                  <img src={(latestProject.banner as Media).url || ""} alt={latestProject.title} className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500" />
+                  <Image src={(latestProject.banner as Media).url || ""} alt={latestProject.title} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500" />
                 )}
                 {!latestProject.banner && (
                   <div className="absolute inset-0 bg-gradient-to-br from-slate-700 to-slate-900 flex items-center justify-center">
@@ -227,7 +231,7 @@ export default async function Home() {
             <Link href="/portfolio" className="relative overflow-hidden bg-bento dark:bg-bento rounded-lg p-6 col-span-1 md:col-span-3 lg:col-span-2 border border-main/25 hover:transition-all duration-300 hover:border-btn/50 hover:-translate-y-2 group hover:shadow-lg shadow-btn/20 flex items-center gap-6">
               <div className="w-24 h-24 shrink-0 rounded-2xl bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700/50 flex items-center justify-center shadow-inner group-hover:scale-105 transition-transform duration-500 relative overflow-hidden">
                 {featuredProject.banner && typeof featuredProject.banner !== "string" && (
-                  <img src={(featuredProject.banner as Media).url || ""} alt={featuredProject.title} className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500" />
+                  <Image src={(featuredProject.banner as Media).url || ""} alt={featuredProject.title} fill sizes="96px" className="object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500" />
                 )}
                 {!featuredProject.banner && <FontAwesomeIcon icon={faChartPie} className="text-blue-500 text-3xl opacity-80" />}
                 <div className="absolute inset-0 bg-blue-500/20 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
@@ -281,7 +285,7 @@ export default async function Home() {
             </Link>
           )}
           <div className="relative overflow-hidden bg-bento dark:bg-bento rounded-lg p-6 border border-main/25 hover:transition-all duration-300 hover:border-btn/50 hover:-translate-y-2 group hover:shadow-lg shadow-btn/20 md:col-span-2 lg:col-span-1">
-            <h1 className="text-2xs font-bold text-slate-500 uppercase tracking-widest mb-15">Soft Skills</h1>
+            <p className="text-2xs font-bold text-slate-500 uppercase tracking-widest mb-15">Soft Skills</p>
             <div className="flex flex-wrap gap-2 mt-2">
               {["Resolución de problemas", "Trabajo en equipo", "Liderazgo"].map((tag, i) => (
                 <span key={i} className="text-[10px] bg-slate-800 px-2 py-1 rounded font-semibold border border-slate-700">
@@ -307,7 +311,7 @@ export default async function Home() {
           <div className="pt-10 pb-10 relative col-span-1 md:col-span-2 lg:col-span-3 overflow-hidden bg-bento dark:bg-bento rounded-lg p-6 border border-main/25 hover:transition-all duration-300 hover:border-btn/50 hover:-translate-y-2 group hover:shadow-lg shadow-btn/20">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
               <div>
-                <h1 className="text-2xl font-bold text-white">¿Comenzamos un proyecto?</h1>
+                <h2 className="text-2xl font-bold text-white">¿Comenzamos un proyecto?</h2>
                 <p className="text-slate-400 text-sm mt-2 line-clamp-2 leading-relaxed">Si tienes alguna idea en mente o necesitas ayuda con algún proyecto, no dudes en contactarme.</p>
               </div>
               <div className="flex justify-end items-center">

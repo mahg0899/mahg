@@ -9,6 +9,9 @@ export const dynamic = 'force-dynamic'
 export const metadata: Metadata = {
     title: 'Blog',
     description: 'Artículos sobre desarrollo web, frontend, tecnología y más — por MAHG.',
+    alternates: {
+        canonical: 'https://mahg.me/blog',
+    },
 }
 
 export default async function BlogIndex() {
@@ -74,21 +77,21 @@ export default async function BlogIndex() {
     }
 
     return (
-        <div className="mx-auto w-11/12 xl:w-6/10 px-0 py-12 md:py-20">
+        <div className="mx-auto w-11/12 xl:w-6/10 py-12 md:py-20">
             {featuredPost && (
                 <FeaturedPost post={featuredPost} />
             )}
             <BlogPostsGrid posts={recentPosts} categories={categories} />
             {(!featuredPost && recentPosts.length === 0) && (
-                <div className="text-center py-20 border border-dashed border-slate-800 rounded-2xl bg-slate-900/50">
+                <div className="text-center py-20 border border-dashed border-main/25 rounded-2xl bg-bento/50">
                     <p className="text-xl text-slate-400 mb-4 font-medium">
-                        No hay posts publicados aún.
+                        No hay posts publicados aun.
                     </p>
                     <p className="text-slate-500">
                         Crea tu primer post en el{' '}
                         <a
                             href="/admin/collections/posts/create"
-                            className="text-blue-400 hover:text-blue-300 underline font-medium"
+                            className="text-btn hover:text-btn/80 underline font-medium"
                         >
                             panel de admin
                         </a>

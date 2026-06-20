@@ -3,12 +3,13 @@ import config from '@payload-config'
 import { notFound } from 'next/navigation'
 import type { Media } from '@/payload-types'
 import Link from 'next/link'
+import Image from 'next/image'
 import { RichText } from '@/components/RichText'
 import SubscribeBox from '@/components/SubscribeBox'
 import ShareButtons from '@/components/ShareButtons'
 import TableOfContents from '@/components/TableOfContents'
 import RelatedPosts from '@/components/RelatedPosts'
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { getSeoData } from '@/lib/getSeoData'
 import { draftMode } from 'next/headers'
 
@@ -26,6 +27,15 @@ function calculateReadingTime(content: any): number {
     return Math.max(1, Math.ceil(wordCount / 200))
 }
 
+export async function generateViewport({ params }: { params: Promise<{ slug: string }> }): Promise<Viewport> {
+    try {
+        const seo = await getSeoData()
+        return { themeColor: seo.themeColor || '#0f172a' }
+    } catch {
+        return { themeColor: '#0f172a' }
+    }
+}
+
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
     try {
         const { slug } = await params
@@ -41,34 +51,37 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
         if (!post) return {}
 
         const postSeo = (post as any).seo || {}
-        const featuredImage = post.featuredImage as Media | undefined
 
         // Priority: SEO override → post defaults → site defaults
         const title = postSeo.metaTitle || post.title
         const description = postSeo.metaDescription || (post as any).excerpt || seo.siteDescription || ''
-        const ogImage = postSeo.metaImage
-            ? (postSeo.metaImage as Media).url
-            : featuredImage?.url || seo.defaultImageUrl
-
         const fullTitle = `${title} | MAHG`
+
+        // OG image served by /api/og/[slug] — dynamic image with MAHG logo watermark
+        const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'
+        const ogImageUrl = `${baseUrl}/api/og/${slug}`
 
         return {
             title,
             description,
+            alternates: {
+                canonical: `https://mahg.me/blog/${slug}`,
+            },
             openGraph: {
                 title: fullTitle,
                 description,
                 type: 'article',
                 siteName: seo.siteTitle,
+                url: `${baseUrl}/blog/${slug}`,
                 ...(post.publishedAt && { publishedTime: post.publishedAt }),
-                ...(ogImage && { images: [{ url: ogImage, width: 1200, height: 630 }] }),
+                images: [{ url: ogImageUrl, width: 1200, height: 630, alt: title }],
             },
             twitter: {
                 card: seo.twitterCard || 'summary_large_image',
                 title: fullTitle,
                 description,
                 ...(seo.twitterHandle && { creator: seo.twitterHandle }),
-                ...(ogImage && { images: [ogImage] }),
+                images: [ogImageUrl],
             },
         }
     } catch {
@@ -164,11 +177,11 @@ export default async function BlogPost({ params, searchParams }: { params: Promi
 
     return (
         <article className="min-h-screen bg-background text-foreground font-sans pb-20">
-            <div className="bg-[#101922] pt-5 pb-16 px-6 relative">
+            <div className="pt-5 pb-16 px-6 relative">
                 <div className="relative z-10 flex justify-start w-full mb-8 md:absolute md:w-auto md:mb-0 md:top-8 md:left-8">
                     <Link
                         href="/blog"
-                        className="group flex items-center gap-2 text-slate-400 hover:text-white transition-colors bg-[#1c2127]/50 hover:bg-[#1c2127] backdrop-blur-sm px-4 py-2 rounded-full ring-1 ring-slate-800"
+                        className="group flex items-center gap-2 text-slate-400 hover:text-white transition-colors bg-bento/50 hover:bg-bento backdrop-blur-sm px-4 py-2 rounded-full border border-main/25"
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="group-hover:-translate-x-1 transition-transform">
                             <path d="m15 18-6-6 6-6" />
@@ -186,7 +199,7 @@ export default async function BlogPost({ params, searchParams }: { params: Promi
                                 return (
                                     <span
                                         key={catKey}
-                                        className="inline-block px-4 py-1.5 rounded-full bg-[#1c2127] text-blue-400 text-xs font-bold uppercase tracking-wider border border-slate-800"
+                                        className="inline-block px-4 py-1.5 rounded-full bg-bento text-btn text-xs font-bold uppercase tracking-wider border border-main/25"
                                     >
                                         {catTitle}
                                     </span>
@@ -202,7 +215,7 @@ export default async function BlogPost({ params, searchParams }: { params: Promi
                         {author && (
                             <div className="flex items-center gap-3">
                                 {author.avatarUrl ? (
-                                    <img src={author.avatarUrl} alt="" className="w-8 h-8 rounded-full border border-slate-700" />
+                                    <Image src={author.avatarUrl} alt={author.name || 'Autor'} width={32} height={32} className="rounded-full border border-slate-700" />
                                 ) : null}
                                 <span className="font-medium text-slate-200">
                                     {author.name || author.email}
@@ -224,11 +237,14 @@ export default async function BlogPost({ params, searchParams }: { params: Promi
             </div>
             <div className="max-w-7xl mx-auto px-6 -mt-8 relative z-10 mb-16">
                 {featuredImage && featuredImage.url ? (
-                    <div className="rounded-2xl overflow-hidden shadow-2xl ring-1 ring-slate-800/50 aspect-video bg-slate-900">
-                        <img
+                    <div className="rounded-2xl overflow-hidden shadow-2xl ring-1 ring-slate-800/50 aspect-video bg-slate-900 relative">
+                        <Image
                             src={featuredImage.url}
                             alt={featuredImage.alt || post.title}
-                            className="w-full h-full object-cover"
+                            fill
+                            priority
+                            sizes="(max-width: 1280px) 100vw, 1280px"
+                            className="object-cover"
                         />
                     </div>
                 ) : null}
@@ -243,19 +259,23 @@ export default async function BlogPost({ params, searchParams }: { params: Promi
                             <RichText content={post.content} hasIntroduction={hasContentBeforeFirstHeading} />
                         </div>
                         <hr className="border-slate-800 my-16" />
-                        <div className="bg-slate-900/40 rounded-2xl p-8 border border-white/5 flex flex-col md:flex-row gap-6 items-center md:items-start text-center md:text-left">
+                        <div className="bg-bento dark:bg-bento rounded-2xl p-8 border border-main/25 flex flex-col md:flex-row gap-6 items-center md:items-start text-center md:text-left">
                             <div className="shrink-0">
                                 {author?.avatar && typeof author.avatar === 'object' && author.avatar.url ? (
-                                    <img
+                                    <Image
                                         src={author.avatar.url}
                                         alt={author.name || 'Author'}
-                                        className="w-20 h-20 rounded-full object-cover shadow-lg ring-2 ring-blue-500/20"
+                                        width={80}
+                                        height={80}
+                                        className="rounded-full object-cover shadow-lg ring-2 ring-blue-500/20"
                                     />
                                 ) : author?.avatarUrl ? (
-                                    <img
+                                    <Image
                                         src={author.avatarUrl}
                                         alt={author.name || 'Author'}
-                                        className="w-20 h-20 rounded-full object-cover shadow-lg ring-2 ring-blue-500/20"
+                                        width={80}
+                                        height={80}
+                                        className="rounded-full object-cover shadow-lg ring-2 ring-blue-500/20"
                                     />
                                 ) : (
                                     <div className="w-20 h-20 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-2xl font-bold text-white shadow-lg ring-2 ring-blue-500/20">

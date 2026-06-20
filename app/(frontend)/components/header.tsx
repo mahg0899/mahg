@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faXmark, faEnvelope } from "@fortawesome/free-solid-svg-icons";
@@ -32,7 +33,7 @@ export default function Header() {
                         </li>
                         <li>
                             <a href="https://github.com/mahg0899" target="_blank" rel="noopener noreferrer">
-                                <img src="https://avatars.githubusercontent.com/u/46274461?v=4" alt="GitHub" className="w-10 rounded-full border border-contrast" />
+                                <Image src="https://avatars.githubusercontent.com/u/46274461?v=4" alt="GitHub" width={40} height={40} className="rounded-full border border-contrast" />
                             </a>
                         </li>
                     </ul>

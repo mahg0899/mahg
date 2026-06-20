@@ -5,9 +5,18 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  // Allow large file uploads (250MB for videos)
-  serverActions: {
-    bodySizeLimit: '250mb',
+  experimental: {
+    // Allow large file uploads for videos
+    serverActions: {
+      bodySizeLimit: '100mb',
+    },
+  },
+  images: {
+    remotePatterns: [
+      { hostname: 'localhost' },
+      { hostname: 'mahg.me' },
+      { hostname: 'avatars.githubusercontent.com' },
+    ],
   },
 };
 

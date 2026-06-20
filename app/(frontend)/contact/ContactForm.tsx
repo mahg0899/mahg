@@ -55,8 +55,8 @@ export default function ContactForm() {
     }
 
     return (
-        <form onSubmit={handleSubmit} className="lg:col-span-7 bg-bento border border-slate-700/50 rounded-2xl p-8 shadow-sm relative group overflow-hidden hover:border-btn/50 hover:-translate-y-2 group hover:shadow-lg shadow-btn/20 transition-all">
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+        <form onSubmit={handleSubmit} className="lg:col-span-7 bg-bento border border-main/25 rounded-lg p-8 relative group overflow-hidden hover:border-btn/50 hover:-translate-y-2 hover:shadow-lg shadow-btn/20 transition-all duration-300">
+            <div className="absolute inset-0 bg-gradient-to-br from-btn/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <div className="space-y-2">
                     <label className="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">Nombre Completo</label>
@@ -70,7 +70,7 @@ export default function ContactForm() {
                     />
                 </div>
                 <div className="space-y-2">
-                    <label className="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">Email <span className="text-blue-500">*</span></label>
+                    <label className="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">Email <span className="text-btn">*</span></label>
                     <input
                         type="email"
                         placeholder="your@email.com"
@@ -99,7 +99,7 @@ export default function ContactForm() {
             </div>
 
             <div className="space-y-2 mb-8">
-                <label className="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">Mensaje <span className="text-blue-500">*</span></label>
+                <label className="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">Mensaje <span className="text-btn">*</span></label>
                 <textarea
                     rows={5}
                     placeholder="Hola, me gustaría proponerte un proyecto..."
@@ -128,7 +128,7 @@ export default function ContactForm() {
             <button
                 type="submit"
                 disabled={status === 'sending'}
-                className="w-full bg-btn hover:bg-blue-600 text-white font-bold py-4 rounded-xl shadow-lg shadow-blue-500/20 transition-all active:scale-[0.98] flex items-center justify-center gap-2 group/btn cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed disabled:active:scale-100"
+                className="w-full bg-btn hover:bg-btn/80 text-white font-bold py-4 rounded-xl shadow-lg shadow-btn/20 transition-all active:scale-[0.98] flex items-center justify-center gap-2 group/btn cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed disabled:active:scale-100"
             >
                 {status === 'sending' ? (
                     <>

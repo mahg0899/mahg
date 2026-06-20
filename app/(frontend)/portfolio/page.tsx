@@ -1,5 +1,6 @@
 import { getPayload } from "payload";
 import config from "@payload-config";
+import Image from "next/image";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGithub, faFigma } from "@fortawesome/free-brands-svg-icons";
@@ -13,6 +14,9 @@ export const dynamic = 'force-dynamic'
 export const metadata: Metadata = {
     title: 'Portafolio',
     description: 'Proyectos de desarrollo web, diseño UI/UX y más — portafolio de MAHG.',
+    alternates: {
+        canonical: 'https://mahg.me/portfolio',
+    },
 }
 
 
@@ -47,9 +51,11 @@ export default async function Portfolio() {
                             <div key={project.id} className="break-inside-avoid mb-6 group bg-bento border border-slate-700/50 rounded-2xl overflow-hidden hover:border-btn/50 hover:-translate-y-2 hover:shadow-xl hover:shadow-btn/10 transition-all duration-300 flex flex-col">
                                 <div className="relative">
                                     {bannerUrl ? (
-                                        <img
+                                        <Image
                                             src={bannerUrl}
                                             alt={project.title}
+                                            width={800}
+                                            height={450}
                                             className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105"
                                         />
                                     ) : (

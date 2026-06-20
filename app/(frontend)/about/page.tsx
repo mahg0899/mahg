@@ -6,6 +6,9 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
     title: 'Sobre Mí',
     description: 'Conoce más sobre MAHG — mi historia, experiencia, setup y los intereses que me mueven como desarrollador.',
+    alternates: {
+        canonical: 'https://mahg.me/about',
+    },
 }
 
 export default function About() {
@@ -115,7 +118,7 @@ export default function About() {
                     </div>
                 </div>
                 <div className="md:col-span-3 md:row-span-2 bento-card rounded-2xl p-10 flex flex-col justify-center relative overflow-hidden group bg-btn border border-main/25 hover:transition-all duration-300 hover:border-main/50 hover:-translate-y-2 group hover:shadow-lg shadow-btn/20">
-                    <h1 className="text-2xl md:text-4xl font-bold mb-4">Hagamos algo grandioso</h1>
+                    <h2 className="text-2xl md:text-4xl font-bold mb-4">Hagamos algo grandioso</h2>
                     <p className="mb-6 text-lg">
                         Estoy abierto a oportunidades laborales y colaboraciones. No dudes en dejar un mensaje.
                     </p>
