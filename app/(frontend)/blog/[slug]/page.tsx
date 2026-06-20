@@ -216,7 +216,7 @@ export default async function BlogPost({ params, searchParams }: { params: Promi
                         {author && (
                             <div className="flex items-center gap-3">
                                 {author.avatarUrl ? (
-                                    <Image src={author.avatarUrl} alt={author.name || 'Autor'} width={32} height={32} className="rounded-full border border-slate-700" />
+                                    <Image src={getMediaSrc(author.avatarUrl)} alt={author.name || 'Autor'} width={32} height={32} className="rounded-full border border-slate-700" />
                                 ) : null}
                                 <span className="font-medium text-slate-200">
                                     {author.name || author.email}
