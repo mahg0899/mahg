@@ -6,11 +6,25 @@ import type { Metadata } from 'next'
 
 export const dynamic = 'force-dynamic'
 
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://mahg.me'
+
 export const metadata: Metadata = {
     title: 'Blog',
-    description: 'Artículos sobre desarrollo web, frontend, tecnología y más — por MAHG.',
+    description: 'Mi rincón en internet. Escribo sobre lo que me interesa, me apasiona o simplemente me da la gana de compartir.',
     alternates: {
-        canonical: 'https://mahg.me/blog',
+        canonical: `${baseUrl}/blog`,
+    },
+    openGraph: {
+        title: 'Blog',
+        description: 'Mi rincón en internet. Escribo sobre lo que me interesa, me apasiona o simplemente me da la gana de compartir.',
+        url: `${baseUrl}/blog`,
+        images: [{ url: `${baseUrl}/api/og/static?page=blog`, width: 1200, height: 630, alt: 'Blog — MAHG.me' }],
+    },
+    twitter: {
+        card: 'summary_large_image',
+        title: 'Blog',
+        description: 'Mi rincón en internet. Escribo sobre lo que me interesa, me apasiona o simplemente me da la gana de compartir.',
+        images: [`${baseUrl}/api/og/static?page=blog`],
     },
 }
 

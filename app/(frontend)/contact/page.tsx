@@ -5,11 +5,25 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import ContactForm from "./ContactForm";
 
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://mahg.me'
+
 export const metadata: Metadata = {
     title: 'Contacto',
-    description: 'Ponte en contacto conmigo — estoy disponible para proyectos freelance y colaboraciones.',
+    description: '¿Tienes un proyecto o propuesta laboral? Ponte en contacto conmigo, estoy disponible para freelance, colaboraciones y nuevas oportunidades.',
     alternates: {
-        canonical: 'https://mahg.me/contact',
+        canonical: `${baseUrl}/contact`,
+    },
+    openGraph: {
+        title: 'Contacto',
+        description: '¿Tienes un proyecto o propuesta laboral? Ponte en contacto conmigo, estoy disponible para freelance, colaboraciones y nuevas oportunidades.',
+        url: `${baseUrl}/contact`,
+        images: [{ url: `${baseUrl}/api/og/static?page=contact`, width: 1200, height: 630, alt: 'Contacto — MAHG.me' }],
+    },
+    twitter: {
+        card: 'summary_large_image',
+        title: 'Contacto',
+        description: '¿Tienes un proyecto o propuesta laboral? Ponte en contacto conmigo, estoy disponible para freelance, colaboraciones y nuevas oportunidades.',
+        images: [`${baseUrl}/api/og/static?page=contact`],
     },
 }
 

@@ -56,30 +56,29 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
         // Priority: SEO override → post defaults → site defaults
         const title = postSeo.metaTitle || post.title
         const description = postSeo.metaDescription || (post as any).excerpt || seo.siteDescription || ''
-        const fullTitle = `${title} | MAHG`
 
         // OG image served by /api/og/[slug] — dynamic image with MAHG logo watermark
-        const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'
-        const ogImageUrl = `${baseUrl}/api/og/${slug}`
+        const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://mahg.me'
+        const ogImageUrl = `${siteUrl}/api/og/${slug}`
 
         return {
             title,
             description,
             alternates: {
-                canonical: `https://mahg.me/blog/${slug}`,
+                canonical: `${siteUrl}/blog/${slug}`,
             },
             openGraph: {
-                title: fullTitle,
+                title,
                 description,
                 type: 'article',
                 siteName: seo.siteTitle,
-                url: `${baseUrl}/blog/${slug}`,
+                url: `${siteUrl}/blog/${slug}`,
                 ...(post.publishedAt && { publishedTime: post.publishedAt }),
                 images: [{ url: ogImageUrl, width: 1200, height: 630, alt: title }],
             },
             twitter: {
                 card: seo.twitterCard || 'summary_large_image',
-                title: fullTitle,
+                title,
                 description,
                 ...(seo.twitterHandle && { creator: seo.twitterHandle }),
                 images: [ogImageUrl],

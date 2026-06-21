@@ -3,11 +3,25 @@ import { faBook, faBrain, faClock, faCode, faDesktop, faFilm, faGamepad, faMusic
 import Link from "next/link";
 import type { Metadata } from "next";
 
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://mahg.me'
+
 export const metadata: Metadata = {
     title: 'Sobre Mí',
-    description: 'Conoce más sobre MAHG — mi historia, experiencia, setup y los intereses que me mueven como desarrollador.',
+    description: 'Desarrollador frontend egresado en Derecho, transformando curiosidad tecnológica en soluciones digitales. Mi stack, experiencia y lo que me mueve.',
     alternates: {
-        canonical: 'https://mahg.me/about',
+        canonical: `${baseUrl}/about`,
+    },
+    openGraph: {
+        title: 'Sobre mí',
+        description: 'Desarrollador frontend egresado en Derecho, transformando curiosidad tecnológica en soluciones digitales. Mi stack, experiencia y lo que me mueve.',
+        url: `${baseUrl}/about`,
+        images: [{ url: `${baseUrl}/api/og/static?page=about`, width: 1200, height: 630, alt: 'Sobre mí — MAHG.me' }],
+    },
+    twitter: {
+        card: 'summary_large_image',
+        title: 'Sobre mí',
+        description: 'Desarrollador frontend egresado en Derecho, transformando curiosidad tecnológica en soluciones digitales. Mi stack, experiencia y lo que me mueve.',
+        images: [`${baseUrl}/api/og/static?page=about`],
     },
 }
 

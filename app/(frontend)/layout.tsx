@@ -42,16 +42,27 @@ export async function generateMetadata(): Promise<Metadata> {
         title: seo.siteTitle,
         description: seo.siteDescription,
         siteName: seo.siteTitle,
-        ...(seo.defaultImageUrl && {
-          images: [{ url: seo.defaultImageUrl, width: 1200, height: 630 }],
-        }),
+        images: [
+          {
+            url: '/api/og/static?page=home',
+            width: 1200,
+            height: 630,
+            alt: seo.siteTitle,
+          },
+          ...(seo.defaultImageUrl
+            ? [{ url: seo.defaultImageUrl, width: 1200, height: 630 }]
+            : []),
+        ],
       },
       twitter: {
         card: seo.twitterCard,
         title: seo.siteTitle,
         description: seo.siteDescription,
         ...(seo.twitterHandle && { creator: seo.twitterHandle }),
-        ...(seo.defaultImageUrl && { images: [seo.defaultImageUrl] }),
+        images: [
+          '/api/og/static?page=home',
+          ...(seo.defaultImageUrl ? [seo.defaultImageUrl] : []),
+        ],
       },
       other: {
         'theme-color': seo.themeColor,

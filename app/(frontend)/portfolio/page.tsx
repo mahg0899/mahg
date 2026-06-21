@@ -11,11 +11,25 @@ import type { Metadata } from "next";
 
 export const dynamic = 'force-dynamic'
 
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://mahg.me'
+
 export const metadata: Metadata = {
     title: 'Portafolio',
-    description: 'Proyectos de desarrollo web, diseño UI/UX y más — portafolio de MAHG.',
+    description: 'Aplicaciones web, interfaces UI/UX y proyectos open source. Explora mi trabajo con React, Next.js, Payload CMS y otras tecnologías modernas.',
     alternates: {
-        canonical: 'https://mahg.me/portfolio',
+        canonical: `${baseUrl}/portfolio`,
+    },
+    openGraph: {
+        title: 'Portafolio',
+        description: 'Aplicaciones web, interfaces UI/UX y proyectos open source. Explora mi trabajo con React, Next.js, Payload CMS y otras tecnologías modernas.',
+        url: `${baseUrl}/portfolio`,
+        images: [{ url: `${baseUrl}/api/og/static?page=portfolio`, width: 1200, height: 630, alt: 'Portafolio — MAHG.me' }],
+    },
+    twitter: {
+        card: 'summary_large_image',
+        title: 'Portafolio',
+        description: 'Aplicaciones web, interfaces UI/UX y proyectos open source. Explora mi trabajo con React, Next.js, Payload CMS y otras tecnologías modernas.',
+        images: [`${baseUrl}/api/og/static?page=portfolio`],
     },
 }
 

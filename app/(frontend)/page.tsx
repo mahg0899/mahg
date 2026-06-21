@@ -4,11 +4,25 @@ import Image from "next/image";
 import type { Metadata } from "next";
 export const dynamic = 'force-dynamic'
 
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://mahg.me'
+
 export const metadata: Metadata = {
   title: 'Inicio',
-  description: 'Portafolio y blog personal de MAHG — Frontend Developer. Proyectos, artículos y más.',
+  description: 'Frontend Developer especializado en React, Next.js y TypeScript. Explora mis proyectos, lee artículos sobre desarrollo web y conoce mi trabajo.',
   alternates: {
-    canonical: 'https://mahg.me',
+    canonical: baseUrl,
+  },
+  openGraph: {
+    title: 'Bienvenido a MAHG.me',
+    description: 'Frontend Developer especializado en React, Next.js y TypeScript. Explora mis proyectos, lee artículos sobre desarrollo web y conoce mi trabajo.',
+    url: baseUrl,
+    images: [{ url: `${baseUrl}/api/og/static?page=home`, width: 1200, height: 630, alt: 'MAHG.me — Frontend Developer' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Bienvenido a MAHG.me',
+    description: 'Frontend Developer especializado en React, Next.js y TypeScript. Explora mis proyectos, lee artículos sobre desarrollo web y conoce mi trabajo.',
+    images: [`${baseUrl}/api/og/static?page=home`],
   },
 }
 import { getPayload } from "payload";
