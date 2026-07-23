@@ -5,7 +5,7 @@ import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGithub, faFigma } from "@fortawesome/free-brands-svg-icons";
 import { faArrowRight, faLaptopCode } from "@fortawesome/free-solid-svg-icons";
-import { ensureUrl } from '@/lib/utils';
+import { ensureUrl, getMediaSrc } from '@/lib/utils';
 import type { Media } from "@/payload-types";
 import type { Metadata } from "next";
 
@@ -56,7 +56,7 @@ export default async function Portfolio() {
                 </div>
                 <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
                     {projects.docs.map((project, index) => {
-                        const bannerUrl = project.banner && typeof project.banner !== "string" ? (project.banner as Media).url : null;
+                        const bannerUrl = project.banner && typeof project.banner !== "string" ? getMediaSrc((project.banner as Media).url) : null;
                         const link = ensureUrl(project.websiteLink || project.githubLink) || "#";
                         const githubUrl = ensureUrl(project.githubLink);
                         const figmaUrl = ensureUrl(project.figmaLink);
