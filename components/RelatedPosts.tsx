@@ -2,7 +2,7 @@ import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Media, Post } from '@/payload-types'
-import { getMediaSrc } from '@/lib/utils'
+import { getMediaSrc, shouldBypassMediaOptimization } from '@/lib/utils'
 
 export default function RelatedPosts({ posts }: { posts: Post[] }) {
     if (!posts || posts.length === 0) return null
@@ -33,6 +33,7 @@ export default function RelatedPosts({ posts }: { posts: Post[] }) {
                                             alt={featuredImage.alt || post.title || ''}
                                             fill
                                             sizes="(max-width: 768px) 100vw, 33vw"
+                                            unoptimized={shouldBypassMediaOptimization(featuredImage.url)}
                                             className="object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500"
                                         />
                                     ) : (

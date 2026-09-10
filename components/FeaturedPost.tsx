@@ -4,7 +4,7 @@ import Image from 'next/image'
 import { Media } from '@/payload-types'
 import { PostCardProps } from './PostCard' // Reusing the type
 import { calculateReadingTime } from '@/utils/readingTime'
-import { getMediaSrc } from '@/lib/utils'
+import { getMediaSrc, shouldBypassMediaOptimization } from '@/lib/utils'
 
 export const FeaturedPost: React.FC<PostCardProps> = ({ post }) => {
     if (!post) return null
@@ -34,6 +34,7 @@ export const FeaturedPost: React.FC<PostCardProps> = ({ post }) => {
                                 alt={featuredImage.alt || post.title || 'Featured Post'}
                                 fill
                                 sizes="(max-width: 768px) 100vw, 50vw"
+                                unoptimized={shouldBypassMediaOptimization(featuredImage.url)}
                                 className="object-cover rounded-lg transition-transform duration-700 group-hover:scale-105"
                             />
                         ) : (
@@ -74,7 +75,7 @@ export const FeaturedPost: React.FC<PostCardProps> = ({ post }) => {
                         {/* Author */}
                         <div className="flex items-center gap-3">
                             {author?.avatar && typeof author.avatar === 'object' && author.avatar.url ? (
-                                <Image src={getMediaSrc(author.avatar.url)} alt={author.name || 'Author'} width={40} height={40} className="rounded-full ring-2 ring-main/25" />
+                                <Image src={getMediaSrc(author.avatar.url)} alt={author.name || 'Author'} width={40} height={40} className="rounded-full ring-2 ring-main/25" unoptimized={shouldBypassMediaOptimization(author.avatar.url)} />
                             ) : (author as any)?.avatarUrl ? (
                                 <Image src={getMediaSrc((author as any).avatarUrl)} alt={author?.name || 'Author'} width={40} height={40} className="rounded-full ring-2 ring-main/25" unoptimized />
                             ) : (

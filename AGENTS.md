@@ -86,6 +86,8 @@ R2_MEDIA_REDIRECT_ENABLED=false # Docker build arg for the legacy URL redirect
 - `instrumentation.ts`: initializes Payload in the Node.js runtime.
 - `scripts/migrate-media-to-r2.ts`: idempotent migration/verification utility for original media files only; run through `npm run media:migrate:r2`.
 - The `media` collection intentionally has no `imageSizes`: Payload stores one original per upload, and both the Admin thumbnail and public site reuse that URL. Do not reintroduce persistent variants without an explicit storage tradeoff decision.
+- Public R2 media is rendered directly from the CDN with Next image optimization bypassed through `shouldBypassMediaOptimization()`. This avoids `/_next/image` allow-list failures and does not create additional R2 objects.
+- Dynamic Open Graph images remain generated in memory by `app/api/og/[slug]/route.tsx` from the original featured image plus post metadata. They are not persistent Payload thumbnails or R2 variants.
 - Run the R2 migration on the production host with `MEDIA_LOCAL_DIR` pointing to its real persistent media volume. Never upload the development workspace's `media/` contents.
 - Deploy and migrate first with both R2 flags set to `false`. After `--verify-only` succeeds, set runtime `R2_MEDIA_ENABLED=true` and build argument `R2_MEDIA_REDIRECT_ENABLED=true`, then rebuild.
 - R2 migration conflicts are not overwritten by default. Inspect them first, then use `npm run media:migrate:r2 -- --overwrite` only when replacement is intended.

@@ -3,7 +3,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { Media } from '@/payload-types'
 import { calculateReadingTime } from '../utils/readingTime'
-import { getMediaSrc } from '@/lib/utils'
+import { getMediaSrc, shouldBypassMediaOptimization } from '@/lib/utils'
 
 // Define a local interface since payload-types.ts seems to be missing Post
 export interface PostCardProps {
@@ -51,6 +51,7 @@ export const PostCard: React.FC<PostCardProps> = ({ post }) => {
                         alt={featuredImage.alt || post.title || 'Post Image'}
                         fill
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        unoptimized={shouldBypassMediaOptimization(featuredImage.url)}
                         className="object-cover transition-transform duration-700 group-hover:scale-105"
                     />
                 ) : (
@@ -97,7 +98,7 @@ export const PostCard: React.FC<PostCardProps> = ({ post }) => {
                     {/* Author */}
                     <div className="flex items-center gap-3">
                         {author?.avatar && typeof author.avatar === 'object' && author.avatar.url ? (
-                            <Image src={getMediaSrc(author.avatar.url)} alt={author.name || 'Author'} width={32} height={32} className="rounded-full ring-2 ring-main/25" />
+                            <Image src={getMediaSrc(author.avatar.url)} alt={author.name || 'Author'} width={32} height={32} className="rounded-full ring-2 ring-main/25" unoptimized={shouldBypassMediaOptimization(author.avatar.url)} />
                         ) : (author as any)?.avatarUrl ? (
                             <Image src={getMediaSrc((author as any).avatarUrl)} alt={author?.name || 'Author'} width={32} height={32} className="rounded-full ring-2 ring-main/25" unoptimized />
                         ) : (

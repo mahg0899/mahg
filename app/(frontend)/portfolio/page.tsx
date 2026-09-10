@@ -5,7 +5,7 @@ import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGithub, faFigma } from "@fortawesome/free-brands-svg-icons";
 import { faArrowRight, faLaptopCode } from "@fortawesome/free-solid-svg-icons";
-import { ensureUrl, getMediaSrc } from '@/lib/utils';
+import { ensureUrl, getMediaSrc, shouldBypassMediaOptimization } from '@/lib/utils';
 import type { Media } from "@/payload-types";
 import type { Metadata } from "next";
 
@@ -70,6 +70,7 @@ export default async function Portfolio() {
                                             alt={project.title}
                                             width={800}
                                             height={450}
+                                            unoptimized={shouldBypassMediaOptimization((project.banner as Media).url)}
                                             className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105"
                                         />
                                     ) : (

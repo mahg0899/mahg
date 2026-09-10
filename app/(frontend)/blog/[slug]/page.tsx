@@ -12,7 +12,7 @@ import RelatedPosts from '@/components/RelatedPosts'
 import type { Metadata, Viewport } from 'next'
 import { getSeoData } from '@/lib/getSeoData'
 import { draftMode } from 'next/headers'
-import { getMediaSrc } from '@/lib/utils'
+import { getMediaSrc, shouldBypassMediaOptimization } from '@/lib/utils'
 
 export const dynamic = 'force-dynamic'
 
@@ -244,6 +244,7 @@ export default async function BlogPost({ params, searchParams }: { params: Promi
                             fill
                             priority
                             sizes="(max-width: 1280px) 100vw, 1280px"
+                            unoptimized={shouldBypassMediaOptimization(featuredImage.url)}
                             className="object-cover"
                         />
                     </div>
@@ -267,6 +268,7 @@ export default async function BlogPost({ params, searchParams }: { params: Promi
                                         alt={author.name || 'Author'}
                                         width={80}
                                         height={80}
+                                        unoptimized={shouldBypassMediaOptimization(author.avatar.url)}
                                         className="rounded-full object-cover shadow-lg ring-2 ring-blue-500/20"
                                     />
                                 ) : author?.avatarUrl ? (

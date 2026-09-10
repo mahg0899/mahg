@@ -38,3 +38,21 @@ export function getMediaSrc(url: string | null | undefined): string {
         return url
     }
 }
+
+/**
+ * Remote Payload media is already served by its public CDN. Bypassing Next's
+ * optimizer for those URLs keeps healthy R2 objects accessible even if the
+ * optimizer's build-time allow-list is stale or unavailable.
+ */
+export function shouldBypassMediaOptimization(url: string | null | undefined): boolean {
+    if (!url) return false
+
+    try {
+        const mediaOrigin = new URL(url).origin
+        const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL || ''
+
+        return !serverUrl || mediaOrigin !== new URL(serverUrl).origin
+    } catch {
+        return false
+    }
+}
