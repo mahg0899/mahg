@@ -2,7 +2,7 @@ import { HeadObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s
 import { createReadStream } from 'node:fs'
 import { stat } from 'node:fs/promises'
 import path from 'node:path'
-import { getPayload } from 'payload'
+import pg from 'pg'
 
 try {
   process.loadEnvFile()
@@ -24,6 +24,7 @@ const verifyOnly = process.argv.includes('--verify-only')
 const overwrite = process.argv.includes('--overwrite')
 
 const requiredEnvironment = [
+  'DATABASE_URL',
   'S3_BUCKET',
   'S3_ENDPOINT',
   'S3_ACCESS_KEY_ID',
@@ -47,6 +48,16 @@ const client = new S3Client({
 })
 
 type MediaFile = { filename: string; mimeType: string }
+type MediaRow = {
+  filename: null | string
+  mime_type: null | string
+  sizes_thumbnail_filename: null | string
+  sizes_thumbnail_mime_type: null | string
+  sizes_card_filename: null | string
+  sizes_card_mime_type: null | string
+  sizes_tablet_filename: null | string
+  sizes_tablet_mime_type: null | string
+}
 type MigrationResult = MediaFile & {
   key: string
   status: 'missing-local' | 'uploaded' | 'verified' | 'would-upload' | 'conflict' | 'failed'
@@ -80,45 +91,52 @@ function safeLocalPath(filename: string) {
 }
 
 async function collectMediaFiles(): Promise<MediaFile[]> {
-  const { default: config } = await import('../payload.config')
-  const payload = await getPayload({ config })
+  const database = new pg.Client({ connectionString: process.env.DATABASE_URL })
   const files = new Map<string, MediaFile>()
-  let page = 1
-  let hasNextPage = true
+  await database.connect()
 
-  while (hasNextPage) {
-    const result = await payload.find({
-      collection: 'media',
-      depth: 0,
-      limit: 100,
-      page,
-      pagination: true,
-    })
+  try {
+    const result = await database.query<MediaRow>(`
+      SELECT
+        filename,
+        mime_type,
+        sizes_thumbnail_filename,
+        sizes_thumbnail_mime_type,
+        sizes_card_filename,
+        sizes_card_mime_type,
+        sizes_tablet_filename,
+        sizes_tablet_mime_type
+      FROM media
+      ORDER BY id
+    `)
 
-    for (const document of result.docs) {
+    for (const document of result.rows) {
+      const fallbackMimeType = document.mime_type || 'application/octet-stream'
+
       if (document.filename) {
         files.set(document.filename, {
           filename: document.filename,
-          mimeType: document.mimeType || 'application/octet-stream',
+          mimeType: fallbackMimeType,
         })
       }
 
-      const sizes = (document as typeof document & {
-        sizes?: Record<string, { filename?: null | string }>
-      }).sizes
+      const sizes = [
+        [document.sizes_thumbnail_filename, document.sizes_thumbnail_mime_type],
+        [document.sizes_card_filename, document.sizes_card_mime_type],
+        [document.sizes_tablet_filename, document.sizes_tablet_mime_type],
+      ] as const
 
-      for (const size of Object.values(sizes || {})) {
-        if (size?.filename) {
-          files.set(size.filename, {
-            filename: size.filename,
-            mimeType: getMimeType(size.filename, document.mimeType || 'application/octet-stream'),
+      for (const [filename, mimeType] of sizes) {
+        if (filename) {
+          files.set(filename, {
+            filename,
+            mimeType: mimeType || getMimeType(filename, fallbackMimeType),
           })
         }
       }
     }
-
-    hasNextPage = result.hasNextPage
-    page += 1
+  } finally {
+    await database.end()
   }
 
   return [...files.values()]
