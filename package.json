@@ -1,11 +1,10 @@
 {
   "name": "mahg",
-  "version": "3.5.0",
+  "version": "3.5.1",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "payload:generate-importmap": "payload generate:importmap",
     "start": "next start -p 3005",
     "lint": "eslint",
     "media:migrate:r2": "tsx scripts/migrate-media-to-r2.ts"

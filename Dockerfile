@@ -29,7 +29,7 @@ ENV R2_MEDIA_REDIRECT_ENABLED=$R2_MEDIA_REDIRECT_ENABLED
 ENV CI=true
 ENV NODE_ENV=production
 
-RUN npm run payload:generate-importmap && npm run build
+RUN npm run build
 
 FROM base AS runner
 WORKDIR /app
