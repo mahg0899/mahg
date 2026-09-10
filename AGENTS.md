@@ -16,7 +16,7 @@ MAHG.me is a Spanish-language personal portfolio and blog. It is a Next.js App R
 | `npm run dev` | Start local development on port 3000. |
 | `npm run lint` | Run ESLint across the project. |
 | `npm run media:migrate:r2 -- --dry-run` | Inventory the Payload media migration without uploading. |
-| `npm run media:migrate:r2` | Copy missing local Payload media and image variants to R2. |
+| `npm run media:migrate:r2` | Copy missing original Payload media to R2. |
 | `npm run media:migrate:r2 -- --verify-only` | Verify that every local Payload media file exists correctly in R2. |
 | `npm run build` | Create the production Next.js build; requires a reachable Payload/PostgreSQL configuration for DB-backed routes. |
 | `npm run start` | Run the production build on port 3005. |
@@ -84,7 +84,8 @@ R2_MEDIA_REDIRECT_ENABLED=false # Docker build arg for the legacy URL redirect
 - `app/api/contact/route.ts`: JSON POST endpoint that validates email/message, uses an in-memory per-IP rate limiter (5 requests/hour per process), and sends with Resend.
 - `app/sitemap.ts` and `app/robots.ts`: SEO metadata routes. Sitemap queries published posts at request time.
 - `instrumentation.ts`: initializes Payload in the Node.js runtime.
-- `scripts/migrate-media-to-r2.ts`: idempotent migration/verification utility for originals and generated image sizes; run through `npm run media:migrate:r2`.
+- `scripts/migrate-media-to-r2.ts`: idempotent migration/verification utility for original media files only; run through `npm run media:migrate:r2`.
+- The `media` collection intentionally has no `imageSizes`: Payload stores one original per upload, and both the Admin thumbnail and public site reuse that URL. Do not reintroduce persistent variants without an explicit storage tradeoff decision.
 - Run the R2 migration on the production host with `MEDIA_LOCAL_DIR` pointing to its real persistent media volume. Never upload the development workspace's `media/` contents.
 - Deploy and migrate first with both R2 flags set to `false`. After `--verify-only` succeeds, set runtime `R2_MEDIA_ENABLED=true` and build argument `R2_MEDIA_REDIRECT_ENABLED=true`, then rebuild.
 - R2 migration conflicts are not overwritten by default. Inspect them first, then use `npm run media:migrate:r2 -- --overwrite` only when replacement is intended.

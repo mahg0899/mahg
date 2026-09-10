@@ -154,7 +154,7 @@ npm run media:migrate:r2
 npm run media:migrate:r2 -- --verify-only
 ```
 
-The migration preserves filenames and writes originals and generated image sizes beneath `mahg/media/`. Conflicting remote objects are never replaced unless the command is run explicitly with `--overwrite`.
+The migration preserves filenames and writes only original Payload media beneath `mahg/media/`. Payload does not generate persistent image variants; the Admin and public site reuse the original. Conflicting remote objects are never replaced unless the command is run explicitly with `--overwrite`.
 
 Keep both R2 flags disabled for the first deployment, run the migration against the production media volume, and require a successful `--verify-only` pass. Then set runtime `R2_MEDIA_ENABLED=true` and build argument `R2_MEDIA_REDIRECT_ENABLED=true` before rebuilding; this activates R2 storage and the permanent redirect from legacy `/api/media/file/*` URLs without exposing R2 credentials during the build.
 

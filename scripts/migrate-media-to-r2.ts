@@ -51,34 +51,11 @@ type MediaFile = { filename: string; mimeType: string }
 type MediaRow = {
   filename: null | string
   mime_type: null | string
-  sizes_thumbnail_filename: null | string
-  sizes_thumbnail_mime_type: null | string
-  sizes_card_filename: null | string
-  sizes_card_mime_type: null | string
-  sizes_tablet_filename: null | string
-  sizes_tablet_mime_type: null | string
 }
 type MigrationResult = MediaFile & {
   key: string
   status: 'missing-local' | 'uploaded' | 'verified' | 'would-upload' | 'conflict' | 'failed'
   detail?: string
-}
-
-const mimeTypes: Record<string, string> = {
-  '.avif': 'image/avif',
-  '.gif': 'image/gif',
-  '.jpeg': 'image/jpeg',
-  '.jpg': 'image/jpeg',
-  '.mp4': 'video/mp4',
-  '.pdf': 'application/pdf',
-  '.png': 'image/png',
-  '.svg': 'image/svg+xml',
-  '.webm': 'video/webm',
-  '.webp': 'image/webp',
-}
-
-function getMimeType(filename: string, fallback: string) {
-  return mimeTypes[path.extname(filename).toLowerCase()] || fallback
 }
 
 function safeLocalPath(filename: string) {
@@ -99,13 +76,7 @@ async function collectMediaFiles(): Promise<MediaFile[]> {
     const result = await database.query<MediaRow>(`
       SELECT
         filename,
-        mime_type,
-        sizes_thumbnail_filename,
-        sizes_thumbnail_mime_type,
-        sizes_card_filename,
-        sizes_card_mime_type,
-        sizes_tablet_filename,
-        sizes_tablet_mime_type
+        mime_type
       FROM media
       ORDER BY id
     `)
@@ -120,20 +91,6 @@ async function collectMediaFiles(): Promise<MediaFile[]> {
         })
       }
 
-      const sizes = [
-        [document.sizes_thumbnail_filename, document.sizes_thumbnail_mime_type],
-        [document.sizes_card_filename, document.sizes_card_mime_type],
-        [document.sizes_tablet_filename, document.sizes_tablet_mime_type],
-      ] as const
-
-      for (const [filename, mimeType] of sizes) {
-        if (filename) {
-          files.set(filename, {
-            filename,
-            mimeType: mimeType || getMimeType(filename, fallbackMimeType),
-          })
-        }
-      }
     }
   } finally {
     await database.end()

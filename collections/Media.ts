@@ -27,27 +27,13 @@ export const Media: CollectionConfig = {
     staticDir: 'media',
     filesRequiredOnCreate: false,
     displayPreview: true,
-    imageSizes: [
-      {
-        name: 'thumbnail',
-        width: 400,
-        height: 300,
-        position: 'centre',
-      },
-      {
-        name: 'card',
-        width: 768,
-        height: 1024,
-        position: 'centre',
-      },
-      {
-        name: 'tablet',
-        width: 1024,
-        height: undefined,
-        position: 'centre',
-      },
-    ],
-    adminThumbnail: 'thumbnail',
+    adminThumbnail: ({ doc }) => (
+      typeof doc.mimeType === 'string' &&
+      doc.mimeType.startsWith('image/') &&
+      typeof doc.url === 'string'
+        ? doc.url
+        : null
+    ),
     mimeTypes: ['image/*', 'video/mp4', 'video/webm'],
   },
 }

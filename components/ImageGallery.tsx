@@ -6,11 +6,6 @@ interface GalleryImage {
     image: {
         url?: string
         alt?: string
-        sizes?: {
-            card?: { url?: string }
-            tablet?: { url?: string }
-            thumbnail?: { url?: string }
-        }
     } | string
 }
 
@@ -36,11 +31,9 @@ export default function ImageGallery({ images, columns = '3', gap = 'md', captio
     const gapValue = gapMap[gap] || gapMap.md
     const colCount = parseInt(columns) || 3
 
-    const getImageUrl = (item: GalleryImage, size: 'full' | 'thumb' = 'thumb') => {
+    const getImageUrl = (item: GalleryImage) => {
         const img = typeof item.image === 'object' ? item.image : null
-        if (!img) return ''
-        if (size === 'full') return img.url || ''
-        return img.sizes?.card?.url || img.sizes?.tablet?.url || img.url || ''
+        return img?.url || ''
     }
 
     const getAlt = (item: GalleryImage) => {
@@ -125,7 +118,7 @@ interface LightboxProps {
     index: number
     onClose: () => void
     onChange: (i: number) => void
-    getImageUrl: (item: GalleryImage, size: 'full' | 'thumb') => string
+    getImageUrl: (item: GalleryImage) => string
     getAlt: (item: GalleryImage) => string
 }
 
@@ -233,7 +226,7 @@ function Lightbox({ images, index, onClose, onChange, getImageUrl, getAlt }: Lig
             {/* Image */}
             <img
                 key={index}
-                src={getImageUrl(images[index], 'full')}
+                src={getImageUrl(images[index])}
                 alt={getAlt(images[index])}
                 onClick={(e) => e.stopPropagation()}
                 className="max-w-[92vw] sm:max-w-[85vw] max-h-[80vh] sm:max-h-[85vh] object-contain rounded-lg shadow-2xl select-none"
