@@ -11,7 +11,7 @@ export default function Footer() {
                     <div className="h-px w-10 bg-slate-800"></div>
                 </div>
                 <p className="text-slate-500 text-[12px] uppercase tracking-wider font-semibold">
-                    © {new Date().getFullYear()} <span className="text-btn">MAHG</span>. Hecho con ♥️ con ayuda de <a href="https://fractalis.dev" target="_blank" className="text-btn">Fractalis.Dev</a>
+                    © {new Date().getFullYear()} <span className="text-btn">MAHG</span>. Hecho con ♥️
                 </p>
             </div>
         </footer>

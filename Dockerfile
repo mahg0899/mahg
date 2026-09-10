@@ -20,10 +20,12 @@ COPY . .
 ARG DATABASE_URL
 ARG PAYLOAD_SECRET
 ARG NEXT_PUBLIC_SERVER_URL
+ARG R2_MEDIA_REDIRECT_ENABLED=false
 
 ENV DATABASE_URL=$DATABASE_URL
 ENV PAYLOAD_SECRET=$PAYLOAD_SECRET
 ENV NEXT_PUBLIC_SERVER_URL=$NEXT_PUBLIC_SERVER_URL
+ENV R2_MEDIA_REDIRECT_ENABLED=$R2_MEDIA_REDIRECT_ENABLED
 ENV CI=true
 ENV NODE_ENV=production
 
@@ -51,6 +53,7 @@ COPY --from=builder /app/globals ./globals
 COPY --from=builder /app/lib ./lib
 COPY --from=builder /app/utils ./utils
 COPY --from=builder /app/components ./components
+COPY --from=builder /app/scripts ./scripts
 COPY --from=builder /app/payload.config.ts ./payload.config.ts
 COPY --from=builder /app/payload-types.ts ./payload-types.ts
 COPY --from=builder /app/tsconfig.json ./tsconfig.json

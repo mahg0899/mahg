@@ -12,8 +12,8 @@ export const ensureUrl = (url?: string | null) => {
 };
 
 /**
- * Converts a Payload media URL to a relative path so Next.js Image
- * can optimize it without making an external HTTP request to itself.
+ * Keeps external media (including R2) on its public origin and converts only
+ * same-origin Payload media URLs to relative paths for Next.js Image.
  *
  * In Docker, the container often can't reach its own public hostname
  * (e.g. https://mahg.me/api/media/file/x.png) for the image optimization

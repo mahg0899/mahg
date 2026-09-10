@@ -1,14 +1,16 @@
 {
   "name": "mahg",
-  "version": "3.4.6",
+  "version": "3.5.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start -p 3005",
-    "lint": "eslint"
+    "lint": "eslint",
+    "media:migrate:r2": "tsx scripts/migrate-media-to-r2.ts"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.1129.0",
     "@fortawesome/fontawesome-svg-core": "^7.1.0",
     "@fortawesome/free-brands-svg-icons": "^7.1.0",
     "@fortawesome/free-solid-svg-icons": "^7.1.0",
@@ -17,6 +19,7 @@
     "@payloadcms/next": "^3.84.1",
     "@payloadcms/plugin-nested-docs": "^3.84.1",
     "@payloadcms/richtext-lexical": "^3.84.1",
+    "@payloadcms/storage-s3": "^3.84.1",
     "clsx": "^2.1.1",
     "graphql": "^16.12.0",
     "next": "^16.2.3",
@@ -35,6 +38,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
     "tailwindcss": "^4",
+    "tsx": "^4.21.0",
     "typescript": "^5"
   }
 }

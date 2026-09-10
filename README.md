@@ -126,6 +126,38 @@ docker build -t bentomahg .
 docker run -p 3005:3005 --env-file .env bentomahg
 ```
 
+### Cloudflare R2 media
+
+Production can store public Payload uploads in Cloudflare R2 while development keeps using the local `media/` directory. Configure all of these variables together; a partial configuration is rejected:
+
+```env
+S3_BUCKET=mahg-media-production
+S3_ENDPOINT=https://ACCOUNT_ID.r2.cloudflarestorage.com
+S3_ACCESS_KEY_ID=your_access_key
+S3_SECRET_ACCESS_KEY=your_secret_key
+MEDIA_PUBLIC_URL=https://cdn.mahg.me
+MEDIA_LOCAL_DIR=/app/media
+R2_MEDIA_ENABLED=false
+R2_MEDIA_REDIRECT_ENABLED=false
+```
+
+Run the migration on the production host, with `MEDIA_LOCAL_DIR` pointing to the existing production media volume. The development workspace's `media/` directory is ignored by Git and must not be uploaded as production data.
+
+```bash
+# Preview the inventory without writing to R2
+npm run media:migrate:r2 -- --dry-run
+
+# Upload missing objects; existing matching objects are verified
+npm run media:migrate:r2
+
+# Confirm that the complete local inventory is available in R2
+npm run media:migrate:r2 -- --verify-only
+```
+
+The migration preserves filenames and writes originals and generated image sizes beneath `mahg/media/`. Conflicting remote objects are never replaced unless the command is run explicitly with `--overwrite`.
+
+Keep both R2 flags disabled for the first deployment, run the migration against the production media volume, and require a successful `--verify-only` pass. Then set runtime `R2_MEDIA_ENABLED=true` and build argument `R2_MEDIA_REDIRECT_ENABLED=true` before rebuilding; this activates R2 storage and the permanent redirect from legacy `/api/media/file/*` URLs without exposing R2 credentials during the build.
+
 ### Required Environment Variables
 
 | Variable | Description |
@@ -146,6 +178,6 @@ This project is licensed under the [MIT License](LICENSE).
 
 <div align="center">
 
-Built with ♥️ by [**MAHG**](https://mahg.me) @ [**Fractalis**](https://fractalis.dev)
+Built with ♥️ by [**MAHG**](https://mahg.me)
 
 </div>

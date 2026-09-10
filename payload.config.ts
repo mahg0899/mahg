@@ -19,6 +19,36 @@ const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
 
 import { nestedDocsPlugin } from '@payloadcms/plugin-nested-docs'
+import { s3Storage } from '@payloadcms/storage-s3'
+
+const R2_MEDIA_PREFIX = 'mahg/media'
+const r2Config = {
+  bucket: process.env.S3_BUCKET,
+  endpoint: process.env.S3_ENDPOINT,
+  accessKeyId: process.env.S3_ACCESS_KEY_ID,
+  secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
+  publicURL: process.env.MEDIA_PUBLIC_URL,
+}
+
+const configuredR2Values = Object.values(r2Config).filter(Boolean).length
+const hasCompleteR2Config = configuredR2Values === Object.keys(r2Config).length
+
+if (configuredR2Values > 0 && !hasCompleteR2Config) {
+  const missing = Object.entries(r2Config)
+    .filter(([, value]) => !value)
+    .map(([key]) => key)
+
+  throw new Error(`Incomplete R2 media configuration. Missing: ${missing.join(', ')}`)
+}
+
+const r2MediaEnabled = process.env.R2_MEDIA_ENABLED === 'true'
+
+if (r2MediaEnabled && !hasCompleteR2Config) {
+  throw new Error('R2_MEDIA_ENABLED requires a complete R2 media configuration.')
+}
+
+const useR2Media = process.env.NODE_ENV === 'production' && r2MediaEnabled && hasCompleteR2Config
+const mediaPublicURL = r2Config.publicURL?.replace(/\/$/, '') || ''
 
 export default buildConfig({
   admin: {
@@ -75,6 +105,27 @@ export default buildConfig({
       collections: ['pages'],
       generateLabel: (_, doc) => doc.title as string,
       generateURL: (docs) => docs.reduce((url, doc) => `${url}/${doc.slug}`, ''),
+    }),
+    s3Storage({
+      enabled: useR2Media,
+      alwaysInsertFields: true,
+      bucket: r2Config.bucket || '',
+      collections: {
+        media: {
+          prefix: R2_MEDIA_PREFIX,
+          disablePayloadAccessControl: true,
+          generateFileURL: ({ filename }) =>
+            `${mediaPublicURL}/${R2_MEDIA_PREFIX}/${encodeURIComponent(filename)}`,
+        },
+      },
+      config: {
+        endpoint: r2Config.endpoint,
+        region: 'auto',
+        credentials: {
+          accessKeyId: r2Config.accessKeyId || '',
+          secretAccessKey: r2Config.secretAccessKey || '',
+        },
+      },
     }),
   ],
   serverURL: process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000',
