@@ -26,7 +26,7 @@ export default function RelatedPosts({ posts }: { posts: Post[] }) {
                                 className="group block transition-all duration-300 hover:-translate-y-2"
                             >
                                 {/* Card Image */}
-                                <div className="aspect-video rounded-lg overflow-hidden bg-bento dark:bg-bento border border-main/25 mb-4 relative group-hover:border-btn/50 transition-all">
+                                <div className="aspect-video rounded-lg overflow-hidden bg-bento border border-main/25 mb-4 relative group-hover:border-btn/50 transition-all">
                                     {featuredImage && featuredImage.url ? (
                                         <Image
                                             src={getMediaSrc(featuredImage.url)}

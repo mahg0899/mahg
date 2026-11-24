@@ -256,11 +256,11 @@ export default async function BlogPost({ params, searchParams }: { params: Promi
                         <TableOfContents items={toc} />
                     </aside>
                     <div className="col-span-1 lg:col-span-7">
-                        <div className="prose prose-lg prose-invert max-w-none prose-headings:text-slate-100 prose-p:text-slate-300 prose-a:text-blue-400 hover:prose-a:text-blue-300 prose-code:text-pink-400 prose-pre:bg-slate-900/50 prose-pre:border prose-pre:border-slate-800 prose-img:rounded-xl">
+                        <div className="prose prose-lg prose-invert max-w-none prose-headings:text-slate-100 prose-p:text-slate-300 prose-a:text-btn hover:prose-a:text-btn/80 prose-code:text-pink-400 prose-pre:bg-slate-900/50 prose-pre:border prose-pre:border-slate-800 prose-img:rounded-xl">
                             <RichText content={post.content} hasIntroduction={hasContentBeforeFirstHeading} />
                         </div>
                         <hr className="border-slate-800 my-16" />
-                        <div className="bg-bento dark:bg-bento rounded-2xl p-8 border border-main/25 flex flex-col md:flex-row gap-6 items-center md:items-start text-center md:text-left">
+                        <div className="bg-bento rounded-2xl p-8 border border-main/25 flex flex-col md:flex-row gap-6 items-center md:items-start text-center md:text-left">
                             <div className="shrink-0">
                                 {author?.avatar && typeof author.avatar === 'object' && author.avatar.url ? (
                                     <Image
@@ -269,7 +269,7 @@ export default async function BlogPost({ params, searchParams }: { params: Promi
                                         width={80}
                                         height={80}
                                         unoptimized={shouldBypassMediaOptimization(author.avatar.url)}
-                                        className="rounded-full object-cover shadow-lg ring-2 ring-blue-500/20"
+                                        className="rounded-full object-cover shadow-lg ring-2 ring-btn/20"
                                     />
                                 ) : author?.avatarUrl ? (
                                     <Image
@@ -277,11 +277,11 @@ export default async function BlogPost({ params, searchParams }: { params: Promi
                                         alt={author.name || 'Author'}
                                         width={80}
                                         height={80}
-                                        className="rounded-full object-cover shadow-lg ring-2 ring-blue-500/20"
+                                        className="rounded-full object-cover shadow-lg ring-2 ring-btn/20"
                                         unoptimized
                                     />
                                 ) : (
-                                    <div className="w-20 h-20 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-2xl font-bold text-white shadow-lg ring-2 ring-blue-500/20">
+                                    <div className="w-20 h-20 rounded-full bg-gradient-to-br from-btn to-purple-600 flex items-center justify-center text-2xl font-bold text-white shadow-lg ring-2 ring-btn/20">
                                         {author?.name ? author.name[0].toUpperCase() : (author?.email?.[0].toUpperCase() || 'A')}
                                     </div>
                                 )}
@@ -310,7 +310,7 @@ export default async function BlogPost({ params, searchParams }: { params: Promi
                                                     href={link.url}
                                                     target="_blank"
                                                     rel="noopener noreferrer"
-                                                    className="text-xs font-semibold uppercase tracking-wider text-blue-400 hover:text-blue-300 transition-colors"
+                                                    className="text-xs font-semibold uppercase tracking-wider text-btn hover:text-btn/80 transition-colors"
                                                 >
                                                     {link.label || 'Link'}
                                                 </a>

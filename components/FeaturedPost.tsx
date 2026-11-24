@@ -23,10 +23,10 @@ export const FeaturedPost: React.FC<PostCardProps> = ({ post }) => {
 
     return (
         <section className="w-full mb-16">
-            <div className="group relative flex flex-col md:flex-row bg-bento dark:bg-bento border border-main/25 rounded-lg overflow-hidden transition-all duration-300 hover:border-btn/50 hover:-translate-y-2 hover:shadow-lg shadow-btn/20">
+            <div className="bento-card group flex flex-col md:flex-row">
 
                 {/* Left: Image (50% on desktop) */}
-                <div className="w-full md:w-1/2 relative bg-slate-800 min-h-[300px] md:min-h-[450px] overflow-hidden">
+                <div className="w-full md:w-1/2 relative bg-contrast min-h-[300px] md:min-h-[450px] overflow-hidden">
                     <div className="absolute inset-0 p-8 flex items-center justify-center">
                         {featuredImage && featuredImage.url ? (
                             <Image
@@ -38,7 +38,7 @@ export const FeaturedPost: React.FC<PostCardProps> = ({ post }) => {
                                 className="object-cover rounded-lg transition-transform duration-700 group-hover:scale-105"
                             />
                         ) : (
-                            <div className="w-4/5 h-4/5 bg-slate-700 rounded-lg flex items-center justify-center">
+                            <div className="w-4/5 h-4/5 bg-contrast rounded-lg flex items-center justify-center">
                                 <span className="text-slate-400 font-medium">Featured Image</span>
                             </div>
                         )}
@@ -79,7 +79,7 @@ export const FeaturedPost: React.FC<PostCardProps> = ({ post }) => {
                             ) : (author as any)?.avatarUrl ? (
                                 <Image src={getMediaSrc((author as any).avatarUrl)} alt={author?.name || 'Author'} width={40} height={40} className="rounded-full ring-2 ring-main/25" unoptimized />
                             ) : (
-                                <div className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center ring-2 ring-main/25">
+                                <div className="w-10 h-10 rounded-full bg-contrast flex items-center justify-center ring-2 ring-main/25">
                                     <span className="text-sm text-slate-300 font-bold">
                                         {author?.name ? author.name.charAt(0) : 'A'}
                                     </span>
@@ -109,7 +109,7 @@ export const FeaturedPost: React.FC<PostCardProps> = ({ post }) => {
                     <div>
                         <Link
                             href={`/blog/${post.slug}`}
-                            className="inline-flex items-center gap-2 px-6 py-3 bg-btn hover:bg-btn/80 text-white font-bold rounded-xl transition-all shadow-lg hover:shadow-btn/25"
+                            className="btn-primary"
                         >
                             Leer Ahora
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

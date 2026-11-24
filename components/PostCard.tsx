@@ -41,10 +41,10 @@ export const PostCard: React.FC<PostCardProps> = ({ post }) => {
     const author = typeof post.author === 'object' ? post.author : null
 
     return (
-        <article className="group relative flex flex-col h-full bg-bento dark:bg-bento border border-main/25 rounded-lg p-5 transition-all duration-300 hover:border-btn/50 hover:-translate-y-2 hover:shadow-lg shadow-btn/20">
+        <article className="bento-card group flex flex-col h-full p-5">
 
             {/* Image Container with Padding */}
-            <Link href={`/blog/${post.slug}`} className="relative block w-full aspect-[16/10] overflow-hidden rounded-lg bg-slate-800">
+            <Link href={`/blog/${post.slug}`} className="relative block w-full aspect-[16/10] overflow-hidden rounded-lg bg-contrast">
                 {featuredImage && featuredImage.url ? (
                     <Image
                         src={getMediaSrc(featuredImage.url)}
@@ -102,7 +102,7 @@ export const PostCard: React.FC<PostCardProps> = ({ post }) => {
                         ) : (author as any)?.avatarUrl ? (
                             <Image src={getMediaSrc((author as any).avatarUrl)} alt={author?.name || 'Author'} width={32} height={32} className="rounded-full ring-2 ring-main/25" unoptimized />
                         ) : (
-                            <div className="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center ring-2 ring-main/25">
+                            <div className="w-8 h-8 rounded-full bg-contrast flex items-center justify-center ring-2 ring-main/25">
                                 <span className="text-[10px] text-slate-300 font-bold">
                                     {author?.name ? author.name.charAt(0) : 'A'}
                                 </span>
@@ -114,7 +114,7 @@ export const PostCard: React.FC<PostCardProps> = ({ post }) => {
                     </div>
 
                     {/* Read Time / Date Pill */}
-                    <div className="flex items-center gap-2 px-3 py-1 bg-slate-700/50 rounded-lg border border-slate-700/50">
+                    <div className="flex items-center gap-2 px-3 py-1 bg-contrast/50 rounded-lg border border-main/25">
                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-slate-500">
                             <circle cx="12" cy="12" r="10" />
                             <polyline points="12 6 12 12 16 14" />

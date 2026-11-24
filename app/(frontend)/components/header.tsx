@@ -3,10 +3,8 @@
 import Link from "next/link";
 import Image from "next/image";
 import React, { useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faXmark, faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import { MahgLogo } from "./MahgLogo";
-import { faGithub } from "@fortawesome/free-brands-svg-icons";
+import { Mail, Menu, X } from "lucide-react";
 
 export default function Header() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -38,7 +36,7 @@ export default function Header() {
                         </li>
                     </ul>
                     <button onClick={toggleMenu} className="md:hidden text-2xl text-slate-400 hover:text-white transition-colors p-2">
-                        <FontAwesomeIcon icon={isMenuOpen ? faXmark : faBars} />
+                        {isMenuOpen ? <X /> : <Menu />}
                     </button>
                 </div>
             </div>
@@ -55,15 +53,15 @@ export default function Header() {
                     </Link>
                     <div className="h-px bg-white/10 my-2"></div>
                     <div className="flex flex-col gap-4 px-4">
-                        <Link href="/contact" onClick={toggleMenu} className="bg-btn text-white text-center rounded-xl px-6 py-3 hover:bg-btn/80 transition-all">
-                            <FontAwesomeIcon icon={faEnvelope} className="mr-2" />
+                        <Link href="/contact" onClick={toggleMenu} className="btn-primary w-full justify-center">
+                            <Mail className="mr-2 size-4" />
                             Contactame
                         </Link>
                     </div>
                 </div>
             </div>
 
-            <div className="w-full h-px bg-contrast dark:bg-contrast my-4 opacity-50 mb-10" />
+            <div className="w-full h-px bg-contrast my-4 opacity-50 mb-10" />
         </div>
     );
 };

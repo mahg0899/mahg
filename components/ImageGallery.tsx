@@ -72,7 +72,7 @@ export default function ImageGallery({ images, columns = '3', gap = 'md', captio
                             <button
                                 key={i}
                                 onClick={() => setLightboxIndex(i)}
-                                className="group relative overflow-hidden bg-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                className="group relative overflow-hidden bg-bento focus:outline-none focus:ring-2 focus:ring-btn"
                                 style={{
                                     aspectRatio: '1',
                                     borderRadius: gap === 'none' ? '0' : '8px',

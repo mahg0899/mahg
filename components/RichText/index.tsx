@@ -389,7 +389,7 @@ function serializeLexical({ nodes }: { nodes: Node[] }) {
 
                         if (tag === 'h1') return <h1 key={index} id={id} className="text-3xl font-bold mt-12 mb-6 text-slate-100 scroll-mt-24">{children}</h1>
                         if (tag === 'h2') return <h2 key={index} id={id} className="text-2xl font-bold mt-12 mb-6 text-slate-100 border-b border-slate-800 pb-2 scroll-mt-24">{children}</h2>
-                        if (tag === 'h3') return <h3 key={index} id={id} className="text-xl font-bold mt-8 mb-4 text-blue-400 scroll-mt-24">{children}</h3>
+                        if (tag === 'h3') return <h3 key={index} id={id} className="text-xl font-bold mt-8 mb-4 text-btn scroll-mt-24">{children}</h3>
                         if (tag === 'h4') return <h4 key={index} id={id} className="text-lg font-bold mt-8 mb-4 text-slate-200 scroll-mt-24">{children}</h4>
                         if (tag === 'h5') return <h5 key={index} id={id} className="text-base font-bold mt-6 mb-3 text-slate-300 scroll-mt-24">{children}</h5>
                         if (tag === 'h6') return <h6 key={index} id={id} className="text-sm font-bold mt-6 mb-3 text-slate-400 uppercase tracking-wide scroll-mt-24">{children}</h6>
@@ -411,7 +411,7 @@ function serializeLexical({ nodes }: { nodes: Node[] }) {
                         )
                     case 'h3':
                         return (
-                            <h3 key={index} id={serializeLexical({ nodes: node.children || [] })?.toString().toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '')} className="text-lg font-bold mt-8 mb-4 text-blue-400 scroll-mt-24">
+                            <h3 key={index} id={serializeLexical({ nodes: node.children || [] })?.toString().toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '')} className="text-lg font-bold mt-8 mb-4 text-btn scroll-mt-24">
                                 {serializeLexical({ nodes: node.children || [] })}
                             </h3>
                         )
@@ -435,7 +435,7 @@ function serializeLexical({ nodes }: { nodes: Node[] }) {
                         )
                     case 'quote':
                         return (
-                            <blockquote key={index} className="border-l-4 border-blue-500 pl-4 italic my-6 text-gray-300">
+                            <blockquote key={index} className="border-l-4 border-btn pl-4 italic my-6 text-gray-300">
                                 {serializeLexical({ nodes: node.children || [] })}
                             </blockquote>
                         )
@@ -496,7 +496,7 @@ function serializeLexical({ nodes }: { nodes: Node[] }) {
                                 key={index}
                                 target={linkNewTab ? '_blank' : '_self'}
                                 rel={linkNewTab ? 'noopener noreferrer' : undefined}
-                                className="text-blue-400 hover:text-blue-300 underline"
+                                className="text-btn hover:text-btn/80 underline"
                             >
                                 {serializeLexical({ nodes: node.children || [] })}
                             </a>

@@ -28,120 +28,39 @@
   --text-5xl: 3rem;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #101922;
-    --foreground: #F0E7D5;
-    --textMain: #F8FAFC;
-    --btnColor: #2D8BFF;
-    --contrast: #1D2835;
-    --bento: #1c2127;
+@utility bento-card {
+  @apply relative overflow-hidden rounded-2xl border border-main/25 bg-bento transition-all duration-300;
+
+  &:hover {
+    border-color: color-mix(in oklab, var(--btnColor) 50%, transparent);
+    translate: 0 -0.5rem;
+    --tw-shadow-color: color-mix(in oklab, var(--btnColor) 20%, transparent);
+    --tw-shadow: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
+    box-shadow: var(--tw-shadow);
+  }
+}
+
+@utility btn-primary {
+  @apply inline-flex items-center gap-2 rounded-xl bg-btn px-6 py-3 font-bold text-white shadow-lg transition-all;
+
+  &:hover {
+    background-color: color-mix(in oklab, var(--btnColor) 80%, transparent);
+    translate: 0 -0.125rem;
+    --tw-shadow-color: color-mix(in oklab, var(--btnColor) 25%, transparent);
+    --tw-shadow: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
+    box-shadow: var(--tw-shadow);
   }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif, var(--font-orbitron), var(--font-bitcount);
-}
-
-.glitch-404 {
-  position: relative;
-  display: inline-block;
-  font-size: inherit;
-  font-weight: inherit;
-  color: rgba(248, 250, 252, 0.9);
-  -webkit-text-stroke: 0;
-}
-
-.glitch-404::before,
-.glitch-404::after {
-  content: '404';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  -webkit-text-stroke: 0;
-}
-
-.glitch-404::before {
-  color: #ff0040;
-  animation: glitch-shift 3s infinite linear alternate-reverse;
-  clip-path: polygon(0 0, 100% 0, 100% 35%, 0 35%);
-  left: -4px;
-  top: -2px;
-}
-
-.glitch-404::after {
-  color: #0040ff;
-  animation: glitch-shift-reverse 2.5s infinite linear alternate-reverse;
-  clip-path: polygon(0 65%, 100% 65%, 100% 100%, 0 100%);
-  left: 4px;
-  top: 2px;
-}
-
-@keyframes glitch-shift {
-
-  0%,
-  80% {
-    transform: translate(0);
-  }
-
-  82% {
-    transform: translate(-3px, 2px);
-  }
-
-  84% {
-    transform: translate(3px, -1px);
-  }
-
-  86% {
-    transform: translate(-2px, -2px);
-  }
-
-  88% {
-    transform: translate(2px, 1px);
-  }
-
-  90%,
-  100% {
-    transform: translate(0);
-  }
-}
-
-@keyframes glitch-shift-reverse {
-
-  0%,
-  85% {
-    transform: translate(0);
-  }
-
-  87% {
-    transform: translate(2px, -2px);
-  }
-
-  89% {
-    transform: translate(-3px, 1px);
-  }
-
-  91% {
-    transform: translate(3px, 2px);
-  }
-
-  93% {
-    transform: translate(-1px, -1px);
-  }
-
-  95%,
-  100% {
-    transform: translate(0);
-  }
+  font-family: var(--font-inter), var(--font-geist-sans), sans-serif;
 }
 
 /* Plyr Video Player - Dark Theme Overrides */
 .plyr-wrapper .plyr {
-  --plyr-color-main: #3b82f6;
+  --plyr-color-main: var(--btnColor);
   --plyr-video-background: #000;
   --plyr-menu-background: #1e293b;
   --plyr-menu-color: #e2e8f0;
@@ -149,10 +68,10 @@ body {
   --plyr-menu-arrow-color: #334155;
   --plyr-tooltip-background: #1e293b;
   --plyr-tooltip-color: #e2e8f0;
-  --plyr-badge-background: #3b82f6;
+  --plyr-badge-background: var(--btnColor);
   --plyr-badge-text-color: #fff;
-  --plyr-range-fill-background: #3b82f6;
-  --plyr-video-control-background-hover: rgba(59, 130, 246, 0.3);
+  --plyr-range-fill-background: var(--btnColor);
+  --plyr-video-control-background-hover: color-mix(in srgb, var(--btnColor) 30%, transparent);
   border-radius: 0.75rem;
   overflow: hidden;
 }
@@ -163,7 +82,7 @@ body {
 }
 
 .plyr-wrapper .plyr__control--overlaid {
-  background: rgba(59, 130, 246, 0.85) !important;
+  background: color-mix(in srgb, var(--btnColor) 85%, transparent) !important;
   backdrop-filter: blur(8px);
   border: 1px solid rgba(255, 255, 255, 0.1);
   width: 64px;
@@ -174,7 +93,7 @@ body {
 }
 
 .plyr-wrapper .plyr__control--overlaid:hover {
-  background: #3b82f6 !important;
+  background: var(--btnColor) !important;
 }
 
 /* Play triangle icon for the big center button */

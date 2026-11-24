@@ -61,7 +61,7 @@ export default function TableOfContents({ items }: { items: TOCItem[] }) {
                                     className={`
                                         block py-2 text-sm transition-all duration-200 border-l-2 -ml-[1px]
                                         ${activeId === item.id
-                                            ? 'border-blue-500 text-blue-400 font-medium'
+                                            ? 'border-btn text-btn font-medium'
                                             : 'border-transparent text-slate-400 hover:text-slate-200 hover:border-slate-600'
                                         }
                                         ${item.id === 'introduccion' ? '' : ''}

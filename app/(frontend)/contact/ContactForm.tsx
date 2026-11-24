@@ -1,8 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPaperPlane, faCircleCheck, faCircleExclamation, faSpinner } from '@fortawesome/free-solid-svg-icons'
+import { CircleAlert, CircleCheck, LoaderCircle, Send } from 'lucide-react'
 
 type FormStatus = 'idle' | 'sending' | 'success' | 'error'
 
@@ -55,7 +54,7 @@ export default function ContactForm() {
     }
 
     return (
-        <form onSubmit={handleSubmit} className="lg:col-span-7 bg-bento border border-main/25 rounded-lg p-8 relative group overflow-hidden hover:border-btn/50 hover:-translate-y-2 hover:shadow-lg shadow-btn/20 transition-all duration-300">
+        <form onSubmit={handleSubmit} className="bento-card group lg:col-span-7 p-8">
             <div className="absolute inset-0 bg-gradient-to-br from-btn/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <div className="space-y-2">
@@ -66,7 +65,7 @@ export default function ContactForm() {
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         disabled={status === 'sending'}
-                        className="w-full bg-slate-900/50 border border-slate-700/50 rounded-lg px-4 py-3 text-white placeholder:text-slate-600 focus:outline-none focus:border-btn focus:ring-1 focus:ring-btn transition-all text-sm font-medium disabled:opacity-50"
+                        className="w-full bg-contrast/50 border border-main/25 rounded-lg px-4 py-3 text-white placeholder:text-slate-600 focus:outline-none focus:border-btn focus:ring-1 focus:ring-btn transition-all text-sm font-medium disabled:opacity-50"
                     />
                 </div>
                 <div className="space-y-2">
@@ -78,7 +77,7 @@ export default function ContactForm() {
                         onChange={(e) => setEmail(e.target.value)}
                         required
                         disabled={status === 'sending'}
-                        className="w-full bg-slate-900/50 border border-slate-700/50 rounded-lg px-4 py-3 text-white placeholder:text-slate-600 focus:outline-none focus:border-btn focus:ring-1 focus:ring-btn transition-all text-sm font-medium disabled:opacity-50"
+                        className="w-full bg-contrast/50 border border-main/25 rounded-lg px-4 py-3 text-white placeholder:text-slate-600 focus:outline-none focus:border-btn focus:ring-1 focus:ring-btn transition-all text-sm font-medium disabled:opacity-50"
                     />
                 </div>
             </div>
@@ -88,7 +87,7 @@ export default function ContactForm() {
                     value={subject}
                     onChange={(e) => setSubject(e.target.value)}
                     disabled={status === 'sending'}
-                    className="w-full bg-slate-900/50 border border-slate-700/50 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-btn focus:ring-1 focus:ring-btn transition-all text-sm font-medium appearance-none disabled:opacity-50"
+                    className="w-full bg-contrast/50 border border-main/25 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-btn focus:ring-1 focus:ring-btn transition-all text-sm font-medium appearance-none disabled:opacity-50"
                 >
                     <option>Propuesta de Proyecto</option>
                     <option>Oferta Laboral</option>
@@ -107,20 +106,20 @@ export default function ContactForm() {
                     onChange={(e) => setMessage(e.target.value)}
                     required
                     disabled={status === 'sending'}
-                    className="w-full bg-slate-900/50 border border-slate-700/50 rounded-lg px-4 py-3 text-white placeholder:text-slate-600 focus:outline-none focus:border-btn focus:ring-1 focus:ring-btn transition-all text-sm font-medium resize-none disabled:opacity-50"
+                    className="w-full bg-contrast/50 border border-main/25 rounded-lg px-4 py-3 text-white placeholder:text-slate-600 focus:outline-none focus:border-btn focus:ring-1 focus:ring-btn transition-all text-sm font-medium resize-none disabled:opacity-50"
                 />
             </div>
 
             {status === 'success' && (
                 <div className="mb-6 flex items-center gap-3 bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 px-4 py-3 rounded-xl text-sm font-semibold animate-in fade-in">
-                    <FontAwesomeIcon icon={faCircleCheck} className="w-5 h-5 shrink-0" />
+                    <CircleCheck className="size-5 shrink-0" />
                     <span>¡Mensaje enviado correctamente! Te responderé pronto.</span>
                 </div>
             )}
 
             {status === 'error' && (
                 <div className="mb-6 flex items-center gap-3 bg-red-500/10 border border-red-500/30 text-red-400 px-4 py-3 rounded-xl text-sm font-semibold">
-                    <FontAwesomeIcon icon={faCircleExclamation} className="w-5 h-5 shrink-0" />
+                    <CircleAlert className="size-5 shrink-0" />
                     <span>{errorMessage}</span>
                 </div>
             )}
@@ -133,12 +132,12 @@ export default function ContactForm() {
                 {status === 'sending' ? (
                     <>
                         Enviando...
-                        <FontAwesomeIcon icon={faSpinner} className="w-4 h-4 animate-spin" />
+                        <LoaderCircle className="size-4 animate-spin" />
                     </>
                 ) : (
                     <>
                         Enviar Mensaje
-                        <FontAwesomeIcon icon={faPaperPlane} className="w-4 h-4 group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform" />
+                        <Send className="size-4 group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform" />
                     </>
                 )}
             </button>

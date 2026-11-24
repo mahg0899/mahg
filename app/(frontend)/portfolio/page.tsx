@@ -2,9 +2,9 @@ import { getPayload } from "payload";
 import config from "@payload-config";
 import Image from "next/image";
 import Link from "next/link";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGithub, faFigma } from "@fortawesome/free-brands-svg-icons";
-import { faArrowRight, faLaptopCode } from "@fortawesome/free-solid-svg-icons";
+import { ArrowRight, Laptop } from "lucide-react";
+import { siFigma, siGithub } from "simple-icons";
+import { BrandIcon } from "@/components/BrandIcon";
 import { ensureUrl, getMediaSrc, shouldBypassMediaOptimization } from '@/lib/utils';
 import type { Media } from "@/payload-types";
 import type { Metadata } from "next";
@@ -62,7 +62,7 @@ export default async function Portfolio() {
                         const figmaUrl = ensureUrl(project.figmaLink);
 
                         return (
-                            <div key={project.id} className="break-inside-avoid mb-6 group bg-bento border border-slate-700/50 rounded-2xl overflow-hidden hover:border-btn/50 hover:-translate-y-2 hover:shadow-xl hover:shadow-btn/10 transition-all duration-300 flex flex-col">
+                            <div key={project.id} className="bento-card group break-inside-avoid mb-6 flex flex-col">
                                 <div className="relative">
                                     {bannerUrl ? (
                                         <Image
@@ -74,14 +74,14 @@ export default async function Portfolio() {
                                             className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105"
                                         />
                                     ) : (
-                                        <div className="w-full h-48 flex items-center justify-center bg-slate-800/50">
-                                            <FontAwesomeIcon icon={faLaptopCode} className="text-3xl text-slate-600" />
+                                        <div className="w-full h-48 flex items-center justify-center bg-contrast/50">
+                                            <Laptop className="size-8 text-slate-600" />
                                         </div>
                                     )}
-                                    <div className="absolute inset-0 bg-blue-500/0 group-hover:bg-blue-500/10 transition-colors duration-300"></div>
+                                    <div className="absolute inset-0 bg-btn/0 group-hover:bg-btn/10 transition-colors duration-300"></div>
                                 </div>
                                 <div className="p-6 flex flex-col">
-                                    <h2 className="text-xl font-bold text-white mb-3 group-hover:text-blue-400 transition-colors">
+                                    <h2 className="text-xl font-bold text-white mb-3 group-hover:text-btn transition-colors">
                                         {project.title}
                                     </h2>
                                     <div className="flex items-start justify-between gap-4 mb-4">
@@ -89,7 +89,7 @@ export default async function Portfolio() {
                                             {project.techStack?.map((t: any, i: number) => (
                                                 <span
                                                     key={i}
-                                                    className="bg-slate-900/80 border border-slate-700/50 text-slate-300 text-[10px] font-bold px-2.5 py-1 rounded-md uppercase tracking-wider"
+                                                    className="bg-contrast/80 border border-main/25 text-slate-300 text-[10px] font-bold px-2.5 py-1 rounded-md uppercase tracking-wider"
                                                 >
                                                     {t.tag}
                                                 </span>
@@ -98,21 +98,21 @@ export default async function Portfolio() {
                                         <div className="flex items-center gap-3 shrink-0 pt-0.5">
                                             {githubUrl ? (
                                                 <a href={githubUrl} target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-white transition-colors" title="Ver Código en GitHub">
-                                                    <FontAwesomeIcon icon={faGithub} className="w-5 h-5" />
+                                                    <BrandIcon icon={siGithub} className="size-5" />
                                                 </a>
                                             ) : (
                                                 <div className="text-slate-700 cursor-not-allowed" title="Código no disponible públicamente">
-                                                    <FontAwesomeIcon icon={faGithub} className="w-5 h-5" />
+                                                    <BrandIcon icon={siGithub} className="size-5" />
                                                 </div>
                                             )}
 
                                             {figmaUrl ? (
                                                 <a href={figmaUrl} target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-[#F24E1E] transition-colors" title="Ver Diseño en Figma">
-                                                    <FontAwesomeIcon icon={faFigma} className="w-5 h-5" />
+                                                    <BrandIcon icon={siFigma} className="size-5" />
                                                 </a>
                                             ) : (
                                                 <div className="text-slate-700 cursor-not-allowed" title="Diseño no disponible públicamente">
-                                                    <FontAwesomeIcon icon={faFigma} className="w-5 h-5" />
+                                                    <BrandIcon icon={siFigma} className="size-5" />
                                                 </div>
                                             )}
                                         </div>
@@ -123,12 +123,11 @@ export default async function Portfolio() {
                                     <Link
                                         href={link}
                                         target="_blank"
-                                        className="w-full bg-slate-800/50 text-white font-bold py-3 rounded-xl border border-slate-700/50 hover:border-btn active:scale-[0.98] transition-all flex items-center justify-center gap-2 group/btn text-sm"
+                                        className="w-full bg-contrast/50 text-white font-bold py-3 rounded-xl border border-main/25 hover:border-btn active:scale-[0.98] transition-all flex items-center justify-center gap-2 group/btn text-sm"
                                     >
-                                        Ver Detalles
-                                        <FontAwesomeIcon
-                                            icon={faArrowRight}
-                                            className="w-3 h-3 text-slate-400 group-hover/btn:text-white group-hover/btn:translate-x-1 transition-all"
+                                        Ver Demo
+                                        <ArrowRight
+                                            className="size-3 text-slate-400 group-hover/btn:text-white group-hover/btn:translate-x-1 transition-all"
                                         />
                                     </Link>
                                 </div>
@@ -137,8 +136,8 @@ export default async function Portfolio() {
                     })}
                 </div>
                 {projects.docs.length === 0 && (
-                    <div className="text-center py-32 border border-dashed border-slate-800 rounded-3xl bg-slate-900/20">
-                        <FontAwesomeIcon icon={faLaptopCode} className="text-6xl text-slate-700 mb-6 w-20 h-20 mx-auto" />
+                    <div className="text-center py-32 border border-dashed border-main/25 rounded-2xl bg-bento/50">
+                        <Laptop className="size-20 text-slate-700 mb-6 mx-auto" />
                         <p className="text-xl text-slate-400 font-medium">
                             No hay proyectos publicados aún.
                         </p>
